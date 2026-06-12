@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""Generate a French PvP ranking page for Great League top 25 from pvpoke.com."""
+"""Generate a French PvP ranking page for all three leagues from pvpoke.com."""
 
 import json, math, time, re, urllib.request
 from html import escape
 
-CP_LIMIT = 1500
+LEAGUES = [
+    {"id": "super",  "name": "Ligue Super",  "cp": 1500, "pvpoke": "rankings-1500.json"},
+    {"id": "hyper",  "name": "Ligue Hyper",  "cp": 2500, "pvpoke": "rankings-2500.json"},
+    {"id": "master", "name": "Ligue Master", "cp": None, "pvpoke": "rankings-10000.json"},
+]
+TOP_N = 36
 
 CPM_TABLE = [
     (1,0.094),(1.5,0.135137432),(2,0.16639787),(2.5,0.192650919),
@@ -35,7 +40,6 @@ CPM_TABLE = [
     (51,0.82200003),
 ]
 
-# GO-specific type-variant moves not directly in PokeAPI as separate entries
 GO_TYPE_VARIANTS = {
     "WEATHER_BALL_FIRE":     ("weather-ball", "Feu"),
     "WEATHER_BALL_ICE":      ("weather-ball", "Glace"),
@@ -59,13 +63,11 @@ GO_TYPE_VARIANTS = {
     "HIDDEN_POWER_STEEL":    ("hidden-power", "Acier"),
 }
 
-# PvPoke move IDs that don't map cleanly to PokeAPI hyphenated names
 MOVE_API_OVERRIDES = {
     "SUPER_POWER": "superpower",
     "ROLLOUT":     "rollout",
 }
 
-# (pvpoke suffix, French display suffix, PokeAPI pokemon-endpoint suffix)
 FORM_SUFFIX_MAP = [
     ("_shadow",   " (Obscur)", ""),
     ("_galarian", " de Galar", "-galar"),
@@ -90,7 +92,6 @@ def fetch_json(url):
 _move_cache = {}
 
 def _fetch_move_fr(api_id):
-    """Fetch the French name for a move from PokeAPI. Returns None on failure."""
     time.sleep(0.2)
     try:
         data = fetch_json(f"https://pokeapi.co/api/v2/move/{api_id}/")
@@ -102,11 +103,9 @@ def _fetch_move_fr(api_id):
     return None
 
 def get_move_fr(move_id):
-    """Return the correct French name for a PvPoke move ID."""
     if move_id in _move_cache:
         return _move_cache[move_id]
 
-    # GO type-variant moves (WEATHER_BALL_FIRE etc.)
     if move_id in GO_TYPE_VARIANTS:
         base_api, type_suffix = GO_TYPE_VARIANTS[move_id]
         if base_api not in _move_cache:
@@ -134,7 +133,6 @@ def prefetch_moves(move_ids):
 _info_cache = {}
 
 def get_pokemon_info(species_id):
-    """Return (french_name, sprite_url) for a PvPoke speciesId."""
     if species_id in _info_cache:
         return _info_cache[species_id]
 
@@ -151,7 +149,6 @@ def get_pokemon_info(species_id):
     pokemon_name = base_h + api_suffix
     species_name  = base_h
 
-    # pokemon endpoint -> sprite id (retry once on transient failure)
     sprite_url = None
     for attempt in range(2):
         time.sleep(0.3 * (attempt + 1))
@@ -163,7 +160,6 @@ def get_pokemon_info(species_id):
             if attempt == 1:
                 print(f"    [pokemon miss: {pokemon_name}] {e}")
 
-    # species endpoint -> French name
     fr_name = None
     time.sleep(0.25)
     try:
@@ -190,14 +186,16 @@ def calc_cp(ba, bd, bs, ia, id_, is_, cpm):
     s = (bs + is_) * cpm
     return max(10, int(a * math.sqrt(d) * math.sqrt(s) / 10))
 
-def find_best_ivs(ba, bd, bs):
+def find_best_ivs(ba, bd, bs, cp_limit):
+    if cp_limit is None:
+        return {"level": 51, "ia": 15, "id": 15, "is": 15}
     best_sp, best = -1, {"level": 1, "ia": 0, "id": 0, "is": 0}
     for ia in range(16):
         for id_ in range(16):
             for is_ in range(16):
                 top_lvl, top_cpm = None, None
                 for lvl, cpm in CPM_TABLE:
-                    if calc_cp(ba, bd, bs, ia, id_, is_, cpm) <= CP_LIMIT:
+                    if calc_cp(ba, bd, bs, ia, id_, is_, cpm) <= cp_limit:
                         top_lvl, top_cpm = lvl, cpm
                     else:
                         break
@@ -217,19 +215,7 @@ def fmt_level(lvl):
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def main():
-    print("Fetching rankings...")
-    rankings = fetch_json("https://pvpoke.com/data/rankings/all/overall/rankings-1500.json")[:25]
-    print("Fetching gamemaster...")
-    gm = fetch_json("https://pvpoke.com/data/gamemaster/pokemon.json")
-    stats_map = {p["speciesId"]: p["baseStats"] for p in gm}
-    dex_map   = {p["speciesId"]: p.get("dex") for p in gm}
-    elite_map = {p["speciesId"]: set(p.get("eliteMoves", [])) for p in gm}
-
-    # Batch-fetch French move names before the per-pokemon loop
-    all_move_ids = [mid for e in rankings for mid in e.get("moveset", [])]
-    prefetch_moves(all_move_ids)
-
+def build_league_rows(rankings, league, stats_map, dex_map, elite_map):
     rows = []
     for rank, entry in enumerate(rankings, 1):
         sid = entry["speciesId"]
@@ -246,7 +232,7 @@ def main():
         base_sid = re.sub(r"_shadow$", "", sid)
         stats = stats_map.get(sid) or stats_map.get(base_sid)
         if stats:
-            b = find_best_ivs(stats["atk"], stats["def"], stats["hp"])
+            b = find_best_ivs(stats["atk"], stats["def"], stats["hp"], league["cp"])
             iv_str = f"Niv. {fmt_level(b['level'])}  {b['ia']}/{b['id']}/{b['is']}"
         else:
             iv_str = "N/A"
@@ -265,8 +251,29 @@ def main():
             "charged_elite": [m in elite for m in charged_ids],
             "ivs": iv_str,
         })
+    return rows
 
-    html = build_html(rows)
+def main():
+    print("Fetching gamemaster...")
+    gm = fetch_json("https://pvpoke.com/data/gamemaster/pokemon.json")
+    stats_map = {p["speciesId"]: p["baseStats"] for p in gm}
+    dex_map   = {p["speciesId"]: p.get("dex") for p in gm}
+    elite_map = {p["speciesId"]: set(p.get("eliteMoves", [])) for p in gm}
+
+    league_rows = {}
+    for league in LEAGUES:
+        print(f"\nFetching {league['name']} rankings...")
+        url = f"https://pvpoke.com/data/rankings/all/overall/{league['pvpoke']}"
+        rankings = fetch_json(url)[:TOP_N]
+
+        all_move_ids = [mid for e in rankings for mid in e.get("moveset", [])]
+        prefetch_moves(all_move_ids)
+
+        league_rows[league["id"]] = build_league_rows(
+            rankings, league, stats_map, dex_map, elite_map
+        )
+
+    html = build_html(league_rows)
     out = "rankings_fr.html"
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
@@ -274,7 +281,7 @@ def main():
 
 # ── HTML generation ───────────────────────────────────────────────────────────
 
-def build_html(rows):
+def build_cards(rows):
     cards = ""
     for r in rows:
         star = '<sup class="elite">*</sup>'
@@ -310,17 +317,73 @@ def build_html(rows):
         <div class="ivs">{escape(r['ivs'])}</div>
       </div>
     </div>"""
+    return cards
+
+def build_html(league_rows):
+    # CSS-only tabs: inputs + labels interleaved as direct body children,
+    # then panels as direct body children.
+    # input immediately precedes its label → input:checked + label works.
+    # input ~ panel (general sibling, same parent) works for all panels.
+    # Inputs come first (hidden), then a visual row of labels.
+    # All are direct <body> children so CSS ~ can reach the panels below.
+    tab_inputs_html = "\n  ".join(
+        '<input type="radio" name="tab" id="tab-{id}"{checked}>'.format(
+            id=l["id"], checked=' checked' if i == 0 else ''
+        )
+        for i, l in enumerate(LEAGUES)
+    )
+    tab_labels_row = "\n    ".join(
+        '<label for="tab-{id}" class="tab-label">{name}</label>'.format(
+            id=l["id"], name=l["name"]
+        )
+        for l in LEAGUES
+    )
+    panel_css = "\n    ".join(
+        f'#tab-{l["id"]}:checked ~ #panel-{l["id"]} {{ display: block; }}'
+        for l in LEAGUES
+    )
+    # input:checked ~ .tab-row reaches labels inside .tab-row (descendant selector)
+    active_label_css = ",\n    ".join(
+        f'#tab-{l["id"]}:checked ~ .tab-row label[for="tab-{l["id"]}"]'
+        for l in LEAGUES
+    )
+
+    panels = ""
+    for league in LEAGUES:
+        lid = league["id"]
+        cp_label = f"{league['cp']} PC" if league["cp"] else "Sans limite"
+        cards = build_cards(league_rows[lid])
+        panels += f"""
+  <div id="panel-{lid}" class="tab-panel">
+    <p class="sub">Source : pvpoke.com  |  Limite : {cp_label}  |  Classement general<br>
+       Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
+    <div class="grid">
+{cards}
+    </div>
+  </div>"""
 
     return f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Top 25 Grande Ligue - PvPoke FR</title>
+  <title>Top {TOP_N} Ligues PvP - PvPoke FR</title>
   <style>
     *{{box-sizing:border-box;margin:0;padding:0}}
     body{{font-family:'Segoe UI',sans-serif;background:#0d1b2a;color:#e0e6f0;padding:2rem 1rem}}
-    h1{{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:.3rem}}
+    h1{{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:1.5rem}}
+    /* Tabs — inputs are hidden, labels act as buttons */
+    input[name="tab"]{{display:none}}
+    .tab-label{{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;
+               background:#152033;border:2px solid #1e3350;color:#7a9bbf;transition:all .15s;
+               display:inline-block;margin:.25rem}}
+    {active_label_css},
+    .tab-label:hover{{background:#1e3a5f;border-color:#3d7ae5;color:#fff}}
+    .tab-panel{{display:none}}
+    {panel_css}
+    /* Layout helpers */
+    .tab-row{{text-align:center;margin-bottom:2rem}}
+    /* Cards */
     .sub{{text-align:center;color:#7a9bbf;font-size:.85rem;margin-bottom:2.5rem;line-height:1.6}}
     .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;max-width:1200px;margin:0 auto}}
     .card{{background:#152033;border:1px solid #1e3350;border-radius:14px;padding:1rem 1.2rem;
@@ -355,13 +418,13 @@ def build_html(rows):
   </style>
 </head>
 <body>
-  <h1>Grande Ligue - Top 25</h1>
-  <p class="sub">Source : pvpoke.com  |  Limite : 1500 PC  |  Classement general<br>
-     Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
-  <div class="grid">
-{cards}
+  <h1>Top {TOP_N} Ligues PvP</h1>
+  {tab_inputs_html}
+  <div class="tab-row">
+    {tab_labels_row}
   </div>
-  <footer>Donnees : pvpoke.com . Images & noms : PokeAPI . Genere le {time.strftime('%d/%m/%Y')}</footer>
+{panels}
+  <footer>Donnees : pvpoke.com . Images &amp; noms : PokeAPI . Genere le {time.strftime('%d/%m/%Y')}</footer>
 </body>
 </html>"""
 

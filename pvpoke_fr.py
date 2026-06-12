@@ -233,7 +233,9 @@ def build_league_rows(rankings, league, stats_map, dex_map, elite_map):
         stats = stats_map.get(sid) or stats_map.get(base_sid)
         if stats:
             b = find_best_ivs(stats["atk"], stats["def"], stats["hp"], league["cp"])
-            iv_str = f"Niv. {fmt_level(b['level'])}  {b['ia']}/{b['id']}/{b['is']}"
+            cpm = dict(CPM_TABLE)[b["level"]]
+            cp = calc_cp(stats["atk"], stats["def"], stats["hp"], b["ia"], b["id"], b["is"], cpm)
+            iv_str = f"Niv. {fmt_level(b['level'])}  {b['ia']}/{b['id']}/{b['is']}  •  {cp} PC"
         else:
             iv_str = "N/A"
             print(f"    WARNING: no stats for {sid}")

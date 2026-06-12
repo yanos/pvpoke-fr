@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate a French PvP ranking page for all three leagues from pvpoke.com."""
 
-import json, math, time, re, urllib.request
+import json, math, time, re, urllib.request, urllib.parse
 from html import escape
 
 LEAGUES = [
@@ -310,7 +310,7 @@ def build_cards(rows):
         {shadow_badge}
       </div>
       <div class="info">
-        <div class="name">{escape(r['fr_name'])}</div>
+        <div class="name"><a href="https://www.pokepedia.fr/{urllib.parse.quote(r['fr_name'].replace(' ', '_'))}" target="_blank" rel="noopener">{escape(r['fr_name'])}</a></div>
         <div class="score">Score : {r['score']:.1f}</div>
         <div class="moves">
           <span class="move fast">{escape(r['fast'])}{fast_star}</span>
@@ -406,6 +406,8 @@ def build_html(league_rows):
     .info{{flex:1;min-width:0}}
     .name{{font-size:1.05rem;font-weight:700;margin-bottom:.15rem;
            white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+    .name a{{color:inherit;text-decoration:none}}
+    .name a:hover{{text-decoration:underline}}
     .score{{font-size:.75rem;color:#7a9bbf;margin-bottom:.45rem}}
     .moves{{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.5rem}}
     .move{{font-size:.68rem;padding:3px 9px;border-radius:20px;font-weight:600}}

@@ -3,11 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Top 25 Grande Ligue - PvPoke FR</title>
+  <title>Top 36 Ligues PvP - PvPoke FR</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Segoe UI',sans-serif;background:#0d1b2a;color:#e0e6f0;padding:2rem 1rem}
-    h1{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:.3rem}
+    h1{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:1.5rem}
+    /* Tabs — inputs are hidden, labels act as buttons */
+    input[name="tab"]{display:none}
+    .tab-label{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;
+               background:#152033;border:2px solid #1e3350;color:#7a9bbf;transition:all .15s;
+               display:inline-block;margin:.25rem}
+    #tab-super:checked ~ .tab-row label[for="tab-super"],
+    #tab-hyper:checked ~ .tab-row label[for="tab-hyper"],
+    #tab-master:checked ~ .tab-row label[for="tab-master"],
+    .tab-label:hover{background:#1e3a5f;border-color:#3d7ae5;color:#fff}
+    .tab-panel{display:none}
+    #tab-super:checked ~ #panel-super { display: block; }
+    #tab-hyper:checked ~ #panel-hyper { display: block; }
+    #tab-master:checked ~ #panel-master { display: block; }
+    /* Layout helpers */
+    .tab-row{text-align:center;margin-bottom:2rem}
+    /* Cards */
     .sub{text-align:center;color:#7a9bbf;font-size:.85rem;margin-bottom:2.5rem;line-height:1.6}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;max-width:1200px;margin:0 auto}
     .card{background:#152033;border:1px solid #1e3350;border-radius:14px;padding:1rem 1.2rem;
@@ -42,10 +58,20 @@
   </style>
 </head>
 <body>
-  <h1>Grande Ligue - Top 25</h1>
-  <p class="sub">Source : pvpoke.com  |  Limite : 1500 PC  |  Classement general<br>
-     Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
-  <div class="grid">
+  <h1>Top 36 Ligues PvP</h1>
+  <input type="radio" name="tab" id="tab-super" checked>
+  <input type="radio" name="tab" id="tab-hyper">
+  <input type="radio" name="tab" id="tab-master">
+  <div class="tab-row">
+    <label for="tab-super" class="tab-label">Ligue Super</label>
+    <label for="tab-hyper" class="tab-label">Ligue Hyper</label>
+    <label for="tab-master" class="tab-label">Ligue Master</label>
+  </div>
+
+  <div id="panel-super" class="tab-panel">
+    <p class="sub">Source : pvpoke.com  |  Limite : 1500 PC  |  Classement general<br>
+       Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
+    <div class="grid">
 
     <div class="card">
       <div class="rank">#1</div>
@@ -234,7 +260,7 @@
         <div class="score">Score : 92.0</div>
         <div class="moves">
           <span class="move fast">Picpic</span>
-          <span class="move charged">Tunnelier<sup class="elite">*</sup></span><span class="move charged">Icy Wind<sup class="elite">*</sup></span>
+          <span class="move charged">Tunnelier<sup class="elite">*</sup></span><span class="move charged">Vent Glace<sup class="elite">*</sup></span>
         </div>
         <div class="ivs">Niv. 26  1/15/15</div>
       </div>
@@ -447,7 +473,1350 @@
         <div class="ivs">Niv. 20  0/15/10</div>
       </div>
     </div>
+    <div class="card shadow">
+      <div class="rank">#26</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/148.png" alt="Draco (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Draco (Obscur)</div>
+        <div class="score">Score : 91.1</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Ligotage</span><span class="move charged">Hydro-Queue</span>
+        </div>
+        <div class="ivs">Niv. 34.5  0/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#27</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/308.png" alt="Charmina" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Charmina</div>
+        <div class="score">Score : 91.1</div>
+        <div class="moves">
+          <span class="move fast">Coupe Psycho</span>
+          <span class="move charged">Poing Glace</span><span class="move charged">Dynamo-Poing</span>
+        </div>
+        <div class="ivs">Niv. 49  12/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#28</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/681.png" alt="Aegislash Shield" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Aegislash Shield</div>
+        <div class="score">Score : 91.0</div>
+        <div class="moves">
+          <span class="move fast">Aegislash Charge Psycho Cut</span>
+          <span class="move charged">Ball’Ombre</span><span class="move charged">Gyroballe</span>
+        </div>
+        <div class="ivs">Niv. 50  4/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#29</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/302.png" alt="Ténéfix (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Ténéfix (Obscur)</div>
+        <div class="score">Score : 91.0</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Tricherie</span><span class="move charged">Vampi-Poing</span>
+        </div>
+        <div class="ivs">Niv. 51  6/15/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#30</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/372.png" alt="Drackhaus" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Drackhaus</div>
+        <div class="score">Score : 90.9</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Ouragan</span><span class="move charged">Lance-Flammes</span>
+        </div>
+        <div class="ivs">Niv. 28.5  0/14/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#31</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/705.png" alt="Colimucus" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Colimucus</div>
+        <div class="score">Score : 90.9</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Plaquage</span><span class="move charged">Draco-Choc</span>
+        </div>
+        <div class="ivs">Niv. 28.5  0/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#32</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/189.png" alt="Cotovol" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Cotovol</div>
+        <div class="score">Score : 90.8</div>
+        <div class="moves">
+          <span class="move fast">Vent Féérique</span>
+          <span class="move charged">Éco-Sphère</span><span class="move charged">Acrobatie<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 41.5  0/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#33</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10180.png" alt="Limonde de Galar" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Limonde de Galar</div>
+        <div class="score">Score : 90.8</div>
+        <div class="moves">
+          <span class="move fast">Tir de Boue</span>
+          <span class="move charged">Éboulement</span><span class="move charged">Séisme</span>
+        </div>
+        <div class="ivs">Niv. 27  0/12/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#34</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/148.png" alt="Draco" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Draco</div>
+        <div class="score">Score : 90.7</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Hydro-Queue</span><span class="move charged">Draco-Choc</span>
+        </div>
+        <div class="ivs">Niv. 34.5  0/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#35</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/537.png" alt="Crapustule" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Crapustule</div>
+        <div class="score">Score : 90.7</div>
+        <div class="moves">
+          <span class="move fast">Tir de Boue</span>
+          <span class="move charged">Telluriforce</span><span class="move charged">Vent Glace</span>
+        </div>
+        <div class="ivs">Niv. 22  0/15/14</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#36</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/372.png" alt="Drackhaus (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Drackhaus (Obscur)</div>
+        <div class="score">Score : 90.7</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Ouragan</span><span class="move charged">Lance-Flammes</span>
+        </div>
+        <div class="ivs">Niv. 28.5  0/14/15</div>
+      </div>
+    </div>
+    </div>
   </div>
-  <footer>Donnees : pvpoke.com . Images & noms : PokeAPI . Genere le 11/06/2026</footer>
+  <div id="panel-hyper" class="tab-panel">
+    <p class="sub">Source : pvpoke.com  |  Limite : 2500 PC  |  Classement general<br>
+       Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
+    <div class="grid">
+
+    <div class="card">
+      <div class="rank">#1</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/959.png" alt="Forgelina" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Forgelina</div>
+        <div class="score">Score : 94.6</div>
+        <div class="moves">
+          <span class="move fast">Vent Féérique</span>
+          <span class="move charged">Marteau Mastoc</span><span class="move charged">Piétisol</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#2</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/463.png" alt="Coudlangue" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Coudlangue</div>
+        <div class="score">Score : 94.2</div>
+        <div class="moves">
+          <span class="move fast">Roulade</span>
+          <span class="move charged">Plaquage<sup class="elite">*</sup></span><span class="move charged">Ball’Ombre</span>
+        </div>
+        <div class="ivs">Niv. 51  4/15/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#3</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10120.png" alt="Zygarde Complete" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Zygarde Complete</div>
+        <div class="score">Score : 94.2</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Mâchouille</span><span class="move charged">Séisme</span>
+        </div>
+        <div class="ivs">Niv. 25  1/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#4</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/593.png" alt="Moyade" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Moyade</div>
+        <div class="score">Score : 94.0</div>
+        <div class="moves">
+          <span class="move fast">Châtiment</span>
+          <span class="move charged">Surf</span><span class="move charged">Ball’Ombre</span>
+        </div>
+        <div class="ivs">Niv. 50.5  13/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#5</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/823.png" alt="Corvaillus" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Corvaillus</div>
+        <div class="score">Score : 93.9</div>
+        <div class="moves">
+          <span class="move fast">Jet de Sable</span>
+          <span class="move charged">Tranch’Air</span><span class="move charged">Représailles</span>
+        </div>
+        <div class="ivs">Niv. 49  6/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#6</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/671.png" alt="Florges" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Florges</div>
+        <div class="score">Score : 93.4</div>
+        <div class="moves">
+          <span class="move fast">Vent Féérique</span>
+          <span class="move charged">Douche Froide</span><span class="move charged">Voix Enjôleuse</span>
+        </div>
+        <div class="ivs">Niv. 29.5  1/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#7</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png" alt="Aligatueur (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Aligatueur (Obscur)</div>
+        <div class="score">Score : 93.3</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Hydroblast<sup class="elite">*</sup></span><span class="move charged">Laser Glace</span>
+        </div>
+        <div class="ivs">Niv. 35.5  0/14/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#8</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/640.png" alt="Viridium" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Viridium</div>
+        <div class="score">Score : 93.2</div>
+        <div class="moves">
+          <span class="move fast">Double Pied</span>
+          <span class="move charged">Lame Feuille</span><span class="move charged">Lame Sainte<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 33  0/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#9</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png" alt="Pingoléon (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Pingoléon (Obscur)</div>
+        <div class="score">Score : 93.0</div>
+        <div class="moves">
+          <span class="move fast">Strido-Son</span>
+          <span class="move charged">Hydroblast<sup class="elite">*</sup></span><span class="move charged">Bec Vrille</span>
+        </div>
+        <div class="ivs">Niv. 35  0/14/13</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#10</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png" alt="Pingoléon" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Pingoléon</div>
+        <div class="score">Score : 92.8</div>
+        <div class="moves">
+          <span class="move fast">Strido-Son</span>
+          <span class="move charged">Hydroblast<sup class="elite">*</sup></span><span class="move charged">Bec Vrille</span>
+        </div>
+        <div class="ivs">Niv. 35  0/14/13</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#11</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10171.png" alt="Sulfura de Galar" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Sulfura de Galar</div>
+        <div class="score">Score : 92.6</div>
+        <div class="moves">
+          <span class="move fast">Coup Bas</span>
+          <span class="move charged">Vol</span><span class="move charged">Rapace</span>
+        </div>
+        <div class="ivs">Niv. 31  0/12/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#12</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/230.png" alt="Hyporoi" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Hyporoi</div>
+        <div class="score">Score : 92.3</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Surf</span><span class="move charged">Météores</span>
+        </div>
+        <div class="ivs">Niv. 40  0/14/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#13</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" alt="Tortank" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Tortank</div>
+        <div class="score">Score : 92.0</div>
+        <div class="moves">
+          <span class="move fast">Roulade</span>
+          <span class="move charged">Hydroblast<sup class="elite">*</sup></span><span class="move charged">Coud’Krâne</span>
+        </div>
+        <div class="ivs">Niv. 49  5/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#14</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/205.png" alt="Foretress" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Foretress</div>
+        <div class="score">Score : 92.0</div>
+        <div class="moves">
+          <span class="move fast">Change Éclair</span>
+          <span class="move charged">Tomberoche</span><span class="move charged">Tourbi-Sable</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#15</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/687.png" alt="Sepiatroce" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Sepiatroce</div>
+        <div class="score">Score : 92.0</div>
+        <div class="moves">
+          <span class="move fast">Vague Psy</span>
+          <span class="move charged">Tricherie</span><span class="move charged">Surpuissance</span>
+        </div>
+        <div class="ivs">Niv. 50  12/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#16</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/687.png" alt="Sepiatroce (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Sepiatroce (Obscur)</div>
+        <div class="score">Score : 92.0</div>
+        <div class="moves">
+          <span class="move fast">Vague Psy</span>
+          <span class="move charged">Tricherie</span><span class="move charged">Surpuissance</span>
+        </div>
+        <div class="ivs">Niv. 50  12/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#17</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/979.png" alt="Courrousinge" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Courrousinge</div>
+        <div class="score">Score : 91.6</div>
+        <div class="moves">
+          <span class="move fast">Balayage</span>
+          <span class="move charged">Poing de Colère<sup class="elite">*</sup></span><span class="move charged">Close Combat</span>
+        </div>
+        <div class="ivs">Niv. 29.5  0/12/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#18</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/979.png" alt="Courrousinge (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Courrousinge (Obscur)</div>
+        <div class="score">Score : 91.4</div>
+        <div class="moves">
+          <span class="move fast">Balayage</span>
+          <span class="move charged">Poing de Colère<sup class="elite">*</sup></span><span class="move charged">Close Combat</span>
+        </div>
+        <div class="ivs">Niv. 29.5  0/12/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#19</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/346.png" alt="Vacilys" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Vacilys</div>
+        <div class="score">Score : 91.4</div>
+        <div class="moves">
+          <span class="move fast">Acide</span>
+          <span class="move charged">Tomberoche</span><span class="move charged">Nœud Herbe</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#20</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/205.png" alt="Foretress (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Foretress (Obscur)</div>
+        <div class="score">Score : 91.4</div>
+        <div class="moves">
+          <span class="move fast">Change Éclair</span>
+          <span class="move charged">Tomberoche</span><span class="move charged">Tourbi-Sable</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#21</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10104.png" alt="Feunard d&#x27;Alola" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Feunard d&#x27;Alola</div>
+        <div class="score">Score : 91.4</div>
+        <div class="moves">
+          <span class="move fast">Poudreuse</span>
+          <span class="move charged">Ball’Météo Glace</span><span class="move charged">Douche Froide</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#22</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png" alt="Mélodelfe" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Mélodelfe</div>
+        <div class="score">Score : 91.3</div>
+        <div class="moves">
+          <span class="move fast">Vent Féérique</span>
+          <span class="move charged">Poing Météore</span><span class="move charged">Pouvoir Lunaire</span>
+        </div>
+        <div class="ivs">Niv. 51  5/15/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#23</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/160.png" alt="Aligatueur" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Aligatueur</div>
+        <div class="score">Score : 91.3</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Hydroblast<sup class="elite">*</sup></span><span class="move charged">Laser Glace</span>
+        </div>
+        <div class="ivs">Niv. 35.5  0/14/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#24</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png" alt="Feunard" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Feunard</div>
+        <div class="score">Score : 91.3</div>
+        <div class="moves">
+          <span class="move fast">Flammèche<sup class="elite">*</sup></span>
+          <span class="move charged">Ball’Météo Feu</span><span class="move charged">Éco-Sphère</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#25</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/765.png" alt="Gouroutan" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Gouroutan</div>
+        <div class="score">Score : 91.3</div>
+        <div class="moves">
+          <span class="move fast">Choc Mental</span>
+          <span class="move charged">Centrifugifle</span><span class="move charged">Désherbaffe</span>
+        </div>
+        <div class="ivs">Niv. 50.5  5/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#26</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/379.png" alt="Registeel" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Registeel</div>
+        <div class="score">Score : 91.3</div>
+        <div class="moves">
+          <span class="move fast">Verrouillage</span>
+          <span class="move charged">Luminocanon</span><span class="move charged">Exploforce</span>
+        </div>
+        <div class="ivs">Niv. 51  6/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#27</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/230.png" alt="Hyporoi (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Hyporoi (Obscur)</div>
+        <div class="score">Score : 91.2</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Surf</span><span class="move charged">Météores</span>
+        </div>
+        <div class="ivs">Niv. 40  0/14/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#28</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png" alt="Lokhlass" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Lokhlass</div>
+        <div class="score">Score : 91.2</div>
+        <div class="moves">
+          <span class="move fast">Vague Psy</span>
+          <span class="move charged">Aria de l’Écume</span><span class="move charged">Laser Glace<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 41.5  0/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#29</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png" alt="Noctunoir" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Noctunoir</div>
+        <div class="score">Score : 91.1</div>
+        <div class="moves">
+          <span class="move fast">Étonnement</span>
+          <span class="move charged">Dynamo-Poing</span><span class="move charged">Poing Ombre</span>
+        </div>
+        <div class="ivs">Niv. 49.5  10/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#30</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png" alt="Ninetales Alolan (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Ninetales Alolan (Obscur)</div>
+        <div class="score">Score : 91.1</div>
+        <div class="moves">
+          <span class="move fast">Poudreuse</span>
+          <span class="move charged">Ball’Météo Glace</span><span class="move charged">Douche Froide</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/14</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#31</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/119.png" alt="Poissoroy" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Poissoroy</div>
+        <div class="score">Score : 91.1</div>
+        <div class="moves">
+          <span class="move fast">Picpic</span>
+          <span class="move charged">Tunnelier<sup class="elite">*</sup></span><span class="move charged">Vent Glace<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#32</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png" alt="Noctunoir (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Noctunoir (Obscur)</div>
+        <div class="score">Score : 91.0</div>
+        <div class="moves">
+          <span class="move fast">Étonnement</span>
+          <span class="move charged">Dynamo-Poing</span><span class="move charged">Poing Ombre</span>
+        </div>
+        <div class="ivs">Niv. 49.5  10/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#33</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/776.png" alt="Boumata" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Boumata</div>
+        <div class="score">Score : 91.0</div>
+        <div class="moves">
+          <span class="move fast">Calcination</span>
+          <span class="move charged">Centrifugifle</span><span class="move charged">Draco-Griffe</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#34</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/977.png" alt="Oyacata" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Oyacata</div>
+        <div class="score">Score : 90.9</div>
+        <div class="moves">
+          <span class="move fast">Cascade</span>
+          <span class="move charged">Surf</span><span class="move charged">Colère</span>
+        </div>
+        <div class="ivs">Niv. 34  0/14/13</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#35</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png" alt="Giratina Altered" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Giratina Altered</div>
+        <div class="score">Score : 90.9</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Draco-Griffe</span><span class="move charged">Ombre Portée</span>
+        </div>
+        <div class="ivs">Niv. 28.5  0/15/11</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#36</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png" alt="Lokhlass (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Lokhlass (Obscur)</div>
+        <div class="score">Score : 90.9</div>
+        <div class="moves">
+          <span class="move fast">Vague Psy</span>
+          <span class="move charged">Aria de l’Écume</span><span class="move charged">Laser Glace<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 41.5  0/15/15</div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div id="panel-master" class="tab-panel">
+    <p class="sub">Source : pvpoke.com  |  Limite : Sans limite  |  Classement general<br>
+       Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
+    <div class="grid">
+
+    <div class="card">
+      <div class="rank">#1</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/888.png" alt="Zacian Crowned Sword" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Zacian Crowned Sword</div>
+        <div class="score">Score : 99.0</div>
+        <div class="moves">
+          <span class="move fast">Griffe Acier</span>
+          <span class="move charged">Close Combat</span><span class="move charged">Gladius Maximus</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#2</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10246.png" alt="Palkia Origin" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Palkia Origin</div>
+        <div class="score">Score : 98.9</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Hydro-Queue</span><span class="move charged">Spatio-Rift</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#3</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/376.png" alt="Métalosse" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Métalosse</div>
+        <div class="score">Score : 98.0</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Poing Météore<sup class="elite">*</sup></span><span class="move charged">Séisme</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#4</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10023.png" alt="Kyurem White" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Kyurem White</div>
+        <div class="score">Score : 94.9</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Flamme Croix</span><span class="move charged">Feu Glacé</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#5</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/792.png" alt="Lunala" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Lunala</div>
+        <div class="score">Score : 94.9</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Ball’Ombre</span><span class="move charged">Pouvoir Lunaire</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#6</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/716.png" alt="Xerneas" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Xerneas</div>
+        <div class="score">Score : 94.8</div>
+        <div class="moves">
+          <span class="move fast">Géo-Contrôle<sup class="elite">*</sup></span>
+          <span class="move charged">Close Combat</span><span class="move charged">Pouvoir Lunaire</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#7</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png" alt="Reshiram" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Reshiram</div>
+        <div class="score">Score : 94.1</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Flamme Croix<sup class="elite">*</sup></span><span class="move charged">Draco-Météore</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#8</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10245.png" alt="Dialga Origin" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Dialga Origin</div>
+        <div class="score">Score : 94.0</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Hurle-Temps</span><span class="move charged">Tête de Fer</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#9</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/889.png" alt="Zamazenta Crowned Shield" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Zamazenta Crowned Shield</div>
+        <div class="score">Score : 93.9</div>
+        <div class="moves">
+          <span class="move fast">Crocs Givre</span>
+          <span class="move charged">Close Combat</span><span class="move charged">Aegis Maxima</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#10</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10022.png" alt="Kyurem Black" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Kyurem Black</div>
+        <div class="score">Score : 93.1</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Éclair Gelé</span><span class="move charged">Éclair Croix</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#11</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Kyogre</div>
+        <div class="score">Score : 92.9</div>
+        <div class="moves">
+          <span class="move fast">Cascade</span>
+          <span class="move charged">Avalanche</span><span class="move charged">Onde Originelle<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#12</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png" alt="Zekrom" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Zekrom</div>
+        <div class="score">Score : 92.9</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Colère</span><span class="move charged">Éclair Croix<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#13</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/802.png" alt="Marshadow" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Marshadow</div>
+        <div class="score">Score : 92.6</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Close Combat</span><span class="move charged">Poing Glace</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#14</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/890.png" alt="Éthernatos" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Éthernatos</div>
+        <div class="score">Score : 91.5</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Canon Dynamax</span><span class="move charged">Lance-Flammes</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#15</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png" alt="Palkia (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Palkia (Obscur)</div>
+        <div class="score">Score : 91.4</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Hydro-Queue</span><span class="move charged">Draco-Météore</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#16</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Lugia</div>
+        <div class="score">Score : 91.0</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Aéroblast<sup class="elite">*</sup></span><span class="move charged">Vol</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#17</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/376.png" alt="Métalosse (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Métalosse (Obscur)</div>
+        <div class="score">Score : 90.6</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Poing Météore<sup class="elite">*</sup></span><span class="move charged">Séisme</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#18</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Lugia (Obscur)</div>
+        <div class="score">Score : 90.2</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Aéroblast<sup class="elite">*</sup></span><span class="move charged">Vol</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#19</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png" alt="Carchacrok (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Carchacrok (Obscur)</div>
+        <div class="score">Score : 89.8</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Ouragan</span><span class="move charged">Telluriforce<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#20</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/800.png" alt="Necrozma Dawn Wings" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Necrozma Dawn Wings</div>
+        <div class="score">Score : 89.7</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Vibrobscur</span><span class="move charged">Rayon Spectral</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#21</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/717.png" alt="Yveltal" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Yveltal</div>
+        <div class="score">Score : 89.7</div>
+        <div class="moves">
+          <span class="move fast">Coup Bas</span>
+          <span class="move charged">Vibrobscur</span><span class="move charged">Mort’Ailes<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#22</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png" alt="Carchacrok" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Carchacrok</div>
+        <div class="score">Score : 88.7</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Ouragan</span><span class="move charged">Telluriforce<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#23</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Ho-Oh</div>
+        <div class="score">Score : 88.7</div>
+        <div class="moves">
+          <span class="move fast">Calcination</span>
+          <span class="move charged">Rapace</span><span class="move charged">Feu Sacré<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#24</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10120.png" alt="Zygarde Complete" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Zygarde Complete</div>
+        <div class="score">Score : 88.7</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Mâchouille</span><span class="move charged">Séisme</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#25</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/648.png" alt="Meloetta Aria" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Meloetta Aria</div>
+        <div class="score">Score : 88.5</div>
+        <div class="moves">
+          <span class="move fast">Choc Mental</span>
+          <span class="move charged">Choc Psy</span><span class="move charged">Éclat Magique</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#26</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png" alt="Palkia" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Palkia</div>
+        <div class="score">Score : 88.4</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Hydro-Queue</span><span class="move charged">Déflagration</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#27</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png" alt="Latios (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Latios (Obscur)</div>
+        <div class="score">Score : 88.1</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Aurasphère</span><span class="move charged">Lumi-Éclat<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#28</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/381.png" alt="Latios" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Latios</div>
+        <div class="score">Score : 88.0</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Aurasphère</span><span class="move charged">Lumi-Éclat<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#29</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png" alt="Kyogre (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Kyogre (Obscur)</div>
+        <div class="score">Score : 87.9</div>
+        <div class="moves">
+          <span class="move fast">Cascade</span>
+          <span class="move charged">Avalanche</span><span class="move charged">Onde Originelle<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#30</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/800.png" alt="Necrozma Dusk Mane" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Necrozma Dusk Mane</div>
+        <div class="score">Score : 87.8</div>
+        <div class="moves">
+          <span class="move fast">Griffe Ombre</span>
+          <span class="move charged">Vibrobscur</span><span class="move charged">Choc Météore</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#31</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png" alt="Groudon" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Groudon</div>
+        <div class="score">Score : 87.5</div>
+        <div class="moves">
+          <span class="move fast">Draco-Queue</span>
+          <span class="move charged">Poing Feu<sup class="elite">*</sup></span><span class="move charged">Lame Pangéenne<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#32</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png" alt="Léviator (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Léviator (Obscur)</div>
+        <div class="score">Score : 87.5</div>
+        <div class="moves">
+          <span class="move fast">Draco-Souffle</span>
+          <span class="move charged">Hydro-Queue<sup class="elite">*</sup></span><span class="move charged">Ouragan</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#33</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/671.png" alt="Florges" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Florges</div>
+        <div class="score">Score : 87.0</div>
+        <div class="moves">
+          <span class="move fast">Vent Féérique</span>
+          <span class="move charged">Pouvoir Lunaire</span><span class="move charged">Douche Froide</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#34</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1000.png" alt="Gromago" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Gromago</div>
+        <div class="score">Score : 87.0</div>
+        <div class="moves">
+          <span class="move fast">Châtiment</span>
+          <span class="move charged">Ball’Ombre</span><span class="move charged">Exploforce</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card shadow">
+      <div class="rank">#35</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo (Obscur)" loading="lazy" onerror="this.style.opacity='0'">
+        <span class="badge">Obscur</span>
+      </div>
+      <div class="info">
+        <div class="name">Mewtwo (Obscur)</div>
+        <div class="score">Score : 87.0</div>
+        <div class="moves">
+          <span class="move fast">Coupe Psycho</span>
+          <span class="move charged">Frappe Psy<sup class="elite">*</sup></span><span class="move charged">Ball’Ombre<sup class="elite">*</sup></span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rank">#36</div>
+      <div class="sprite-wrap">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/791.png" alt="Solgaleo" loading="lazy" onerror="this.style.opacity='0'">
+        
+      </div>
+      <div class="info">
+        <div class="name">Solgaleo</div>
+        <div class="score">Score : 86.8</div>
+        <div class="moves">
+          <span class="move fast">Danse Flammes</span>
+          <span class="move charged">Psycho-Croc</span><span class="move charged">Tête de Fer</span>
+        </div>
+        <div class="ivs">Niv. 51  15/15/15</div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <footer>Donnees : pvpoke.com . Images &amp; noms : PokeAPI . Genere le 12/06/2026</footer>
 </body>
 </html>

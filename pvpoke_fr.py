@@ -374,6 +374,9 @@ def build_html(league_rows):
     *{{box-sizing:border-box;margin:0;padding:0}}
     body{{font-family:'Segoe UI',sans-serif;background:#0d1b2a;color:#e0e6f0;padding:2rem 1rem}}
     h1{{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:1.5rem}}
+    nav.site-nav{{text-align:center;margin-bottom:1.5rem;font-size:.85rem}}
+    nav.site-nav a{{color:#7a9bbf;text-decoration:none;margin:0 .6rem}}
+    nav.site-nav a:hover{{color:#fff;text-decoration:underline}}
     /* Tabs — inputs are hidden, labels act as buttons */
     input[name="tab"]{{display:none}}
     .tab-label{{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;
@@ -423,6 +426,7 @@ def build_html(league_rows):
 </head>
 <body>
   <h1>Top {TOP_N} Ligues PvP</h1>
+  <nav class="site-nav"><a href="battle_fr.html">Simulateur de combat</a></nav>
   {tab_inputs_html}
   <div class="tab-row">
     {tab_labels_row}
@@ -432,5 +436,158 @@ def build_html(league_rows):
 </body>
 </html>"""
 
+# ── French i18n data for the battle simulator ──────────────────────────────────
+# Walks the vendored gamemaster (every Pokemon + move the engine can use) and emits
+# vendor/pvpoke/data/i18n_fr.json, reusing the same PokeAPI lookups as the rankings page.
+# Requires sync_engine.py to have already populated vendor/pvpoke/data/gamemaster.json.
+
+def build_i18n_json():
+    gm_path = "vendor/pvpoke/data/gamemaster.json"
+    with open(gm_path, encoding="utf-8") as f:
+        gmdata = json.load(f)
+
+    print(f"Building French i18n data for {len(gmdata['pokemon'])} Pokemon and {len(gmdata['moves'])} moves...")
+
+    pokemon_i18n = {}
+    for p in gmdata["pokemon"]:
+        if p.get("aliasId"):
+            continue
+        sid = p["speciesId"]
+        fr_name, sprite_url = get_pokemon_info(sid)
+        if not sprite_url and p.get("dex"):
+            sprite_url = ARTWORK.format(p["dex"])
+        pokemon_i18n[sid] = {"name": fr_name, "sprite": sprite_url or ""}
+
+    move_ids = [m["moveId"] for m in gmdata["moves"]]
+    prefetch_moves(move_ids)
+    moves_i18n = {mid: get_move_fr(mid) for mid in move_ids}
+
+    out = "vendor/pvpoke/data/i18n_fr.json"
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump({"pokemon": pokemon_i18n, "moves": moves_i18n}, f, ensure_ascii=False)
+    print(f"Saved: {out}")
+
+# ── Battle simulator page (client-side, vendored pvpoke engine) ───────────────
+
+def build_battle_html():
+    tab_inputs_html = "\n  ".join(
+        '<input type="radio" name="tab" id="tab-{id}"{checked}>'.format(
+            id=l["id"], checked=' checked' if i == 0 else ''
+        )
+        for i, l in enumerate(LEAGUES)
+    )
+    tab_labels_row = "\n    ".join(
+        '<label for="tab-{id}" class="tab-label">{name}</label>'.format(
+            id=l["id"], name=l["name"]
+        )
+        for l in LEAGUES
+    )
+    panel_css = "\n    ".join(
+        f'#tab-{l["id"]}:checked ~ #panel-{l["id"]} {{ display: block; }}'
+        for l in LEAGUES
+    )
+    active_label_css = ",\n    ".join(
+        f'#tab-{l["id"]}:checked ~ .tab-row label[for="tab-{l["id"]}"]'
+        for l in LEAGUES
+    )
+    panels = "\n".join(
+        f'  <div id="panel-{l["id"]}" class="tab-panel"></div>' for l in LEAGUES
+    )
+
+    engine_scripts = "\n  ".join(
+        f'<script src="vendor/pvpoke/engine/{f}"></script>'
+        for f in [
+            "DamageCalculator.js", "ActionLogic.js", "TimelineEvent.js",
+            "TimelineAction.js", "DecisionOption.js", "Battle.js",
+            "Pokemon.js", "TeamRanker.js",
+        ]
+    )
+
+    return f"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Simulateur de combat PvP - PvPoke FR</title>
+  <style>
+    *{{box-sizing:border-box;margin:0;padding:0}}
+    body{{font-family:'Segoe UI',sans-serif;background:#0d1b2a;color:#e0e6f0;padding:2rem 1rem}}
+    h1{{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:1.5rem}}
+    nav.site-nav{{text-align:center;margin-bottom:1.5rem;font-size:.85rem}}
+    nav.site-nav a{{color:#7a9bbf;text-decoration:none;margin:0 .6rem}}
+    nav.site-nav a:hover{{color:#fff;text-decoration:underline}}
+    input[name="tab"]{{display:none}}
+    .tab-label{{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;
+               background:#152033;border:2px solid #1e3350;color:#7a9bbf;transition:all .15s;
+               display:inline-block;margin:.25rem}}
+    {active_label_css},
+    .tab-label:hover{{background:#1e3a5f;border-color:#3d7ae5;color:#fff}}
+    .tab-panel{{display:none;max-width:900px;margin:0 auto}}
+    {panel_css}
+    .tab-row{{text-align:center;margin-bottom:2rem}}
+    .controls{{max-width:900px;margin:0 auto 2.5rem;background:#152033;border:1px solid #1e3350;
+               border-radius:14px;padding:1.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}}
+    .controls label{{display:block;font-size:.75rem;color:#7a9bbf;margin-bottom:.3rem;font-weight:600}}
+    .controls select,.controls input{{width:100%;padding:.45rem;border-radius:6px;border:1px solid #1e3350;
+                                       background:#0d1b2a;color:#e0e6f0;font-size:.85rem}}
+    #run-battle{{grid-column:1/-1;padding:.7rem;border-radius:8px;border:none;background:#3d7ae5;
+                 color:#fff;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:.5rem}}
+    #run-battle:hover{{background:#2f63c4}}
+    #run-battle:disabled{{background:#1e3350;color:#5a7ba0;cursor:wait}}
+    #loading{{text-align:center;color:#7a9bbf;margin-bottom:1.5rem;display:none}}
+    .battle-summary{{display:flex;align-items:center;gap:1rem;background:#152033;border:1px solid #1e3350;
+                     border-radius:14px;padding:1rem;margin-bottom:1.5rem}}
+    .battle-summary .poke-sprite{{width:70px;height:70px;object-fit:contain}}
+    .battle-summary .poke-name{{font-size:1.2rem;font-weight:700}}
+    .battle-summary .poke-moves{{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}}
+    .matchup-list{{display:flex;flex-direction:column;gap:.4rem}}
+    .matchup-row{{display:flex;align-items:center;gap:.8rem;background:#152033;border:1px solid #1e3350;
+                  border-radius:10px;padding:.5rem .8rem;font-size:.85rem}}
+    .matchup-row.win{{border-left:4px solid #3d7ae5}}
+    .matchup-row.loss{{border-left:4px solid #c70c70}}
+    .matchup-rank{{color:#7a9bbf;min-width:2.2rem;font-weight:700}}
+    .matchup-sprite{{width:36px;height:36px;object-fit:contain}}
+    .matchup-name{{flex:1}}
+    .matchup-rating{{font-weight:700;font-family:'Courier New',monospace}}
+    footer{{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}}
+  </style>
+</head>
+<body>
+  <h1>Simulateur de combat PvP</h1>
+  <nav class="site-nav"><a href="index.html">Classements</a></nav>
+  <div class="controls">
+    <div><label for="species-select">Pokemon</label><select id="species-select"></select></div>
+    <div><label for="level-input">Niveau</label><input type="number" id="level-input" min="1" max="51" step="0.5" value="20"></div>
+    <div><label for="iv-atk">IV Attaque</label><input type="number" id="iv-atk" min="0" max="15" value="0"></div>
+    <div><label for="iv-def">IV Defense</label><input type="number" id="iv-def" min="0" max="15" value="0"></div>
+    <div><label for="iv-hp">IV Endurance</label><input type="number" id="iv-hp" min="0" max="15" value="0"></div>
+    <div><label for="fast-move-select">Attaque rapide</label><select id="fast-move-select"></select></div>
+    <div><label for="charged-move-1-select">Attaque chargee 1</label><select id="charged-move-1-select"></select></div>
+    <div><label for="charged-move-2-select">Attaque chargee 2</label><select id="charged-move-2-select"></select></div>
+    <div><label for="shield-select">Boucliers</label>
+      <select id="shield-select"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select>
+    </div>
+    <div><label for="bait-select">Appat (leurre)</label>
+      <select id="bait-select"><option value="0">Non</option><option value="1" selected>Selectif</option><option value="2">Toujours</option></select>
+    </div>
+    <button id="run-battle" disabled>Lancer la simulation</button>
+  </div>
+  <div id="loading">Chargement / simulation en cours...</div>
+  {tab_inputs_html}
+  <div class="tab-row">
+    {tab_labels_row}
+  </div>
+{panels}
+  <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le {time.strftime('%d/%m/%Y')}</footer>
+  {engine_scripts}
+  <script src="gamemaster_shim.js"></script>
+  <script src="battle_driver.js"></script>
+</body>
+</html>"""
+
 if __name__ == "__main__":
     main()
+    build_i18n_json()
+    with open("battle_fr.html", "w", encoding="utf-8") as f:
+        f.write(build_battle_html())
+    print("Saved: battle_fr.html")

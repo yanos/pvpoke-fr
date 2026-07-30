@@ -51,7 +51,7 @@ FORM_SUFFIX_MAP = [
     ("_alolan",   " d'Alola",  "-alola"),
     ("_hisuian",  " de Hisui", "-hisui"),
     ("_paldean",  " de Paldea","-paldea"),
-    ("_mega",     " Mega",     "-mega"),
+    ("_mega",     " Méga",     "-mega"),
 ]
 
 ARTWORK = ("https://raw.githubusercontent.com/PokeAPI/sprites/master"
@@ -279,8 +279,8 @@ def build_html(league_rows):
         cards = build_cards(league_rows[lid])
         panels += f"""
   <div id="panel-{lid}" class="tab-panel">
-    <p class="sub">Source : pvpoke.com  |  Limite : {cp_label}  |  Classement general<br>
-       Attaque rapide . Attaques chargees . IVs ideaux (Atk/Def/End)  |  * = Attaque Elite</p>
+    <p class="sub">Source : pvpoke.com  |  Limite : {cp_label}  |  Classement général<br>
+       Attaque rapide . Attaques chargées . IVs idéaux (Atk/Def/End)  |  * = Attaque Élite</p>
     <div class="grid">
 {cards}
     </div>
@@ -354,7 +354,7 @@ def build_html(league_rows):
     {tab_labels_row}
   </div>
 {panels}
-  <footer>Donnees : pvpoke.com . Images &amp; noms : PokeAPI . Genere le {time.strftime('%d/%m/%Y')}</footer>
+  <footer>Données : pvpoke.com . Images &amp; noms : PokeAPI . Généré le {time.strftime('%d/%m/%Y')}</footer>
 </body>
 </html>"""
 
@@ -462,31 +462,31 @@ def build_battle_html():
   <nav class="site-nav"><a href="rankings_fr.html">Classements</a></nav>
   <div class="controls">
     <div class="species-field">
-      <label for="species-search">Pokemon</label>
-      <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokemon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
+      <label for="species-search">Pokémon</label>
+      <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokémon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
       <input type="hidden" id="species-select">
       <div id="species-suggestions" class="suggestions" role="listbox"></div>
     </div>
     <div class="field-group">
-      <label>IV (Attaque / Defense / Endurance)</label>
+      <label>IV (Attaque / Défense / Endurance)</label>
       <div class="inline-fields">
         <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
-        <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Defense" title="IV Defense">
+        <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Défense" title="IV Défense">
         <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
       </div>
     </div>
     <div class="field-group">
-      <label>Attaques (rapide / chargee 1 / chargee 2)</label>
+      <label>Attaques (rapide / chargée 1 / chargée 2)</label>
       <div class="inline-fields">
         <select id="fast-move-select" aria-label="Attaque rapide" title="Attaque rapide"></select>
-        <select id="charged-move-1-select" aria-label="Attaque chargee 1" title="Attaque chargee 1"></select>
-        <select id="charged-move-2-select" aria-label="Attaque chargee 2" title="Attaque chargee 2"></select>
+        <select id="charged-move-1-select" aria-label="Attaque chargée 1" title="Attaque chargée 1"></select>
+        <select id="charged-move-2-select" aria-label="Attaque chargée 2" title="Attaque chargée 2"></select>
       </div>
     </div>
   </div>
   <div id="loading">Chargement...</div>
   <div id="result-panel" class="result-panel"></div>
-  <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le {time.strftime('%d/%m/%Y')}</footer>
+  <footer>Moteur : pvpoke.com (vendu localement) . Données &amp; noms : PokeAPI . Généré le {time.strftime('%d/%m/%Y')}</footer>
   {engine_scripts}
   <script src="gamemaster_shim.js"></script>
   <script src="battle_driver.js"></script>

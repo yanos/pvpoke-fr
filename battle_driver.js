@@ -477,9 +477,9 @@ function onGlobalRankMessage(e) {
 	}
 
 	var r = msg.result;
-	cell.innerHTML = '<span class="poke-rank" title="Rang simule de cet IV precis parmi les ' + r.count +
-		' especes de la ligue - calcule en simulant des combats contre tout le champ, comme le ' +
-		'classement officiel de pvpoke.com mais pour cet IV exact plutot que l\'IV ideal">#' + r.rank + '</span>';
+	cell.innerHTML = '<span class="poke-rank" title="Rang simulé de cet IV précis parmi les ' + r.count +
+		' espèces de la ligue - calculé en simulant des combats contre tout le champ, comme le ' +
+		'classement officiel de pvpoke.com mais pour cet IV exact plutôt que l\'IV idéal">#' + r.rank + '</span>';
 }
 
 function runLeague(league, speciesId, ivs, moves) {
@@ -501,8 +501,8 @@ function runLeague(league, speciesId, ivs, moves) {
 var VARIANT_BADGES = {
 	selected: [],
 	shadow: ["Obscur"],
-	evolution: ["Evolution"],
-	"evolution-shadow": ["Evolution", "Obscur"],
+	evolution: ["Évolution"],
+	"evolution-shadow": ["Évolution", "Obscur"],
 };
 
 function badgeClass(label) {

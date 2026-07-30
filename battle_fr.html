@@ -29,6 +29,14 @@
     .controls label{display:block;font-size:.75rem;color:#7a9bbf;margin-bottom:.3rem;font-weight:600}
     .controls select,.controls input{width:100%;padding:.45rem;border-radius:6px;border:1px solid #1e3350;
                                        background:#0d1b2a;color:#e0e6f0;font-size:.85rem}
+    .species-field{position:relative}
+    .suggestions{display:none;position:absolute;top:100%;left:0;right:0;margin-top:.2rem;
+                  background:#0d1b2a;border:1px solid #1e3350;border-radius:8px;max-height:280px;
+                  overflow-y:auto;z-index:20}
+    .suggestions.open{display:block}
+    .suggestion-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;cursor:pointer;font-size:.85rem}
+    .suggestion-item img{width:24px;height:24px;object-fit:contain}
+    .suggestion-item:hover,.suggestion-item.active{background:#1e3a5f}
     #run-battle{grid-column:1/-1;padding:.7rem;border-radius:8px;border:none;background:#3d7ae5;
                  color:#fff;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:.5rem}
     #run-battle:hover{background:#2f63c4}
@@ -55,7 +63,12 @@
   <h1>Simulateur de combat PvP</h1>
   <nav class="site-nav"><a href="index.html">Classements</a></nav>
   <div class="controls">
-    <div><label for="species-select">Pokemon</label><select id="species-select"></select></div>
+    <div class="species-field">
+      <label for="species-search">Pokemon</label>
+      <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokemon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
+      <input type="hidden" id="species-select">
+      <div id="species-suggestions" class="suggestions" role="listbox"></div>
+    </div>
     <div><label for="level-input">Niveau</label><input type="number" id="level-input" min="1" max="51" step="0.5" value="20"></div>
     <div><label for="iv-atk">IV Attaque</label><input type="number" id="iv-atk" min="0" max="15" value="0"></div>
     <div><label for="iv-def">IV Defense</label><input type="number" id="iv-def" min="0" max="15" value="0"></div>
@@ -83,7 +96,7 @@
   <div id="panel-super" class="tab-panel"></div>
   <div id="panel-hyper" class="tab-panel"></div>
   <div id="panel-master" class="tab-panel"></div>
-  <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le 14/07/2026</footer>
+  <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le 30/07/2026</footer>
   <script src="vendor/pvpoke/engine/DamageCalculator.js"></script>
   <script src="vendor/pvpoke/engine/ActionLogic.js"></script>
   <script src="vendor/pvpoke/engine/TimelineEvent.js"></script>

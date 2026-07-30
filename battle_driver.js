@@ -94,20 +94,89 @@ function init() {
 	});
 }
 
+var pokemonList = []; // {speciesId, name}, sorted by French display name
+
 function populateSpeciesPicker() {
-	var select = document.getElementById("species-select");
-	var pokemonList = gm.data.pokemon.slice().sort(function (a, b) {
-		return frPokemonName(a.speciesId).localeCompare(frPokemonName(b.speciesId));
+	pokemonList = gm.data.pokemon
+		.filter(function (p) { return !p.aliasId; }) // skip duplicate entries, keep only the canonical species
+		.map(function (p) { return { speciesId: p.speciesId, name: frPokemonName(p.speciesId) }; })
+		.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+	var search = document.getElementById("species-search");
+	search.addEventListener("input", function () { renderSuggestions(search.value); });
+	search.addEventListener("focus", function () { renderSuggestions(search.value); });
+	search.addEventListener("keydown", onSpeciesSearchKeydown);
+	document.addEventListener("click", function (e) {
+		if (e.target !== search && !e.target.closest("#species-suggestions")) closeSuggestions();
 	});
-	pokemonList.forEach(function (p) {
-		if (p.aliasId) return; // skip duplicate entries, keep only the canonical species
-		var opt = document.createElement("option");
-		opt.value = p.speciesId;
-		opt.textContent = frPokemonName(p.speciesId);
-		select.appendChild(opt);
+
+	selectSpecies(pokemonList[0].speciesId);
+}
+
+function renderSuggestions(query) {
+	var suggestions = document.getElementById("species-suggestions");
+	var search = document.getElementById("species-search");
+	var q = query.trim().toLowerCase();
+	var matches = (q ? pokemonList.filter(function (p) { return p.name.toLowerCase().indexOf(q) !== -1; }) : pokemonList).slice(0, 30);
+
+	suggestions.innerHTML = "";
+	matches.forEach(function (p) {
+		var item = document.createElement("div");
+		item.className = "suggestion-item";
+		item.setAttribute("role", "option");
+		item.dataset.speciesId = p.speciesId;
+		item.innerHTML = '<img src="' + frSprite(p.speciesId) + '" alt="">' + '<span>' + p.name + '</span>';
+		// mousedown (not click) fires before the input's blur, so preventDefault keeps focus and
+		// stops the document-level click-outside handler from closing the list first.
+		item.addEventListener("mousedown", function (e) {
+			e.preventDefault();
+			selectSpecies(p.speciesId);
+			closeSuggestions();
+		});
+		suggestions.appendChild(item);
 	});
-	select.addEventListener("change", onSpeciesChange);
-	select.selectedIndex = 0;
+
+	suggestions.classList.toggle("open", matches.length > 0);
+	search.setAttribute("aria-expanded", matches.length > 0 ? "true" : "false");
+}
+
+function closeSuggestions() {
+	var suggestions = document.getElementById("species-suggestions");
+	suggestions.classList.remove("open");
+	document.getElementById("species-search").setAttribute("aria-expanded", "false");
+}
+
+function onSpeciesSearchKeydown(e) {
+	var suggestions = document.getElementById("species-suggestions");
+	var items = suggestions.querySelectorAll(".suggestion-item");
+	if (e.key === "Escape") { closeSuggestions(); return; }
+	if (!items.length) return;
+
+	var active = suggestions.querySelector(".suggestion-item.active");
+	var idx = active ? Array.prototype.indexOf.call(items, active) : -1;
+
+	if (e.key === "ArrowDown") {
+		e.preventDefault();
+		idx = (idx + 1) % items.length;
+	} else if (e.key === "ArrowUp") {
+		e.preventDefault();
+		idx = (idx - 1 + items.length) % items.length;
+	} else if (e.key === "Enter") {
+		e.preventDefault();
+		if (active) { selectSpecies(active.dataset.speciesId); closeSuggestions(); }
+		return;
+	} else {
+		return;
+	}
+
+	if (active) active.classList.remove("active");
+	items[idx].classList.add("active");
+	items[idx].scrollIntoView({ block: "nearest" });
+}
+
+function selectSpecies(speciesId) {
+	document.getElementById("species-select").value = speciesId;
+	document.getElementById("species-search").value = frPokemonName(speciesId);
 	onSpeciesChange();
 }
 
@@ -173,7 +242,7 @@ function buildUserPokemon(battle) {
 
 function runBattles() {
 	document.getElementById("loading").style.display = "block";
-	document.getElementById("results").innerHTML = "";
+	LEAGUES.forEach(function (l) { document.getElementById("panel-" + l.id).innerHTML = ""; });
 
 	// Let the loading indicator paint before the (synchronous, CPU-heavy) sim runs.
 	setTimeout(function () {

@@ -24,11 +24,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Sync pvpoke battle engine + data
-        run: python sync_engine.py
-
       - name: Generate rankings + battle pages
-        run: python pvpoke_fr.py
+        run: ./generate.sh
 
       - name: Prepare Pages site
         run: |

@@ -14,11 +14,18 @@ A generator that produces two static French-language pages for Pokemon GO PvP:
 ```bash
 python sync_engine.py   # vendor pvpoke's engine JS + gamemaster/rankings data into vendor/pvpoke/
 python pvpoke_fr.py      # generate rankings_fr.html, vendor/pvpoke/data/i18n_fr.json, and battle_fr.html
+./generate.sh            # convenience wrapper: runs both of the above in order
 ```
 
 `sync_engine.py` must run first — `pvpoke_fr.py`'s i18n builder and `battle_fr.html`'s engine `<script>` tags both depend on `vendor/pvpoke/` being populated. Neither script takes arguments or has a package-manager dependency beyond the Python 3 standard library (`urllib`, `json`, `math`, `time`, `re`, `html`, `os`). Both fetch live data from the network, so running them requires internet access. `pvpoke_fr.py` takes a while — it walks every Pokemon and move in the full gamemaster (~1700 species, ~330 moves) through PokeAPI with rate-limiting sleeps between requests, so a full run is on the order of 30-45+ minutes. `sync_engine.py` is comparatively fast (a handful of file downloads).
 
 There is no test suite, linter, or CI check to run against this repo. `test_engine.js` (Node, run via `node test_engine.js`) is a standalone headless smoke test for the vendored battle engine + `gamemaster_shim.js` — not part of the generated site, useful when changing `gamemaster_shim.js` or after `sync_engine.py` pulls an upstream engine change, to catch integration breaks (missing globals, API shape changes) before they show up in the browser. The only automated job is the GitHub Actions workflow below.
+
+```bash
+./serve.sh [port]       # serve the repo over HTTP (default port 8934) and open battle_fr.html
+```
+
+`serve.sh` is for manually testing `battle_fr.html` in a browser (species search, IV/moveset form, running a battle) against whatever's already on disk in `vendor/pvpoke/` — it doesn't run `sync_engine.py`/`pvpoke_fr.py` for you, so re-run those first if you need fresher data. It kills anything already bound to the port before starting, waits for the server to actually respond before opening the browser, and stops the server on exit/Ctrl+C.
 
 ## Architecture
 
@@ -54,7 +61,8 @@ battle_driver.js
 
 - **`vendor/pvpoke/engine/*.js`** — pvpoke's own battle engine (`Battle`, `Pokemon`, `DamageCalculator`, `ActionLogic` for shield/bait AI, `TeamRanker` for ranking one Pokemon against a whole league, timeline/decision classes), vendored verbatim by `sync_engine.py`. This is what makes results match pvpoke.com exactly — it's their code, their data, their opponent list.
 - **`gamemaster_shim.js`** (hand-written, NOT vendored) — replaces pvpoke's real `GameMaster.js`, which is jQuery/DOM/localStorage-coupled and the only engine-adjacent file that is. Implements just the surface the vendored files actually call: `getInstance()`, `.data`/`.rankings`, `getPokemonById`, `getMoveById`, `getCupById`, `getFormat`, `loadRankingData`, `generateFilteredPokemonList` — loading from the same-origin vendored JSON via `fetch()` instead of `$.ajax` against pvpoke.com.
-- **`battle_driver.js`** (hand-written) — wires the above together: populates the species/move pickers, reads the form on submit, builds a `Pokemon` from the user's inputs, and calls `ranker.setTargets([])` + `ranker.rank([poke], cp, cup)` — the empty target list makes `TeamRanker` fall back to `gm.generateFilteredPokemonList()` against the "all" cup, i.e. pvpoke's own full opponent set for that league, not an approximation. Also defines two page-level globals that pvpoke's *own* battle page defines inline in its HTML (not in any engine file) but that `TeamRanker.js`/`Pokemon.js` reference directly: `getDefaultMultiBattleSettings()` and a `settings` object (`matrixDirection`, `hardMovesetLinks`, etc.). If a future `sync_engine.py` pull adds a new bare-global reference like this, `node test_engine.js` will surface it immediately as a `ReferenceError`.
+- **`battle_driver.js`** (hand-written) — wires the above together: populates the species picker and move pickers, reads the form on submit, builds a `Pokemon` from the user's inputs, and calls `ranker.setTargets([])` + `ranker.rank([poke], cp, cup)` — the empty target list makes `TeamRanker` fall back to `gm.generateFilteredPokemonList()` against the "all" cup, i.e. pvpoke's own full opponent set for that league, not an approximation. Also defines two page-level globals that pvpoke's *own* battle page defines inline in its HTML (not in any engine file) but that `TeamRanker.js`/`Pokemon.js` reference directly: `getDefaultMultiBattleSettings()` and a `settings` object (`matrixDirection`, `hardMovesetLinks`, etc.). If a future `sync_engine.py` pull adds a new bare-global reference like this, `node test_engine.js` will surface it immediately as a `ReferenceError`.
+  - The species picker is a text input (`#species-search`) with a live-filtered suggestions dropdown (`#species-suggestions`, French name substring match, sprite + keyboard nav), not a plain `<select>` — the full gamemaster is too long to scroll through. The canonical `speciesId` is tracked in a hidden `#species-select` input so the rest of the driver (`onSpeciesChange`, `buildUserPokemon`) can keep reading `.value` from one place regardless of how it was set. Picking a suggestion (click or Enter) calls `selectSpecies(speciesId)`, which updates both the hidden value and the visible search text and re-triggers the moveset dropdowns.
 - Renders three league tabs (reusing `build_html`'s CSS-only tab pattern) with a win/loss matchup list, French names/sprites from `i18n_fr.json`.
 
 ### Data flow / sources

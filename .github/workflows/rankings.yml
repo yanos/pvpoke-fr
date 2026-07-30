@@ -74,7 +74,7 @@ jobs:
       - name: Prepare Pages site
         run: |
           mkdir -p _site
-          mv rankings_fr.html _site/index.html
+          cp rankings_fr.html _site/index.html
           mv battle_fr.html _site/battle_fr.html
           cp battle_driver.js battle_worker.js gamemaster_shim.js _site/
           cp -r vendor _site/vendor

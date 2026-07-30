@@ -459,14 +459,22 @@ def build_battle_html():
     .battle-summary .poke-moves{{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}}
     .league-stats{{background:#152033;border:1px solid #1e3350;border-top:none;border-radius:0 0 14px 14px;
                    overflow:hidden}}
-    .league-stat-row{{display:flex;flex-wrap:wrap;align-items:center;padding:.7rem 1rem;gap:.6rem 1rem;
-                      border-top:1px solid #1e3350}}
+    .league-stat-row{{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(4,minmax(0,1fr));
+                      align-items:center;padding:.7rem .8rem;gap:.3rem;border-top:1px solid #1e3350}}
     .league-stat-row:first-child{{border-top:none}}
     .league-stat-header{{padding-bottom:.3rem}}
     .league-stat-header .league-stat-value{{font-weight:700;color:#4a6d94;font-size:.7rem;
                                              text-transform:uppercase;letter-spacing:.03em}}
-    .league-stat-name{{flex:0 0 110px;font-weight:700;color:#fff;font-size:.85rem}}
-    .league-stat-value{{flex:1 1 90px;min-width:90px;font-size:.85rem;color:#7a9bbf;text-align:center}}
+    .league-stat-name{{font-weight:700;color:#fff;font-size:.85rem;overflow:hidden;
+                       text-overflow:ellipsis;white-space:nowrap}}
+    .league-stat-value{{font-size:.85rem;color:#7a9bbf;text-align:center;overflow:hidden;
+                        text-overflow:ellipsis;white-space:nowrap}}
+    @media(max-width:480px){{
+      .league-stat-row{{grid-template-columns:minmax(0,1fr) repeat(4,minmax(0,.8fr));gap:.2rem;padding:.6rem .5rem}}
+      .league-stat-name{{font-size:.72rem}}
+      .league-stat-value{{font-size:.72rem}}
+      .league-stat-header .league-stat-value{{font-size:.58rem}}
+    }}
     .poke-rank{{font-weight:700;color:#fff}}
     .poke-rank-pending{{font-weight:400;color:#7a9bbf;font-style:italic}}
     footer{{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}}

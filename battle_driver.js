@@ -2,12 +2,14 @@
 //
 // Wires the vendored pvpoke engine (Battle/Pokemon) + gamemaster_shim.js together: pick a
 // Pokemon, set its IVs/moveset, and for each league show its level/CP (auto-maxed to the
-// highest level, given the chosen IVs, whose CP still fits under that league's cap) and its
-// rank in pvpoke's precomputed "all"/"overall" ranking list. No live battles are simulated, so
-// ActionLogic/TeamRanker/Timeline* aren't needed here. All three leagues are shown at once (no
-// tab navigation) and re-run automatically whenever any control changes. Results are rendered
-// with French names/sprites from i18n_fr.json; the underlying computation runs on English
-// species/move IDs exactly as pvpoke's engine expects, so level/CP/rank match pvpoke.com exactly.
+// highest level, given the chosen IVs, whose CP still fits under that league's cap) plus three
+// different rank numbers - see rankingEntry()/globalRank() (species tier rank), getIVRank()
+// (per-species IV rank) and dispatchGlobalRankRequests() (true battle-simulated global rank,
+// computed off the main thread in battle_worker.js since it's comparatively expensive - see that
+// file's own header comment). All three leagues are shown at once (no tab navigation) and
+// re-run automatically whenever any control changes. Results are rendered with French
+// names/sprites from i18n_fr.json; the underlying computation runs on English species/move IDs
+// exactly as pvpoke's engine expects, so level/CP/rank match pvpoke.com exactly.
 
 var LEAGUES = [
 	{ id: "super", name: "Ligue Super", cp: 1500 },
@@ -17,6 +19,11 @@ var LEAGUES = [
 
 var gm = GameMaster.getInstance();
 var i18n = { pokemon: {}, moves: {} };
+
+// True global rank state - see dispatchGlobalRankRequests()/onGlobalRankMessage() below.
+var globalRankWorker = null;
+var globalRankGeneration = 0;
+var globalRankRequestSeq = 0;
 
 var state = {
 	speciesId: null,
@@ -41,6 +48,16 @@ function frMoveName(moveId) {
 }
 
 function init() {
+	// If this fails (e.g. Workers unavailable in this context), globalRankWorker stays null and
+	// dispatchGlobalRankRequests() below becomes a no-op - the "Calcul..." placeholder just never
+	// resolves, but nothing else on the page breaks.
+	try {
+		globalRankWorker = new Worker("battle_worker.js");
+		globalRankWorker.onmessage = onGlobalRankMessage;
+	} catch (e) {
+		console.error("battle_worker.js unavailable, true global rank disabled:", e);
+	}
+
 	Promise.all([
 		gm.load(),
 		fetch("vendor/pvpoke/data/i18n_fr.json").then(function (r) { return r.json(); }),
@@ -57,8 +74,10 @@ function init() {
 	});
 }
 
-// Re-run whenever any input changes, instead of requiring an explicit button press. There's no
-// live battle simulation anymore (just a level/CP/rank lookup), so no debouncing is needed.
+// Re-run whenever any input changes, instead of requiring an explicit button press. The cheap
+// level/CP/species-rank/IV-rank numbers (runBattles()) recompute on every event with no
+// debouncing needed; the comparatively expensive true global rank (scheduleGlobalRankRequests(),
+// called at the end of runBattles()) debounces itself separately - see there.
 function wireAutoRun() {
 	["iv-atk", "iv-def", "iv-hp"].forEach(function (id) {
 		var el = document.getElementById(id);
@@ -364,27 +383,101 @@ function globalRank(league, speciesId) {
 	return found ? found.rank : null;
 }
 
+// Shared by runBattles() (sync, cheap numbers) and dispatchGlobalRankRequests() (debounced,
+// worker-based true global rank) so both read the same form state the same way.
+function currentIvsAndMoves() {
+	return {
+		ivs: {
+			atk: parseInt(document.getElementById("iv-atk").value),
+			def: parseInt(document.getElementById("iv-def").value),
+			hp: parseInt(document.getElementById("iv-hp").value),
+		},
+		userMoves: {
+			fast: document.getElementById("fast-move-select").value,
+			charged1: document.getElementById("charged-move-1-select").value,
+			charged2: document.getElementById("charged-move-2-select").value,
+		},
+	};
+}
+
 function runBattles() {
-	var ivs = {
-		atk: parseInt(document.getElementById("iv-atk").value),
-		def: parseInt(document.getElementById("iv-def").value),
-		hp: parseInt(document.getElementById("iv-hp").value),
-	};
-	var userMoves = {
-		fast: document.getElementById("fast-move-select").value,
-		charged1: document.getElementById("charged-move-1-select").value,
-		charged2: document.getElementById("charged-move-2-select").value,
-	};
+	var current = currentIvsAndMoves();
 
 	var groups = buildVariantList(state.speciesId).map(function (variant) {
 		// The selected species uses the user's own move picks; evolutions/Shadow forms (which have
 		// no move controls of their own) fall back to their own best-ranked moveset, same IVs.
-		var moves = variant.kind === "selected" ? userMoves : defaultMoveset(variant.speciesId);
-		var results = LEAGUES.map(function (league) { return runLeague(league, variant.speciesId, ivs, moves); });
+		var moves = variant.kind === "selected" ? current.userMoves : defaultMoveset(variant.speciesId);
+		var results = LEAGUES.map(function (league) { return runLeague(league, variant.speciesId, current.ivs, moves); });
 		return { kind: variant.kind, results: results };
 	});
 
 	renderResults(groups);
+	scheduleGlobalRankRequests();
+}
+
+// Debounced: the true global rank is comparatively expensive (a few hundred ms per league, per
+// variant - see battle_worker.js), so only kick off a fresh batch of worker requests once input
+// has settled for a moment, rather than on every keystroke. The cheap numbers above still update
+// instantly on every input event.
+var scheduleGlobalRankRequests = debounce(dispatchGlobalRankRequests, 350);
+
+function debounce(fn, wait) {
+	var timer = null;
+	return function () {
+		clearTimeout(timer);
+		timer = setTimeout(fn, wait);
+	};
+}
+
+function globalRankKey(speciesId, leagueId) {
+	return speciesId + "__" + leagueId;
+}
+
+function dispatchGlobalRankRequests() {
+	if (!globalRankWorker) return;
+
+	globalRankGeneration++;
+	var generation = globalRankGeneration;
+	var current = currentIvsAndMoves();
+
+	buildVariantList(state.speciesId).forEach(function (variant) {
+		var moves = variant.kind === "selected" ? current.userMoves : defaultMoveset(variant.speciesId);
+		LEAGUES.forEach(function (league) {
+			globalRankRequestSeq++;
+			globalRankWorker.postMessage({
+				type: "computeGlobalRank",
+				requestId: globalRankRequestSeq,
+				generation: generation,
+				speciesId: variant.speciesId,
+				leagueId: league.id,
+				ivs: current.ivs,
+				moves: moves,
+				cp: league.cp,
+			});
+		});
+	});
+}
+
+// A reply only matters if it's still for the current generation (a later IV/species change
+// would have bumped globalRankGeneration and re-rendered fresh placeholder cells already) - and
+// the cell is looked up fresh by speciesId+league rather than held as a stale DOM reference, so
+// this is safe even if runBattles() re-rendered in between dispatch and reply.
+function onGlobalRankMessage(e) {
+	var msg = e.data;
+	if (msg.type !== "globalRankResult" || msg.generation !== globalRankGeneration) return;
+
+	var cell = document.querySelector('[data-global-rank="' + globalRankKey(msg.speciesId, msg.leagueId) + '"]');
+	if (!cell) return;
+
+	if (msg.error) {
+		cell.textContent = "non classe";
+		return;
+	}
+
+	var r = msg.result;
+	cell.innerHTML = '<span class="poke-rank" title="Rang simule de cet IV precis parmi les ' + r.count +
+		' especes de la ligue - calcule en simulant des combats contre tout le champ, comme le ' +
+		'classement officiel de pvpoke.com mais pour cet IV exact plutot que l\'IV ideal">Global #' + r.rank + '/' + r.count + '</span>';
 }
 
 function runLeague(league, speciesId, ivs, moves) {
@@ -463,7 +556,9 @@ function renderVariantPanel(group) {
 			'<div class="league-stat-value">Niveau ' + r.poke.level + '</div>' +
 			'<div class="league-stat-value">PC ' + r.poke.cp + '</div>' +
 			'<div class="league-stat-value">' + ivRankHtml + '</div>' +
-			'<div class="league-stat-value">' + speciesRankHtml + '</div>';
+			'<div class="league-stat-value">' + speciesRankHtml + '</div>' +
+			'<div class="league-stat-value" data-global-rank="' + globalRankKey(r.poke.speciesId, r.league.id) + '">' +
+			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>';
 		table.appendChild(row);
 	});
 	wrapper.appendChild(table);

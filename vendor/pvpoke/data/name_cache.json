@@ -4076,12 +4076,12 @@
       "name": "Mew",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"
     },
-    "mewtwo_armored": {
-      "name": "Mewtwo (Armure)",
-      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
-    },
     "mewtwo": {
       "name": "Mewtwo",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
+    },
+    "mewtwo_armored": {
+      "name": "Mewtwo (Armure)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
     },
     "mewtwo_mega_x": {

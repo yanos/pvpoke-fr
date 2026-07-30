@@ -75,6 +75,7 @@ jobs:
         run: |
           mkdir -p _site
           cp rankings_fr.html _site/index.html
+          cp rankings_fr.html _site/rankings_fr.html
           mv battle_fr.html _site/battle_fr.html
           cp battle_driver.js battle_worker.js gamemaster_shim.js _site/
           cp -r vendor _site/vendor

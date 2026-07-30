@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Generate a French PvP ranking page for all three leagues from pvpoke.com."""
+"""Generate a French PvP ranking page for all three leagues from pvpoke.com.
+
+French Pokemon/move names come from vendor/pvpoke/data/name_cache.json, read-only here (falling
+back to a formatted slug for anything not yet in it) -- this script never queries PokeAPI itself.
+Run update_name_cache.py first to actually refresh that cache.
+"""
 
 import json, math, time, re, urllib.request, urllib.parse
 from html import escape
@@ -40,34 +45,6 @@ CPM_TABLE = [
     (51,0.82200003),
 ]
 
-GO_TYPE_VARIANTS = {
-    "WEATHER_BALL_FIRE":     ("weather-ball", "Feu"),
-    "WEATHER_BALL_ICE":      ("weather-ball", "Glace"),
-    "WEATHER_BALL_ROCK":     ("weather-ball", "Roche"),
-    "WEATHER_BALL_WATER":    ("weather-ball", "Eau"),
-    "HIDDEN_POWER_ICE":      ("hidden-power", "Glace"),
-    "HIDDEN_POWER_FIRE":     ("hidden-power", "Feu"),
-    "HIDDEN_POWER_ELECTRIC": ("hidden-power", "Electrik"),
-    "HIDDEN_POWER_GROUND":   ("hidden-power", "Sol"),
-    "HIDDEN_POWER_GRASS":    ("hidden-power", "Plante"),
-    "HIDDEN_POWER_ROCK":     ("hidden-power", "Roche"),
-    "HIDDEN_POWER_WATER":    ("hidden-power", "Eau"),
-    "HIDDEN_POWER_FLYING":   ("hidden-power", "Vol"),
-    "HIDDEN_POWER_PSYCHIC":  ("hidden-power", "Psy"),
-    "HIDDEN_POWER_FIGHTING": ("hidden-power", "Combat"),
-    "HIDDEN_POWER_BUG":      ("hidden-power", "Insecte"),
-    "HIDDEN_POWER_POISON":   ("hidden-power", "Poison"),
-    "HIDDEN_POWER_DARK":     ("hidden-power", "Tenebres"),
-    "HIDDEN_POWER_GHOST":    ("hidden-power", "Spectre"),
-    "HIDDEN_POWER_DRAGON":   ("hidden-power", "Dragon"),
-    "HIDDEN_POWER_STEEL":    ("hidden-power", "Acier"),
-}
-
-MOVE_API_OVERRIDES = {
-    "SUPER_POWER": "superpower",
-    "ROLLOUT":     "rollout",
-}
-
 FORM_SUFFIX_MAP = [
     ("_shadow",   " (Obscur)", ""),
     ("_galarian", " de Galar", "-galar"),
@@ -80,6 +57,8 @@ FORM_SUFFIX_MAP = [
 ARTWORK = ("https://raw.githubusercontent.com/PokeAPI/sprites/master"
            "/sprites/pokemon/other/official-artwork/{}.png")
 
+NAME_CACHE_PATH = "vendor/pvpoke/data/name_cache.json"
+
 # ── Network ───────────────────────────────────────────────────────────────────
 
 def fetch_json(url):
@@ -87,96 +66,42 @@ def fetch_json(url):
     with urllib.request.urlopen(req, timeout=15) as r:
         return json.loads(r.read().decode())
 
-# ── Move name lookup via PokeAPI ──────────────────────────────────────────────
+# ── French name/sprite lookup (cache-only) ────────────────────────────────────
+# All PokeAPI fetching lives in update_name_cache.py — this script only ever reads whatever it
+# already resolved into vendor/pvpoke/data/name_cache.json, falling back to a formatted slug for
+# anything not yet in there, so generating a page never triggers its own 30-45+ minute PokeAPI
+# walk. Run update_name_cache.py first (generate.sh does) to get real translations instead of
+# fallback slugs.
 
-_move_cache = {}
+_name_cache = None
 
-def _fetch_move_fr(api_id):
-    time.sleep(0.2)
-    try:
-        data = fetch_json(f"https://pokeapi.co/api/v2/move/{api_id}/")
-        for n in data.get("names", []):
-            if n["language"]["name"] == "fr":
-                return n["name"]
-    except Exception as e:
-        print(f"    [move miss: {api_id}] {e}")
-    return None
-
-def get_move_fr(move_id):
-    if move_id in _move_cache:
-        return _move_cache[move_id]
-
-    if move_id in GO_TYPE_VARIANTS:
-        base_api, type_suffix = GO_TYPE_VARIANTS[move_id]
-        if base_api not in _move_cache:
-            _move_cache[base_api] = _fetch_move_fr(base_api)
-        base_fr = _move_cache[base_api]
-        result = f"{base_fr} {type_suffix}" if base_fr else move_id.replace("_", " ").title()
-        _move_cache[move_id] = result
-        return result
-
-    api_id = MOVE_API_OVERRIDES.get(move_id, move_id.lower().replace("_", "-"))
-    fr = _fetch_move_fr(api_id)
-    result = fr if fr else move_id.replace("_", " ").title()
-    _move_cache[move_id] = result
-    return result
-
-def prefetch_moves(move_ids):
-    unique = sorted(set(move_ids) - set(_move_cache))
-    if unique:
-        print(f"  Fetching French names for {len(unique)} moves via PokeAPI...")
-    for mid in unique:
-        get_move_fr(mid)
-
-# ── Pokemon info lookup via PokeAPI ───────────────────────────────────────────
-
-_info_cache = {}
+def _cached_names():
+    global _name_cache
+    if _name_cache is None:
+        try:
+            with open(NAME_CACHE_PATH, encoding="utf-8") as f:
+                _name_cache = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            _name_cache = {"pokemon": {}, "moves": {}}
+    return _name_cache
 
 def get_pokemon_info(species_id):
-    if species_id in _info_cache:
-        return _info_cache[species_id]
+    cached = _cached_names()["pokemon"].get(species_id)
+    if cached:
+        return cached["name"], cached.get("sprite") or None
 
-    fr_suffix, api_suffix = "", ""
+    fr_suffix = ""
     base = species_id
-    for pvp, fr, api in sorted(FORM_SUFFIX_MAP, key=lambda x: -len(x[0])):
+    for pvp, fr, _api in sorted(FORM_SUFFIX_MAP, key=lambda x: -len(x[0])):
         if base.endswith(pvp):
             base = base[:-len(pvp)]
             fr_suffix = fr
-            api_suffix = api
             break
+    return base.replace("_", " ").title() + fr_suffix, None
 
-    base_h = base.replace("_", "-")
-    pokemon_name = base_h + api_suffix
-    species_name  = base_h
-
-    sprite_url = None
-    for attempt in range(2):
-        time.sleep(0.3 * (attempt + 1))
-        try:
-            pdata = fetch_json(f"https://pokeapi.co/api/v2/pokemon/{pokemon_name}/")
-            sprite_url = ARTWORK.format(pdata["id"])
-            break
-        except Exception as e:
-            if attempt == 1:
-                print(f"    [pokemon miss: {pokemon_name}] {e}")
-
-    fr_name = None
-    time.sleep(0.25)
-    try:
-        sdata = fetch_json(f"https://pokeapi.co/api/v2/pokemon-species/{species_name}/")
-        for n in sdata.get("names", []):
-            if n["language"]["name"] == "fr":
-                fr_name = n["name"]
-                break
-    except Exception as e:
-        print(f"    [species miss: {species_name}] {e}")
-
-    if fr_name is None:
-        fr_name = base_h.replace("-", " ").title()
-
-    result = (fr_name + fr_suffix, sprite_url)
-    _info_cache[species_id] = result
-    return result
+def get_move_fr(move_id):
+    cached = _cached_names()["moves"].get(move_id)
+    return cached if cached else move_id.replace("_", " ").title()
 
 # ── IV computation ────────────────────────────────────────────────────────────
 
@@ -267,9 +192,6 @@ def main():
         print(f"\nFetching {league['name']} rankings...")
         url = f"https://pvpoke.com/data/rankings/all/overall/{league['pvpoke']}"
         rankings = fetch_json(url)[:TOP_N]
-
-        all_move_ids = [mid for e in rankings for mid in e.get("moveset", [])]
-        prefetch_moves(all_move_ids)
 
         league_rows[league["id"]] = build_league_rows(
             rankings, league, stats_map, dex_map, elite_map
@@ -459,7 +381,6 @@ def build_i18n_json():
         pokemon_i18n[sid] = {"name": fr_name, "sprite": sprite_url or ""}
 
     move_ids = [m["moveId"] for m in gmdata["moves"]]
-    prefetch_moves(move_ids)
     moves_i18n = {mid: get_move_fr(mid) for mid in move_ids}
 
     out = "vendor/pvpoke/data/i18n_fr.json"
@@ -470,37 +391,15 @@ def build_i18n_json():
 # ── Battle simulator page (client-side, vendored pvpoke engine) ───────────────
 
 def build_battle_html():
-    tab_inputs_html = "\n  ".join(
-        '<input type="radio" name="tab" id="tab-{id}"{checked}>'.format(
-            id=l["id"], checked=' checked' if i == 0 else ''
-        )
-        for i, l in enumerate(LEAGUES)
-    )
-    tab_labels_row = "\n    ".join(
-        '<label for="tab-{id}" class="tab-label">{name}</label>'.format(
-            id=l["id"], name=l["name"]
-        )
-        for l in LEAGUES
-    )
-    panel_css = "\n    ".join(
-        f'#tab-{l["id"]}:checked ~ #panel-{l["id"]} {{ display: block; }}'
-        for l in LEAGUES
-    )
-    active_label_css = ",\n    ".join(
-        f'#tab-{l["id"]}:checked ~ .tab-row label[for="tab-{l["id"]}"]'
-        for l in LEAGUES
-    )
     panels = "\n".join(
-        f'  <div id="panel-{l["id"]}" class="tab-panel"></div>' for l in LEAGUES
+        f'  <div id="panel-{l["id"]}" class="league-panel"></div>' for l in LEAGUES
     )
 
+    # Only what's needed to build a Pokemon and compute its level/CP/moves - no live battle
+    # simulation runs anymore, so ActionLogic/Timeline*/DecisionOption/TeamRanker aren't loaded.
     engine_scripts = "\n  ".join(
         f'<script src="vendor/pvpoke/engine/{f}"></script>'
-        for f in [
-            "DamageCalculator.js", "ActionLogic.js", "TimelineEvent.js",
-            "TimelineAction.js", "DecisionOption.js", "Battle.js",
-            "Pokemon.js", "TeamRanker.js",
-        ]
+        for f in ["DamageCalculator.js", "Battle.js", "Pokemon.js"]
     )
 
     return f"""<!DOCTYPE html>
@@ -516,20 +415,17 @@ def build_battle_html():
     nav.site-nav{{text-align:center;margin-bottom:1.5rem;font-size:.85rem}}
     nav.site-nav a{{color:#7a9bbf;text-decoration:none;margin:0 .6rem}}
     nav.site-nav a:hover{{color:#fff;text-decoration:underline}}
-    input[name="tab"]{{display:none}}
-    .tab-label{{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;
-               background:#152033;border:2px solid #1e3350;color:#7a9bbf;transition:all .15s;
-               display:inline-block;margin:.25rem}}
-    {active_label_css},
-    .tab-label:hover{{background:#1e3a5f;border-color:#3d7ae5;color:#fff}}
-    .tab-panel{{display:none;max-width:900px;margin:0 auto}}
-    {panel_css}
-    .tab-row{{text-align:center;margin-bottom:2rem}}
+    .league-panel{{max-width:900px;margin:0 auto 2.5rem}}
+    .league-title{{text-align:center;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem}}
     .controls{{max-width:900px;margin:0 auto 2.5rem;background:#152033;border:1px solid #1e3350;
-               border-radius:14px;padding:1.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}}
+               border-radius:14px;padding:1.5rem;display:flex;flex-wrap:wrap;gap:1rem}}
     .controls label{{display:block;font-size:.75rem;color:#7a9bbf;margin-bottom:.3rem;font-weight:600}}
     .controls select,.controls input{{width:100%;padding:.45rem;border-radius:6px;border:1px solid #1e3350;
                                        background:#0d1b2a;color:#e0e6f0;font-size:.85rem}}
+    .controls > div{{flex:1 1 180px}}
+    .controls .field-group{{flex:2 1 320px}}
+    .inline-fields{{display:flex;gap:.5rem}}
+    .inline-fields input,.inline-fields select{{width:auto;flex:1;min-width:0}}
     .species-field{{position:relative}}
     .suggestions{{display:none;position:absolute;top:100%;left:0;right:0;margin-top:.2rem;
                   background:#0d1b2a;border:1px solid #1e3350;border-radius:8px;max-height:280px;
@@ -538,25 +434,14 @@ def build_battle_html():
     .suggestion-item{{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;cursor:pointer;font-size:.85rem}}
     .suggestion-item img{{width:24px;height:24px;object-fit:contain}}
     .suggestion-item:hover,.suggestion-item.active{{background:#1e3a5f}}
-    #run-battle{{grid-column:1/-1;padding:.7rem;border-radius:8px;border:none;background:#3d7ae5;
-                 color:#fff;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:.5rem}}
-    #run-battle:hover{{background:#2f63c4}}
-    #run-battle:disabled{{background:#1e3350;color:#5a7ba0;cursor:wait}}
     #loading{{text-align:center;color:#7a9bbf;margin-bottom:1.5rem;display:none}}
     .battle-summary{{display:flex;align-items:center;gap:1rem;background:#152033;border:1px solid #1e3350;
                      border-radius:14px;padding:1rem;margin-bottom:1.5rem}}
     .battle-summary .poke-sprite{{width:70px;height:70px;object-fit:contain}}
     .battle-summary .poke-name{{font-size:1.2rem;font-weight:700}}
     .battle-summary .poke-moves{{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}}
-    .matchup-list{{display:flex;flex-direction:column;gap:.4rem}}
-    .matchup-row{{display:flex;align-items:center;gap:.8rem;background:#152033;border:1px solid #1e3350;
-                  border-radius:10px;padding:.5rem .8rem;font-size:.85rem}}
-    .matchup-row.win{{border-left:4px solid #3d7ae5}}
-    .matchup-row.loss{{border-left:4px solid #c70c70}}
-    .matchup-rank{{color:#7a9bbf;min-width:2.2rem;font-weight:700}}
-    .matchup-sprite{{width:36px;height:36px;object-fit:contain}}
-    .matchup-name{{flex:1}}
-    .matchup-rating{{font-weight:700;font-family:'Courier New',monospace}}
+    .battle-summary .poke-stats{{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}}
+    .battle-summary .poke-rank{{font-weight:700;color:#fff}}
     footer{{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}}
   </style>
 </head>
@@ -570,26 +455,24 @@ def build_battle_html():
       <input type="hidden" id="species-select">
       <div id="species-suggestions" class="suggestions" role="listbox"></div>
     </div>
-    <div><label for="level-input">Niveau</label><input type="number" id="level-input" min="1" max="51" step="0.5" value="20"></div>
-    <div><label for="iv-atk">IV Attaque</label><input type="number" id="iv-atk" min="0" max="15" value="0"></div>
-    <div><label for="iv-def">IV Defense</label><input type="number" id="iv-def" min="0" max="15" value="0"></div>
-    <div><label for="iv-hp">IV Endurance</label><input type="number" id="iv-hp" min="0" max="15" value="0"></div>
-    <div><label for="fast-move-select">Attaque rapide</label><select id="fast-move-select"></select></div>
-    <div><label for="charged-move-1-select">Attaque chargee 1</label><select id="charged-move-1-select"></select></div>
-    <div><label for="charged-move-2-select">Attaque chargee 2</label><select id="charged-move-2-select"></select></div>
-    <div><label for="shield-select">Boucliers</label>
-      <select id="shield-select"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select>
+    <div class="field-group">
+      <label>IV (Attaque / Defense / Endurance)</label>
+      <div class="inline-fields">
+        <input type="number" id="iv-atk" min="0" max="15" value="0" aria-label="IV Attaque" title="IV Attaque">
+        <input type="number" id="iv-def" min="0" max="15" value="0" aria-label="IV Defense" title="IV Defense">
+        <input type="number" id="iv-hp" min="0" max="15" value="0" aria-label="IV Endurance" title="IV Endurance">
+      </div>
     </div>
-    <div><label for="bait-select">Appat (leurre)</label>
-      <select id="bait-select"><option value="0">Non</option><option value="1" selected>Selectif</option><option value="2">Toujours</option></select>
+    <div class="field-group">
+      <label>Attaques (rapide / chargee 1 / chargee 2)</label>
+      <div class="inline-fields">
+        <select id="fast-move-select" aria-label="Attaque rapide" title="Attaque rapide"></select>
+        <select id="charged-move-1-select" aria-label="Attaque chargee 1" title="Attaque chargee 1"></select>
+        <select id="charged-move-2-select" aria-label="Attaque chargee 2" title="Attaque chargee 2"></select>
+      </div>
     </div>
-    <button id="run-battle" disabled>Lancer la simulation</button>
   </div>
-  <div id="loading">Chargement / simulation en cours...</div>
-  {tab_inputs_html}
-  <div class="tab-row">
-    {tab_labels_row}
-  </div>
+  <div id="loading">Chargement...</div>
 {panels}
   <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le {time.strftime('%d/%m/%Y')}</footer>
   {engine_scripts}

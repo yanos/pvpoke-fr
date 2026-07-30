@@ -11,24 +11,17 @@
     nav.site-nav{text-align:center;margin-bottom:1.5rem;font-size:.85rem}
     nav.site-nav a{color:#7a9bbf;text-decoration:none;margin:0 .6rem}
     nav.site-nav a:hover{color:#fff;text-decoration:underline}
-    input[name="tab"]{display:none}
-    .tab-label{padding:.5rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;
-               background:#152033;border:2px solid #1e3350;color:#7a9bbf;transition:all .15s;
-               display:inline-block;margin:.25rem}
-    #tab-super:checked ~ .tab-row label[for="tab-super"],
-    #tab-hyper:checked ~ .tab-row label[for="tab-hyper"],
-    #tab-master:checked ~ .tab-row label[for="tab-master"],
-    .tab-label:hover{background:#1e3a5f;border-color:#3d7ae5;color:#fff}
-    .tab-panel{display:none;max-width:900px;margin:0 auto}
-    #tab-super:checked ~ #panel-super { display: block; }
-    #tab-hyper:checked ~ #panel-hyper { display: block; }
-    #tab-master:checked ~ #panel-master { display: block; }
-    .tab-row{text-align:center;margin-bottom:2rem}
+    .league-panel{max-width:900px;margin:0 auto 2.5rem}
+    .league-title{text-align:center;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem}
     .controls{max-width:900px;margin:0 auto 2.5rem;background:#152033;border:1px solid #1e3350;
-               border-radius:14px;padding:1.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+               border-radius:14px;padding:1.5rem;display:flex;flex-wrap:wrap;gap:1rem}
     .controls label{display:block;font-size:.75rem;color:#7a9bbf;margin-bottom:.3rem;font-weight:600}
     .controls select,.controls input{width:100%;padding:.45rem;border-radius:6px;border:1px solid #1e3350;
                                        background:#0d1b2a;color:#e0e6f0;font-size:.85rem}
+    .controls > div{flex:1 1 180px}
+    .controls .field-group{flex:2 1 320px}
+    .inline-fields{display:flex;gap:.5rem}
+    .inline-fields input,.inline-fields select{width:auto;flex:1;min-width:0}
     .species-field{position:relative}
     .suggestions{display:none;position:absolute;top:100%;left:0;right:0;margin-top:.2rem;
                   background:#0d1b2a;border:1px solid #1e3350;border-radius:8px;max-height:280px;
@@ -37,25 +30,14 @@
     .suggestion-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;cursor:pointer;font-size:.85rem}
     .suggestion-item img{width:24px;height:24px;object-fit:contain}
     .suggestion-item:hover,.suggestion-item.active{background:#1e3a5f}
-    #run-battle{grid-column:1/-1;padding:.7rem;border-radius:8px;border:none;background:#3d7ae5;
-                 color:#fff;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:.5rem}
-    #run-battle:hover{background:#2f63c4}
-    #run-battle:disabled{background:#1e3350;color:#5a7ba0;cursor:wait}
     #loading{text-align:center;color:#7a9bbf;margin-bottom:1.5rem;display:none}
     .battle-summary{display:flex;align-items:center;gap:1rem;background:#152033;border:1px solid #1e3350;
                      border-radius:14px;padding:1rem;margin-bottom:1.5rem}
     .battle-summary .poke-sprite{width:70px;height:70px;object-fit:contain}
     .battle-summary .poke-name{font-size:1.2rem;font-weight:700}
     .battle-summary .poke-moves{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}
-    .matchup-list{display:flex;flex-direction:column;gap:.4rem}
-    .matchup-row{display:flex;align-items:center;gap:.8rem;background:#152033;border:1px solid #1e3350;
-                  border-radius:10px;padding:.5rem .8rem;font-size:.85rem}
-    .matchup-row.win{border-left:4px solid #3d7ae5}
-    .matchup-row.loss{border-left:4px solid #c70c70}
-    .matchup-rank{color:#7a9bbf;min-width:2.2rem;font-weight:700}
-    .matchup-sprite{width:36px;height:36px;object-fit:contain}
-    .matchup-name{flex:1}
-    .matchup-rating{font-weight:700;font-family:'Courier New',monospace}
+    .battle-summary .poke-stats{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}
+    .battle-summary .poke-rank{font-weight:700;color:#fff}
     footer{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}
   </style>
 </head>
@@ -69,42 +51,31 @@
       <input type="hidden" id="species-select">
       <div id="species-suggestions" class="suggestions" role="listbox"></div>
     </div>
-    <div><label for="level-input">Niveau</label><input type="number" id="level-input" min="1" max="51" step="0.5" value="20"></div>
-    <div><label for="iv-atk">IV Attaque</label><input type="number" id="iv-atk" min="0" max="15" value="0"></div>
-    <div><label for="iv-def">IV Defense</label><input type="number" id="iv-def" min="0" max="15" value="0"></div>
-    <div><label for="iv-hp">IV Endurance</label><input type="number" id="iv-hp" min="0" max="15" value="0"></div>
-    <div><label for="fast-move-select">Attaque rapide</label><select id="fast-move-select"></select></div>
-    <div><label for="charged-move-1-select">Attaque chargee 1</label><select id="charged-move-1-select"></select></div>
-    <div><label for="charged-move-2-select">Attaque chargee 2</label><select id="charged-move-2-select"></select></div>
-    <div><label for="shield-select">Boucliers</label>
-      <select id="shield-select"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select>
+    <div class="field-group">
+      <label>IV (Attaque / Defense / Endurance)</label>
+      <div class="inline-fields">
+        <input type="number" id="iv-atk" min="0" max="15" value="0" aria-label="IV Attaque" title="IV Attaque">
+        <input type="number" id="iv-def" min="0" max="15" value="0" aria-label="IV Defense" title="IV Defense">
+        <input type="number" id="iv-hp" min="0" max="15" value="0" aria-label="IV Endurance" title="IV Endurance">
+      </div>
     </div>
-    <div><label for="bait-select">Appat (leurre)</label>
-      <select id="bait-select"><option value="0">Non</option><option value="1" selected>Selectif</option><option value="2">Toujours</option></select>
+    <div class="field-group">
+      <label>Attaques (rapide / chargee 1 / chargee 2)</label>
+      <div class="inline-fields">
+        <select id="fast-move-select" aria-label="Attaque rapide" title="Attaque rapide"></select>
+        <select id="charged-move-1-select" aria-label="Attaque chargee 1" title="Attaque chargee 1"></select>
+        <select id="charged-move-2-select" aria-label="Attaque chargee 2" title="Attaque chargee 2"></select>
+      </div>
     </div>
-    <button id="run-battle" disabled>Lancer la simulation</button>
   </div>
-  <div id="loading">Chargement / simulation en cours...</div>
-  <input type="radio" name="tab" id="tab-super" checked>
-  <input type="radio" name="tab" id="tab-hyper">
-  <input type="radio" name="tab" id="tab-master">
-  <div class="tab-row">
-    <label for="tab-super" class="tab-label">Ligue Super</label>
-    <label for="tab-hyper" class="tab-label">Ligue Hyper</label>
-    <label for="tab-master" class="tab-label">Ligue Master</label>
-  </div>
-  <div id="panel-super" class="tab-panel"></div>
-  <div id="panel-hyper" class="tab-panel"></div>
-  <div id="panel-master" class="tab-panel"></div>
+  <div id="loading">Chargement...</div>
+  <div id="panel-super" class="league-panel"></div>
+  <div id="panel-hyper" class="league-panel"></div>
+  <div id="panel-master" class="league-panel"></div>
   <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le 30/07/2026</footer>
   <script src="vendor/pvpoke/engine/DamageCalculator.js"></script>
-  <script src="vendor/pvpoke/engine/ActionLogic.js"></script>
-  <script src="vendor/pvpoke/engine/TimelineEvent.js"></script>
-  <script src="vendor/pvpoke/engine/TimelineAction.js"></script>
-  <script src="vendor/pvpoke/engine/DecisionOption.js"></script>
   <script src="vendor/pvpoke/engine/Battle.js"></script>
   <script src="vendor/pvpoke/engine/Pokemon.js"></script>
-  <script src="vendor/pvpoke/engine/TeamRanker.js"></script>
   <script src="gamemaster_shim.js"></script>
   <script src="battle_driver.js"></script>
 </body>

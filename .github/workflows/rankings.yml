@@ -6,7 +6,8 @@ on:
   workflow_dispatch:       # also allow manual trigger from the Actions tab
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
   pages: write
   id-token: write
 
@@ -23,6 +24,49 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Configure git identity
+        # Needed for the name-cache commit made in the next step. generate.sh (further below)
+        # never commits anything itself, so this identity isn't needed for it.
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Refresh French name cache
+        # Standalone and run first, before sync_engine.py/generate.sh: this is the slow,
+        # PokeAPI-rate-limited step (30-45+ minutes on a cold cache), so get it committed via
+        # its own PR before spending any time regenerating the site pages. generate.sh's own
+        # pvpoke_fr.py run reuses whatever's left in name_cache.json, so a warm cache also makes
+        # the rest of the pipeline fast.
+        id: name_cache
+        run: |
+          python3 update_name_cache.py
+          if [ -n "$(git status --porcelain -- vendor/pvpoke/data/name_cache.json)" ]; then
+            git add -- vendor/pvpoke/data/name_cache.json
+            git commit -m "chore: update French name cache" -- vendor/pvpoke/data/name_cache.json
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open PR for name cache update
+        # Push the commit above to a dedicated bot branch instead of main directly, since main
+        # may have branch protection, and force-push that branch so it always sits on top of the
+        # latest main rather than accumulating stale commits day over day. Force-pushing here
+        # only ever touches this bot-owned branch, never main. If a PR is already open for it,
+        # the force push alone updates its diff — GitHub tracks PRs by branch head, so no further
+        # gh call is needed in that case.
+        if: steps.name_cache.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch="chore/name-cache-update"
+          git push --force origin "HEAD:refs/heads/$branch"
+          if ! gh pr view "$branch" >/dev/null 2>&1; then
+            gh pr create --title "chore: update French name cache" \
+              --body "Automated update of \`vendor/pvpoke/data/name_cache.json\` from the daily rankings workflow: newly confirmed French Pokemon/move name lookups from PokeAPI." \
+              --head "$branch" --base main
+          fi
 
       - name: Generate rankings + battle pages
         run: ./generate.sh

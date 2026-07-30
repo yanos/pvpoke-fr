@@ -82,6 +82,8 @@ function wireAutoRun() {
 	["iv-atk", "iv-def", "iv-hp"].forEach(function (id) {
 		var el = document.getElementById(id);
 		el.addEventListener("input", function () { clampIv(el); runBattles(); });
+		// Select the existing value on focus so typing replaces it outright instead of appending.
+		el.addEventListener("focus", function () { el.select(); });
 	});
 	["fast-move-select", "charged-move-1-select", "charged-move-2-select"].forEach(function (id) {
 		document.getElementById(id).addEventListener("change", runBattles);
@@ -114,7 +116,7 @@ function populateSpeciesPicker() {
 
 	var search = document.getElementById("species-search");
 	search.addEventListener("input", function () { renderSuggestions(search.value); });
-	search.addEventListener("focus", function () { renderSuggestions(search.value); });
+	search.addEventListener("focus", function () { renderSuggestions(search.value); search.select(); });
 	search.addEventListener("keydown", onSpeciesSearchKeydown);
 	document.addEventListener("click", function (e) {
 		if (e.target !== search && !e.target.closest("#species-suggestions")) closeSuggestions();

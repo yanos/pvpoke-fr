@@ -11,7 +11,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 echo "== Refreshing French name cache =="
-python3 update_name_cache.py
+#python3 update_name_cache.py
 
 echo "== Syncing pvpoke engine + data =="
 python3 sync_engine.py

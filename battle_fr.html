@@ -11,8 +11,7 @@
     nav.site-nav{text-align:center;margin-bottom:1.5rem;font-size:.85rem}
     nav.site-nav a{color:#7a9bbf;text-decoration:none;margin:0 .6rem}
     nav.site-nav a:hover{color:#fff;text-decoration:underline}
-    .league-panel{max-width:900px;margin:0 auto 2.5rem}
-    .league-title{text-align:center;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem}
+    .result-panel{max-width:900px;margin:0 auto 2.5rem}
     .controls{max-width:900px;margin:0 auto 2.5rem;background:#152033;border:1px solid #1e3350;
                border-radius:14px;padding:1.5rem;display:flex;flex-wrap:wrap;gap:1rem}
     .controls label{display:block;font-size:.75rem;color:#7a9bbf;margin-bottom:.3rem;font-weight:600}
@@ -31,13 +30,26 @@
     .suggestion-item img{width:24px;height:24px;object-fit:contain}
     .suggestion-item:hover,.suggestion-item.active{background:#1e3a5f}
     #loading{text-align:center;color:#7a9bbf;margin-bottom:1.5rem;display:none}
+    .variant-panel{margin-bottom:1.5rem}
+    .variant-panel:last-child{margin-bottom:0}
+    .variant-badge{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;
+                    letter-spacing:.03em;border-radius:4px;padding:.15rem .4rem;margin-right:.3rem;
+                    vertical-align:middle}
+    .variant-badge.shadow{color:#a060ff;background:#1a1030;border:1px solid #3d1a6e}
+    .variant-badge.evolution{color:#5b9bd5;background:#0f2438;border:1px solid #1e3350}
     .battle-summary{display:flex;align-items:center;gap:1rem;background:#152033;border:1px solid #1e3350;
-                     border-radius:14px;padding:1rem;margin-bottom:1.5rem}
+                     border-radius:14px 14px 0 0;padding:1rem;border-bottom:1px solid #1e3350}
     .battle-summary .poke-sprite{width:70px;height:70px;object-fit:contain}
     .battle-summary .poke-name{font-size:1.2rem;font-weight:700}
     .battle-summary .poke-moves{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}
-    .battle-summary .poke-stats{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}
-    .battle-summary .poke-rank{font-weight:700;color:#fff}
+    .league-stats{background:#152033;border:1px solid #1e3350;border-top:none;border-radius:0 0 14px 14px;
+                   overflow:hidden}
+    .league-stat-row{display:flex;align-items:center;padding:.7rem 1rem;gap:1rem;
+                      border-top:1px solid #1e3350}
+    .league-stat-row:first-child{border-top:none}
+    .league-stat-name{flex:0 0 110px;font-weight:700;color:#fff;font-size:.85rem}
+    .league-stat-value{flex:1;font-size:.85rem;color:#7a9bbf;text-align:center}
+    .poke-rank{font-weight:700;color:#fff}
     footer{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}
   </style>
 </head>
@@ -54,9 +66,9 @@
     <div class="field-group">
       <label>IV (Attaque / Defense / Endurance)</label>
       <div class="inline-fields">
-        <input type="number" id="iv-atk" min="0" max="15" value="0" aria-label="IV Attaque" title="IV Attaque">
-        <input type="number" id="iv-def" min="0" max="15" value="0" aria-label="IV Defense" title="IV Defense">
-        <input type="number" id="iv-hp" min="0" max="15" value="0" aria-label="IV Endurance" title="IV Endurance">
+        <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
+        <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Defense" title="IV Defense">
+        <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
       </div>
     </div>
     <div class="field-group">
@@ -69,9 +81,7 @@
     </div>
   </div>
   <div id="loading">Chargement...</div>
-  <div id="panel-super" class="league-panel"></div>
-  <div id="panel-hyper" class="league-panel"></div>
-  <div id="panel-master" class="league-panel"></div>
+  <div id="result-panel" class="result-panel"></div>
   <footer>Moteur : pvpoke.com (vendu localement) . Donnees &amp; noms : PokeAPI . Genere le 30/07/2026</footer>
   <script src="vendor/pvpoke/engine/DamageCalculator.js"></script>
   <script src="vendor/pvpoke/engine/Battle.js"></script>

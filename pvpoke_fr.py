@@ -85,18 +85,33 @@ def _cached_names():
             _name_cache = {"pokemon": {}, "moves": {}}
     return _name_cache
 
+# Shadow is stripped independently of FORM_SUFFIX_MAP so a compound id like diglett_alolan_shadow
+# yields both " d'Alola" and " (Obscur)" instead of just whichever suffix matched first.
+def strip_form_suffix(species_id):
+    base = species_id
+    is_shadow = base.endswith("_shadow")
+    if is_shadow:
+        base = base[: -len("_shadow")]
+
+    fr_suffix = ""
+    for pvp, fr, _api in sorted(FORM_SUFFIX_MAP, key=lambda x: -len(x[0])):
+        if pvp == "_shadow":
+            continue
+        if base.endswith(pvp):
+            base = base[: -len(pvp)]
+            fr_suffix = fr
+            break
+
+    if is_shadow:
+        fr_suffix += " (Obscur)"
+    return base, fr_suffix
+
 def get_pokemon_info(species_id):
     cached = _cached_names()["pokemon"].get(species_id)
     if cached:
         return cached["name"], cached.get("sprite") or None
 
-    fr_suffix = ""
-    base = species_id
-    for pvp, fr, _api in sorted(FORM_SUFFIX_MAP, key=lambda x: -len(x[0])):
-        if base.endswith(pvp):
-            base = base[:-len(pvp)]
-            fr_suffix = fr
-            break
+    base, fr_suffix = strip_form_suffix(species_id)
     return base.replace("_", " ").title() + fr_suffix, None
 
 def get_move_fr(move_id):

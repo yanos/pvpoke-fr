@@ -3,6 +3,8 @@
     "ACID": "Acide",
     "ACID_SPRAY": "Bombe Acide",
     "ACROBATICS": "Acrobatie",
+    "AEGISLASH_CHARGE_AIR_SLASH": "Lame d’Air",
+    "AEGISLASH_CHARGE_PSYCHO_CUT": "Coupe Psycho",
     "AERIAL_ACE": "Aéropique",
     "AEROBLAST": "Aéroblast",
     "AIR_CUTTER": "Tranch’Air",
@@ -13,6 +15,8 @@
     "AQUA_TAIL": "Hydro-Queue",
     "ASTONISH": "Étonnement",
     "AURA_SPHERE": "Aurasphère",
+    "AURA_WHEEL_DARK": "Roue Libre Ténèbres",
+    "AURA_WHEEL_ELECTRIC": "Roue Libre Électrik",
     "AURORA_BEAM": "Onde Boréale",
     "AVALANCHE": "Avalanche",
     "BEAK_BLAST": "Bec-Canon",
@@ -132,6 +136,7 @@
     "HIDDEN_POWER_GRASS": "Puissance Cachée Plante",
     "HIDDEN_POWER_GROUND": "Puissance Cachée Sol",
     "HIDDEN_POWER_ICE": "Puissance Cachée Glace",
+    "HIDDEN_POWER_NORMAL": "Puissance Cachée Normal",
     "HIDDEN_POWER_POISON": "Puissance Cachée Poison",
     "HIDDEN_POWER_PSYCHIC": "Puissance Cachée Psy",
     "HIDDEN_POWER_ROCK": "Puissance Cachée Roche",
@@ -143,6 +148,7 @@
     "HURRICANE": "Vent Violent",
     "HYDRO_CANNON": "Hydroblast",
     "HYDRO_PUMP": "Hydrocanon",
+    "HYDRO_PUMP_BLASTOISE": "Hydrocanon",
     "HYPER_BEAM": "Ultralaser",
     "HYPER_FANG": "Croc de Mort",
     "ICE_BEAM": "Laser Glace",
@@ -287,6 +293,11 @@
     "SYNCHRONOISE": "Synchropeine",
     "TACKLE": "Charge",
     "TAKE_DOWN": "Bélier",
+    "TECHNO_BLAST_BURN": "Techno-Buster Feu",
+    "TECHNO_BLAST_CHILL": "Techno-Buster Glace",
+    "TECHNO_BLAST_DOUSE": "Techno-Buster Eau",
+    "TECHNO_BLAST_NORMAL": "Techno-Buster Normal",
+    "TECHNO_BLAST_SHOCK": "Techno-Buster Électrik",
     "THUNDER": "Fatal-Foudre",
     "THUNDERBOLT": "Tonnerre",
     "THUNDER_CAGE": "Voltageôle",
@@ -307,10 +318,12 @@
     "V_CREATE": "Coup Victoire",
     "WATERFALL": "Cascade",
     "WATER_GUN": "Pistolet à O",
+    "WATER_GUN_FAST_BLASTOISE": "Pistolet à O",
     "WATER_PULSE": "Vibraqua",
     "WATER_SHURIKEN": "Sheauriken",
     "WEATHER_BALL_FIRE": "Ball’Météo Feu",
     "WEATHER_BALL_ICE": "Ball’Météo Glace",
+    "WEATHER_BALL_NORMAL": "Ball’Météo Normal",
     "WEATHER_BALL_ROCK": "Ball’Météo Roche",
     "WEATHER_BALL_WATER": "Ball’Météo Eau",
     "WILDBOLT_STORM": "Typhon Fulgurant",
@@ -321,7 +334,9 @@
     "YAWN": "Bâillement",
     "ZAP_CANNON": "Élecanon",
     "ZEN_HEADBUTT": "Psykoud’Boul",
+    "aura-wheel": "Roue Libre",
     "hidden-power": "Puissance Cachée",
+    "techno-blast": "Techno-Buster",
     "weather-ball": "Ball’Météo"
   },
   "pokemon": {
@@ -364,6 +379,14 @@
     "accelgor_shadow": {
       "name": "Limaspeed (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/617.png"
+    },
+    "aegislash_blade": {
+      "name": "Exagide Assaut",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10026.png"
+    },
+    "aegislash_shield": {
+      "name": "Exagide Parade",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/681.png"
     },
     "aerodactyl": {
       "name": "Ptéra",
@@ -523,6 +546,74 @@
     },
     "arceus": {
       "name": "Arceus",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_bug": {
+      "name": "Arceus Insecte",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_dark": {
+      "name": "Arceus Ténèbres",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_dragon": {
+      "name": "Arceus Dragon",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_electric": {
+      "name": "Arceus Électrik",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_fairy": {
+      "name": "Arceus Fée",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_fighting": {
+      "name": "Arceus Combat",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_fire": {
+      "name": "Arceus Feu",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_flying": {
+      "name": "Arceus Vol",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_ghost": {
+      "name": "Arceus Spectre",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_grass": {
+      "name": "Arceus Plante",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_ground": {
+      "name": "Arceus Sol",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_ice": {
+      "name": "Arceus Glace",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_poison": {
+      "name": "Arceus Poison",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_psychic": {
+      "name": "Arceus Psy",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_rock": {
+      "name": "Arceus Roche",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_steel": {
+      "name": "Arceus Acier",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    "arceus_water": {
+      "name": "Arceus Eau",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
     },
     "archaludon": {
@@ -688,6 +779,18 @@
     "barraskewda": {
       "name": "Hastacuda",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/847.png"
+    },
+    "basculegion_female": {
+      "name": "Paragruel Femelle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10248.png"
+    },
+    "basculegion_male": {
+      "name": "Paragruel Mâle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/902.png"
+    },
+    "basculin": {
+      "name": "Bargantua",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/550.png"
     },
     "bastiodon": {
       "name": "Bastiodon",
@@ -909,6 +1012,10 @@
       "name": "Archéomire",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/436.png"
     },
+    "brutebonnet": {
+      "name": "Fongus-Furie",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/986.png"
+    },
     "bruxish": {
       "name": "Denticrisse",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/779.png"
@@ -941,6 +1048,18 @@
       "name": "Sapereau (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/659.png"
     },
+    "burmy_plant": {
+      "name": "Cheniti Plante",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/412.png"
+    },
+    "burmy_sandy": {
+      "name": "Cheniti Sable",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/412.png"
+    },
+    "burmy_trash": {
+      "name": "Cheniti Déchet",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/412.png"
+    },
     "butterfree": {
       "name": "Papilusion",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"
@@ -972,6 +1091,10 @@
     "calyrex": {
       "name": "Sylveroy",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/898.png"
+    },
+    "calyrex_ice_rider": {
+      "name": "Calyrex Cavalier du Froid",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10193.png"
     },
     "camerupt": {
       "name": "Camérupt",
@@ -1025,6 +1148,18 @@
       "name": "Morphéo",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/351.png"
     },
+    "castform_rainy": {
+      "name": "Morphéo Eau de Pluie",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10014.png"
+    },
+    "castform_snowy": {
+      "name": "Morphéo Blizzard",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10015.png"
+    },
+    "castform_sunny": {
+      "name": "Morphéo Solaire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10013.png"
+    },
     "caterpie": {
       "name": "Chenipan",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png"
@@ -1077,6 +1212,14 @@
       "name": "Dracaufeu",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
     },
+    "charizard_mega_x": {
+      "name": "Méga-Dracaufeu X",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10034.png"
+    },
+    "charizard_mega_y": {
+      "name": "Méga-Dracaufeu Y",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png"
+    },
     "charizard_shadow": {
       "name": "Dracaufeu (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
@@ -1108,6 +1251,14 @@
     "chatot": {
       "name": "Pijako",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/441.png"
+    },
+    "cherrim_overcast": {
+      "name": "Ceriflor Couvert",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/421.png"
+    },
+    "cherrim_sunny": {
+      "name": "Ceriflor Ensoleillé",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/421.png"
     },
     "cherubi": {
       "name": "Ceribou",
@@ -1445,6 +1596,26 @@
       "name": "Darkrai (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png"
     },
+    "darmanitan_galarian_standard": {
+      "name": "Darumacho de Galar Normal",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10177.png"
+    },
+    "darmanitan_galarian_zen": {
+      "name": "Darumacho de Galar Transe",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10178.png"
+    },
+    "darmanitan_standard": {
+      "name": "Darumacho Normal",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/555.png"
+    },
+    "darmanitan_standard_shadow": {
+      "name": "Darumacho Normal (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/555.png"
+    },
+    "darmanitan_zen": {
+      "name": "Darumacho Transe",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10017.png"
+    },
     "dartrix": {
       "name": "Efflèche",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/723.png"
@@ -1505,6 +1676,22 @@
       "name": "Goupelin (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/655.png"
     },
+    "deoxys": {
+      "name": "Deoxys Normal",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png"
+    },
+    "deoxys_attack": {
+      "name": "Deoxys Attaque",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10001.png"
+    },
+    "deoxys_defense": {
+      "name": "Deoxys Défense",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10002.png"
+    },
+    "deoxys_speed": {
+      "name": "Deoxys Vitesse",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10003.png"
+    },
     "dewgong": {
       "name": "Lamantine",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/87.png"
@@ -1537,6 +1724,10 @@
       "name": "Dialga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png"
     },
+    "dialga_origin": {
+      "name": "Diagla Originel",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10245.png"
+    },
     "dialga_shadow": {
       "name": "Dialga (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png"
@@ -1564,6 +1755,10 @@
     "diglett_alolan": {
       "name": "Taupiqueur d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10105.png"
+    },
+    "diglett_alolan_shadow": {
+      "name": "Taupiqueur d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/50.png"
     },
     "diglett_shadow": {
       "name": "Taupiqueur (Obscur)",
@@ -1729,6 +1924,10 @@
       "name": "Couaneton (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/580.png"
     },
+    "dudunsparce": {
+      "name": "Deusolourdo",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/982.png"
+    },
     "dugtrio": {
       "name": "Triopikeur",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/51.png"
@@ -1736,6 +1935,10 @@
     "dugtrio_alolan": {
       "name": "Triopikeur d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10106.png"
+    },
+    "dugtrio_alolan_shadow": {
+      "name": "Triopikeur d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/51.png"
     },
     "dugtrio_shadow": {
       "name": "Triopikeur (Obscur)",
@@ -1808,6 +2011,18 @@
     "eevee": {
       "name": "Évoli",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"
+    },
+    "eiscue": {
+      "name": "Bekaglaçon Tête de Gel",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/875.png"
+    },
+    "eiscue_ice": {
+      "name": "Bekaglaçon Tête de Gel",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/875.png"
+    },
+    "eiscue_noice": {
+      "name": "Bekaglaçon Tête Dégel",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10185.png"
     },
     "ekans": {
       "name": "Abo",
@@ -1885,6 +2100,14 @@
       "name": "Pingoléon (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png"
     },
+    "enamorus_incarnate": {
+      "name": "Amovénus Avatar",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/905.png"
+    },
+    "enamorus_therian": {
+      "name": "Amovénus Totémique",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10249.png"
+    },
     "entei": {
       "name": "Entei",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/244.png"
@@ -1917,6 +2140,10 @@
       "name": "Éthernatos",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/890.png"
     },
+    "eternatus_eternamax": {
+      "name": "Éthernatos Infinimax",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10190.png"
+    },
     "excadrill": {
       "name": "Minotaupe",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/530.png"
@@ -1940,6 +2167,10 @@
     "exeggutor_alolan": {
       "name": "Noadkoko d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10114.png"
+    },
+    "exeggutor_alolan_shadow": {
+      "name": "Noadkoko d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/103.png"
     },
     "exeggutor_shadow": {
       "name": "Noadkoko (Obscur)",
@@ -2093,6 +2324,10 @@
       "name": "Florges",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/671.png"
     },
+    "fluttermane": {
+      "name": "Flotte-Mèche",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/987.png"
+    },
     "flygon": {
       "name": "Libégon",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/330.png"
@@ -2132,6 +2367,10 @@
     "frigibax": {
       "name": "Frigodo",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/996.png"
+    },
+    "frillish": {
+      "name": "Viskuse",
+      "sprite": null
     },
     "froakie": {
       "name": "Grenousse",
@@ -2253,6 +2492,22 @@
       "name": "Genesect",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png"
     },
+    "genesect_burn": {
+      "name": "Genesect Pyro",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png"
+    },
+    "genesect_chill": {
+      "name": "Genesect Cryo",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png"
+    },
+    "genesect_douse": {
+      "name": "Genesect Aqua",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png"
+    },
+    "genesect_shock": {
+      "name": "Genesect Choc",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png"
+    },
     "gengar": {
       "name": "Ectoplasma",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"
@@ -2272,6 +2527,10 @@
     "geodude_alolan": {
       "name": "Racaillou d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10109.png"
+    },
+    "geodude_alolan_shadow": {
+      "name": "Racaillou d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png"
     },
     "geodude_shadow": {
       "name": "Racaillou (Obscur)",
@@ -2308,6 +2567,18 @@
     "girafarig_shadow": {
       "name": "Girafarig (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/203.png"
+    },
+    "giratina_altered": {
+      "name": "Giratina Alternatif",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"
+    },
+    "giratina_altered_shadow": {
+      "name": "Giratina Alternatif (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"
+    },
+    "giratina_origin": {
+      "name": "Giratina Originel",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10007.png"
     },
     "glaceon": {
       "name": "Givrali",
@@ -2401,6 +2672,10 @@
       "name": "Grolem d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10111.png"
     },
+    "golem_alolan_shadow": {
+      "name": "Grolem d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/76.png"
+    },
     "golem_shadow": {
       "name": "Grolem (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/76.png"
@@ -2469,6 +2744,22 @@
       "name": "Feu-Perçant",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1020.png"
     },
+    "gourgeist_average": {
+      "name": "Banshitrouye Normal",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png"
+    },
+    "gourgeist_large": {
+      "name": "Banshitrouye Maxi",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10031.png"
+    },
+    "gourgeist_small": {
+      "name": "Banshitrouye Mini",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10030.png"
+    },
+    "gourgeist_super": {
+      "name": "Banshitrouye Ultra",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10032.png"
+    },
     "grafaiai": {
       "name": "Tag-Tag",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/945.png"
@@ -2493,9 +2784,17 @@
       "name": "Gravalanch d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10110.png"
     },
+    "graveler_alolan_shadow": {
+      "name": "Gravalanch d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"
+    },
     "graveler_shadow": {
       "name": "Gravalanch (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png"
+    },
+    "greattusk": {
+      "name": "Fort-Ivoire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/984.png"
     },
     "greavard": {
       "name": "Toutombe",
@@ -2521,6 +2820,10 @@
       "name": "Tadmorv d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10112.png"
     },
+    "grimer_alolan_shadow": {
+      "name": "Tadmorv d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/88.png"
+    },
     "grimer_shadow": {
       "name": "Tadmorv (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/88.png"
@@ -2544,6 +2847,10 @@
     "groudon": {
       "name": "Groudon",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/383.png"
+    },
+    "groudon_primal": {
+      "name": "Primo-Groudon",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png"
     },
     "groudon_shadow": {
       "name": "Groudon (Obscur)",
@@ -2769,6 +3076,14 @@
       "name": "Hoopa",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/720.png"
     },
+    "hoopa_confined": {
+      "name": "Hoopa Enchaîné",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/720.png"
+    },
+    "hoopa_unbound": {
+      "name": "Hoopa Déchaîné",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10086.png"
+    },
     "hoothoot": {
       "name": "Hoothoot",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/163.png"
@@ -2857,6 +3172,14 @@
       "name": "Félinferno",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/727.png"
     },
+    "indeedee_female": {
+      "name": "Wimessir Femelle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10186.png"
+    },
+    "indeedee_male": {
+      "name": "Wimessir Mâle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/876.png"
+    },
     "infernape": {
       "name": "Simiabraz",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/392.png"
@@ -2889,6 +3212,34 @@
       "name": "Vert-de-Fer",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1010.png"
     },
+    "ironbundle": {
+      "name": "Hotte-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/991.png"
+    },
+    "ironhands": {
+      "name": "Paume-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/992.png"
+    },
+    "ironjugulis": {
+      "name": "Têtes-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/993.png"
+    },
+    "ironmoth": {
+      "name": "Mite-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/994.png"
+    },
+    "ironthorns": {
+      "name": "Épine-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/995.png"
+    },
+    "irontreads": {
+      "name": "Roue-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/990.png"
+    },
+    "ironvaliant": {
+      "name": "Garde-de-Fer",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1006.png"
+    },
     "ivysaur": {
       "name": "Herbizarre",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"
@@ -2900,6 +3251,10 @@
     "jangmo_o": {
       "name": "Bébécaille",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/782.png"
+    },
+    "jellicent": {
+      "name": "Moyade",
+      "sprite": null
     },
     "jigglypuff": {
       "name": "Rondoudou",
@@ -2988,6 +3343,14 @@
     "kecleon": {
       "name": "Kecleon",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/352.png"
+    },
+    "keldeo_ordinary": {
+      "name": "Keldeo Normal",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/647.png"
+    },
+    "keldeo_resolute": {
+      "name": "Keldeo Décidé",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10024.png"
     },
     "kilowattrel": {
       "name": "Fulgulairo",
@@ -3097,6 +3460,10 @@
       "name": "Kyogre",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png"
     },
+    "kyogre_primal": {
+      "name": "Primo-Kyogre",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10077.png"
+    },
     "kyogre_shadow": {
       "name": "Kyogre (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/382.png"
@@ -3104,6 +3471,14 @@
     "kyurem": {
       "name": "Kyurem",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/646.png"
+    },
+    "kyurem_black": {
+      "name": "Kyurem Noir",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10022.png"
+    },
+    "kyurem_white": {
+      "name": "Kyurem Blanc",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10023.png"
     },
     "lairon": {
       "name": "Galegon",
@@ -3120,6 +3495,18 @@
     "lampent_shadow": {
       "name": "Mélancolux (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/608.png"
+    },
+    "landorus_incarnate": {
+      "name": "Démétéros Avatar",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/645.png"
+    },
+    "landorus_incarnate_shadow": {
+      "name": "Démétéros Avatar (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/645.png"
+    },
+    "landorus_therian": {
+      "name": "Démétéros Totémique",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10021.png"
     },
     "lanturn": {
       "name": "Lanturn",
@@ -3241,6 +3628,10 @@
       "name": "Linéon de Galar",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10175.png"
     },
+    "linoone_galarian_shadow": {
+      "name": "Linéon de Galar (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/264.png"
+    },
     "litleo": {
       "name": "Hélionceau",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/667.png"
@@ -3340,6 +3731,18 @@
     "luxray_shadow": {
       "name": "Luxray (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/405.png"
+    },
+    "lycanroc_dusk": {
+      "name": "Lougaroc Forme Crépusculaire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10152.png"
+    },
+    "lycanroc_midday": {
+      "name": "Lougaroc Forme Diurne",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/745.png"
+    },
+    "lycanroc_midnight": {
+      "name": "Lougaroc Forme Nocturne",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10126.png"
     },
     "mabosstiff": {
       "name": "Dogrino",
@@ -3521,6 +3924,10 @@
       "name": "Ossatueur d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10115.png"
     },
+    "marowak_alolan_shadow": {
+      "name": "Ossatueur d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png"
+    },
     "marowak_shadow": {
       "name": "Ossatueur (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png"
@@ -3544,6 +3951,18 @@
     "masquerain": {
       "name": "Maskadra",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/284.png"
+    },
+    "maushold": {
+      "name": "Famignol",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/925.png"
+    },
+    "maushold_family_of_four": {
+      "name": "Famignol Famille de Quatre",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/925.png"
+    },
+    "maushold_family_of_three": {
+      "name": "Famignol Famille de Trois",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10257.png"
     },
     "mawile": {
       "name": "Mysdibule",
@@ -3581,6 +4000,14 @@
       "name": "Melmetal",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/809.png"
     },
+    "meloetta_aria": {
+      "name": "Meloetta Chant",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/648.png"
+    },
+    "meloetta_pirouette": {
+      "name": "Meloetta Danse",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10018.png"
+    },
     "meltan": {
       "name": "Meltan",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/808.png"
@@ -3588,6 +4015,14 @@
     "meowscarada": {
       "name": "Miascarade",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/908.png"
+    },
+    "meowstic": {
+      "name": "Mistigrix Mâle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/678.png"
+    },
+    "meowstic_female": {
+      "name": "Mistigrix Femelle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10025.png"
     },
     "meowth": {
       "name": "Miaouss",
@@ -3641,9 +4076,21 @@
       "name": "Mew",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"
     },
+    "mewtwo_armored": {
+      "name": "Mewtwo (Armure)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
+    },
     "mewtwo": {
       "name": "Mewtwo",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
+    },
+    "mewtwo_mega_x": {
+      "name": "Méga-Mewtwo X",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10043.png"
+    },
+    "mewtwo_mega_y": {
+      "name": "Méga-Mewtwo Y",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png"
     },
     "mewtwo_shadow": {
       "name": "Mewtwo (Obscur)",
@@ -3685,9 +4132,25 @@
       "name": "Mime Jr.",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/439.png"
     },
+    "mimikyu": {
+      "name": "Mimiqui Déguisé",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/778.png"
+    },
+    "mimikyu_busted": {
+      "name": "Mimiqui Forme Démasquée",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10143.png"
+    },
     "minccino": {
       "name": "Chinchidou",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/572.png"
+    },
+    "minior_core": {
+      "name": "Météno (Noyau)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10136.png"
+    },
+    "minior_meteor": {
+      "name": "Météno (Météore)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/774.png"
     },
     "minun": {
       "name": "Négapi",
@@ -3741,6 +4204,14 @@
       "name": "Fourbelin",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/860.png"
     },
+    "morpeko_full_belly": {
+      "name": "Morpeko Rassasié",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/877.png"
+    },
+    "morpeko_hangry": {
+      "name": "Morpeko Affamé",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10187.png"
+    },
     "mothim": {
       "name": "Papilord",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/414.png"
@@ -3780,6 +4251,10 @@
     "muk_alolan": {
       "name": "Grotadmorv d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10113.png"
+    },
+    "muk_alolan_shadow": {
+      "name": "Grotadmorv d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/89.png"
     },
     "muk_shadow": {
       "name": "Grotadmorv (Obscur)",
@@ -3833,6 +4308,18 @@
       "name": "Necrozma",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/800.png"
     },
+    "necrozma_dawn_wings": {
+      "name": "Necrozma Ailes de l’Aurore",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10156.png"
+    },
+    "necrozma_dusk_mane": {
+      "name": "Necrozma Crinière du Couchant",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10155.png"
+    },
+    "necrozma_ultra": {
+      "name": "Ultra-Necrozma",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10157.png"
+    },
     "nickit": {
       "name": "Goupilou",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/827.png"
@@ -3852,6 +4339,22 @@
     "nidoqueen_shadow": {
       "name": "Nidoqueen (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/31.png"
+    },
+    "nidoran_female": {
+      "name": "Nidoran♀",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/29.png"
+    },
+    "nidoran_female_shadow": {
+      "name": "Nidoran♀ (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/29.png"
+    },
+    "nidoran_male": {
+      "name": "Nidoran♂",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/32.png"
+    },
+    "nidoran_male_shadow": {
+      "name": "Nidoran♂ (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/32.png"
     },
     "nidorina": {
       "name": "Nidorina",
@@ -3884,6 +4387,10 @@
     "ninetales_alolan": {
       "name": "Feunard d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10104.png"
+    },
+    "ninetales_alolan_shadow": {
+      "name": "Feunard d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/38.png"
     },
     "ninetales_shadow": {
       "name": "Feunard (Obscur)",
@@ -3969,6 +4476,14 @@
       "name": "Ogerpon",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1017.png"
     },
+    "oinkologne": {
+      "name": "Fragroin Mâle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/916.png"
+    },
+    "oinkologne_female": {
+      "name": "Fragroin Femelle",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10254.png"
+    },
     "okidogi": {
       "name": "Félicanis",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1014.png"
@@ -4005,6 +4520,22 @@
       "name": "Astronelle",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/826.png"
     },
+    "oricorio_baile": {
+      "name": "Plumeline Style Flamenco",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/741.png"
+    },
+    "oricorio_pau": {
+      "name": "Plumeline Style Hula",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10124.png"
+    },
+    "oricorio_pom_pom": {
+      "name": "Plumeline Style Pom-Pom",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10123.png"
+    },
+    "oricorio_sensu": {
+      "name": "Plumeline Style Buyō",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10125.png"
+    },
     "orthworm": {
       "name": "Ferdeter",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/968.png"
@@ -4025,9 +4556,25 @@
       "name": "Pachirisu",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/417.png"
     },
+    "palafin": {
+      "name": "Superdofin Forme Ordinaire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/964.png"
+    },
+    "palafin_hero": {
+      "name": "Superdofin Forme Super",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10256.png"
+    },
+    "palafin_zero": {
+      "name": "Superdofin Forme Ordinaire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/964.png"
+    },
     "palkia": {
       "name": "Palkia",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png"
+    },
+    "palkia_origin": {
+      "name": "Palkia Originel",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10246.png"
     },
     "palkia_shadow": {
       "name": "Palkia (Obscur)",
@@ -4381,6 +4928,22 @@
       "name": "Psykokwak (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"
     },
+    "pumpkaboo_average": {
+      "name": "Pitrouille Normal",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png"
+    },
+    "pumpkaboo_large": {
+      "name": "Pitrouille Maxi",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10028.png"
+    },
+    "pumpkaboo_small": {
+      "name": "Pitrouille Mini",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10027.png"
+    },
+    "pumpkaboo_super": {
+      "name": "Pitrouille Ultra",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10029.png"
+    },
     "pupitar": {
       "name": "Ymphect",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/247.png"
@@ -4404,6 +4967,10 @@
     "purugly_shadow": {
       "name": "Chaffreux (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/432.png"
+    },
+    "pyroar": {
+      "name": "Némélios",
+      "sprite": null
     },
     "pyukumuku": {
       "name": "Concombaffe",
@@ -4477,6 +5044,14 @@
       "name": "Raichu d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10100.png"
     },
+    "raichu_mega_x": {
+      "name": "Méga-Raichu X",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10304.png"
+    },
+    "raichu_mega_y": {
+      "name": "Méga-Raichu Y",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10305.png"
+    },
     "raikou": {
       "name": "Raikou",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/243.png"
@@ -4521,6 +5096,10 @@
       "name": "Rattatac d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10092.png"
     },
+    "raticate_alolan_shadow": {
+      "name": "Rattatac d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png"
+    },
     "raticate_shadow": {
       "name": "Rattatac (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png"
@@ -4532,6 +5111,10 @@
     "rattata_alolan": {
       "name": "Rattata d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10091.png"
+    },
+    "rattata_alolan_shadow": {
+      "name": "Rattata d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png"
     },
     "rattata_shadow": {
       "name": "Rattata (Obscur)",
@@ -4653,6 +5236,10 @@
       "name": "Riolu",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/447.png"
     },
+    "roaringmoon": {
+      "name": "Rugit-Lune",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1005.png"
+    },
     "rockruff": {
       "name": "Rocabot",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/744.png"
@@ -4688,6 +5275,26 @@
     "rotom": {
       "name": "Motisma",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png"
+    },
+    "rotom_fan": {
+      "name": "Motisma Hélice",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10011.png"
+    },
+    "rotom_frost": {
+      "name": "Motisma Froid",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10010.png"
+    },
+    "rotom_heat": {
+      "name": "Motisma Chaleur",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10008.png"
+    },
+    "rotom_mow": {
+      "name": "Motisma Tonte",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10012.png"
+    },
+    "rotom_wash": {
+      "name": "Motisma Lavage",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10009.png"
     },
     "rowlet": {
       "name": "Brindibou",
@@ -4761,6 +5368,10 @@
       "name": "Sabelette d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10101.png"
     },
+    "sandshrew_alolan_shadow": {
+      "name": "Sabelette d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png"
+    },
     "sandshrew_shadow": {
       "name": "Sabelette (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/27.png"
@@ -4773,6 +5384,10 @@
       "name": "Sablaireau d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10102.png"
     },
+    "sandslash_alolan_shadow": {
+      "name": "Sablaireau d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/28.png"
+    },
     "sandslash_shadow": {
       "name": "Sablaireau (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/28.png"
@@ -4780,6 +5395,10 @@
     "sandygast": {
       "name": "Bacabouh",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/769.png"
+    },
+    "sandyshocks": {
+      "name": "Pelage-Sablé",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/989.png"
     },
     "sawk": {
       "name": "Karaclée",
@@ -4844,6 +5463,10 @@
     "scraggy": {
       "name": "Baggiguane",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/559.png"
+    },
+    "screamtail": {
+      "name": "Hurle-Queue",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/985.png"
     },
     "scyther": {
       "name": "Insécateur",
@@ -4932,6 +5555,14 @@
     "sharpedo_shadow": {
       "name": "Sharpedo (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/319.png"
+    },
+    "shaymin_land": {
+      "name": "Shaymin Terrestre",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/492.png"
+    },
+    "shaymin_sky": {
+      "name": "Shaymin Céleste",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10006.png"
     },
     "shedinja": {
       "name": "Munja",
@@ -5035,6 +5666,74 @@
     },
     "silvally": {
       "name": "Silvallié",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_bug": {
+      "name": "Silvallié Insecte",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_dark": {
+      "name": "Silvallié Ténèbres",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_dragon": {
+      "name": "Silvallié Dragon",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_electric": {
+      "name": "Silvallié Électrik",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_fairy": {
+      "name": "Silvallié Fée",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_fighting": {
+      "name": "Silvallié Combat",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_fire": {
+      "name": "Silvallié Feu",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_flying": {
+      "name": "Silvallié Vol",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_ghost": {
+      "name": "Silvallié Spectre",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_grass": {
+      "name": "Silvallié Plante",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_ground": {
+      "name": "Silvallié Sol",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_ice": {
+      "name": "Silvallié Glace",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_poison": {
+      "name": "Silvallié Poison",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_psychic": {
+      "name": "Silvallié Psy",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_rock": {
+      "name": "Silvallié Roche",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_steel": {
+      "name": "Silvallié Acier",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
+    },
+    "silvally_water": {
+      "name": "Silvallié Eau",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/773.png"
     },
     "simipour": {
@@ -5141,6 +5840,10 @@
       "name": "Colimucus",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/705.png"
     },
+    "slitherwing": {
+      "name": "Rampe-Ailes",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/988.png"
+    },
     "slowbro": {
       "name": "Flagadoss",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/80.png"
@@ -5208,6 +5911,10 @@
     "sneasel_hisuian": {
       "name": "Farfuret de Hisui",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10235.png"
+    },
+    "sneasel_hisuian_shadow": {
+      "name": "Farfuret de Hisui (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/215.png"
     },
     "sneasel_shadow": {
       "name": "Farfuret (Obscur)",
@@ -5336,6 +6043,10 @@
     "spritzee": {
       "name": "Fluvetin",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/682.png"
+    },
+    "squawkabilly": {
+      "name": "Tapatoès",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/931.png"
     },
     "squirtle": {
       "name": "Carapuce",
@@ -5597,9 +6308,33 @@
       "name": "Tissenboule",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/917.png"
     },
+    "tatsugiri_curly": {
+      "name": "Nigirigon Forme Courbée",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/978.png"
+    },
+    "tatsugiri_droopy": {
+      "name": "Nigirigon Forme Affalée",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10258.png"
+    },
+    "tatsugiri_stretchy": {
+      "name": "Nigirigon Forme Raide",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10259.png"
+    },
     "tauros": {
       "name": "Tauros",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/128.png"
+    },
+    "tauros_aqua": {
+      "name": "Tauros de Paldéa Race Aquatique",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10252.png"
+    },
+    "tauros_blaze": {
+      "name": "Tauros de Paldéa Race Flamboyante",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10251.png"
+    },
+    "tauros_combat": {
+      "name": "Tauros de Paldéa Race Combative",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10250.png"
     },
     "teddiursa": {
       "name": "Teddiursa",
@@ -5652,6 +6387,18 @@
     "throh_shadow": {
       "name": "Judokrak (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/538.png"
+    },
+    "thundurus_incarnate": {
+      "name": "Fulguris Avatar",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/642.png"
+    },
+    "thundurus_incarnate_shadow": {
+      "name": "Fulguris Avatar (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/642.png"
+    },
+    "thundurus_therian": {
+      "name": "Fulguris Totémique",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10020.png"
     },
     "thwackey": {
       "name": "Badabouin",
@@ -5725,6 +6472,18 @@
       "name": "Chartor",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/324.png"
     },
+    "tornadus_incarnate": {
+      "name": "Boréas Avatar",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/641.png"
+    },
+    "tornadus_incarnate_shadow": {
+      "name": "Boréas Avatar (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/641.png"
+    },
+    "tornadus_therian": {
+      "name": "Boréas Totémique",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10019.png"
+    },
     "torracat": {
       "name": "Matoufeu",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/726.png"
@@ -5768,6 +6527,18 @@
     "toxicroak_shadow": {
       "name": "Coatox (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/454.png"
+    },
+    "toxtricity": {
+      "name": "Salarsen Forme Aigüe",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/849.png"
+    },
+    "toxtricity_amped": {
+      "name": "Salarsen Forme Aigüe",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/849.png"
+    },
+    "toxtricity_low_key": {
+      "name": "Salarsen Forme Grave",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10184.png"
     },
     "tranquill": {
       "name": "Colombeau",
@@ -5924,6 +6695,14 @@
     "ursaring_shadow": {
       "name": "Ursaring (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/217.png"
+    },
+    "urshifu_rapid_strike": {
+      "name": "Shifours Style Mille Poings",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10191.png"
+    },
+    "urshifu_single_strike": {
+      "name": "Shifours Style Poing Final",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/892.png"
     },
     "uxie": {
       "name": "Créhelf",
@@ -6085,6 +6864,10 @@
       "name": "Goupix d'Alola",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10103.png"
     },
+    "vulpix_alolan_shadow": {
+      "name": "Goupix d'Alola (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/37.png"
+    },
     "vulpix_shadow": {
       "name": "Goupix (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/37.png"
@@ -6169,6 +6952,10 @@
       "name": "Smogogo de Galar",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10167.png"
     },
+    "weezing_galarian_shadow": {
+      "name": "Smogogo de Galar (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/110.png"
+    },
     "weezing_shadow": {
       "name": "Smogogo (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/110.png"
@@ -6217,6 +7004,18 @@
       "name": "Goélise",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/278.png"
     },
+    "wishiwashi": {
+      "name": "Froussardine Forme Solitaire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/746.png"
+    },
+    "wishiwashi_school": {
+      "name": "Froussardine Forme Banc",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10127.png"
+    },
+    "wishiwashi_solo": {
+      "name": "Froussardine Forme Solitaire",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/746.png"
+    },
     "wo_chien": {
       "name": "Chongjian",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1001.png"
@@ -6248,6 +7047,18 @@
     "wooper_shadow": {
       "name": "Axoloto (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/194.png"
+    },
+    "wormadam_plant": {
+      "name": "Cheniselle Plante",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/413.png"
+    },
+    "wormadam_sandy": {
+      "name": "Cheniselle Sable",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10004.png"
+    },
+    "wormadam_trash": {
+      "name": "Cheniselle Déchet",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10005.png"
     },
     "wugtrio": {
       "name": "Triopikeau",
@@ -6313,6 +7124,22 @@
       "name": "Yveltal",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/717.png"
     },
+    "zacian_crowned_sword": {
+      "name": "Zacian Épée Suprême",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10188.png"
+    },
+    "zacian_hero": {
+      "name": "Zacian",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/888.png"
+    },
+    "zamazenta_crowned_shield": {
+      "name": "Zamazenta Bouclier Suprême",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10189.png"
+    },
+    "zamazenta_hero": {
+      "name": "Zamazenta",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/889.png"
+    },
     "zangoose": {
       "name": "Mangriff",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/335.png"
@@ -6357,6 +7184,10 @@
       "name": "Zigzaton de Galar",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10174.png"
     },
+    "zigzagoon_galarian_shadow": {
+      "name": "Zigzaton de Galar (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/263.png"
+    },
     "zoroark": {
       "name": "Zoroark",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/571.png"
@@ -6388,6 +7219,18 @@
     "zweilous_shadow": {
       "name": "Diamat (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/634.png"
+    },
+    "zygarde": {
+      "name": "Zygarde Forme 50 %",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png"
+    },
+    "zygarde_10": {
+      "name": "Zygarde Forme 10 %",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10181.png"
+    },
+    "zygarde_complete": {
+      "name": "Zygarde Forme Parfaite",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10120.png"
     }
   }
 }

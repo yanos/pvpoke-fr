@@ -382,6 +382,27 @@ def build_html(league_rows):
   <h1>Top {TOP_N} Ligues PvP</h1>
   <nav class="site-nav"><a href="battle_fr.html">Simulateur de combat</a></nav>
   {tab_inputs_html}
+  <script>
+  // The league tabs are otherwise CSS-only (radio inputs + sibling selectors), and this is the
+  // page's only script: remember which league was last viewed so coming back from the simulator
+  // lands on it instead of resetting to Super every time. Inlined here, immediately after the
+  // inputs and before the panels are parsed, so the restored tab is the one that first paints --
+  // moving this to the end of <body> or to DOMContentLoaded would flash the default tab first.
+  (function () {{
+    var KEY = "pvpoke-fr:league";
+    var inputs = document.getElementsByName("tab");
+    try {{
+      // Only honour a stored id that really is one of this page's tab inputs.
+      var saved = document.getElementById(localStorage.getItem(KEY) || "");
+      if (saved && saved.name === "tab") saved.checked = true;
+    }} catch (e) {{ /* storage blocked (private mode, cookies off) - keep the default tab */ }}
+    for (var i = 0; i < inputs.length; i++) {{
+      inputs[i].addEventListener("change", function () {{
+        try {{ localStorage.setItem(KEY, this.id); }} catch (e) {{}}
+      }});
+    }}
+  }})();
+  </script>
   <div class="tab-row">
     {tab_labels_row}
   </div>
@@ -453,13 +474,19 @@ def build_battle_html():
     .controls .field-group{{flex:2 1 320px}}
     .inline-fields{{display:flex;gap:.5rem}}
     .inline-fields input,.inline-fields select{{width:auto;flex:1;min-width:0}}
-    .controls > .top-row{{flex:0 0 100%;width:100%;display:flex;align-items:flex-end;gap:1rem}}
+    /* top-row wraps so that once the IV bars would be squeezed unreadably narrow, the whole IV
+       section (numbers + bars, kept together in .iv-section) drops onto its own full-width line
+       instead of shrinking. flex-basis on .iv-section is what triggers that. */
+    .controls > .top-row{{flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;
+                          align-items:flex-end;gap:1rem}}
     .species-field{{position:relative;flex:0 0 auto;width:14rem}}
+    .iv-section{{display:flex;align-items:flex-end;gap:1rem;flex:1 1 24rem;min-width:0}}
     .top-row .field-group.iv-group{{flex:0 0 auto}}
     .iv-inline{{display:flex;align-items:center;gap:.3rem}}
     .iv-inline input{{width:2.3rem;text-align:center}}
     .iv-sep{{color:#7a9bbf;font-weight:600}}
-    .iv-visual{{flex:1;display:flex;flex-direction:column;gap:.3rem;min-height:2.4rem;margin-left:1.5rem}}
+    .iv-visual{{flex:1 1 auto;min-width:5rem;display:flex;flex-direction:column;gap:.3rem;
+                min-height:2.4rem;margin-left:.5rem}}
     .iv-bar-track{{position:relative;flex:1;min-height:0;border-radius:4px;background:#0d1b2a;
                    border:1px solid #1e3350;overflow:hidden}}
     .iv-bar-fill{{position:absolute;top:0;left:0;height:100%;border-radius:3px 0 0 3px;
@@ -488,12 +515,21 @@ def build_battle_html():
     .battle-summary .poke-sprite{{width:70px;height:70px;object-fit:contain}}
     .battle-summary .poke-name{{font-size:1.2rem;font-weight:700}}
     .battle-summary .poke-moves{{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}}
+    /* Scrolls sideways rather than crushing the columns once the viewport can't fit them (see the
+       min-width on .league-stat-row). overflow-y stays hidden so the rounded bottom corners still
+       clip; -webkit-overflow-scrolling keeps momentum scrolling on older iOS, and touch-action
+       lets a finger drag the table horizontally while still passing vertical swipes to the page. */
     .league-stats{{background:#152033;border:1px solid #1e3350;border-top:none;border-radius:0 0 14px 14px;
-                   overflow:hidden}}
-    /* Columns: league, Niveau, PC, Att/Déf/PV (wider - three numbers in one cell), Produit, Classement. */
-    .league-stat-row{{display:grid;
+                   overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+                   touch-action:pan-x pan-y;scrollbar-width:thin;scrollbar-color:#2c4a72 #152033}}
+    .league-stats::-webkit-scrollbar{{height:8px}}
+    .league-stats::-webkit-scrollbar-track{{background:#152033}}
+    .league-stats::-webkit-scrollbar-thumb{{background:#2c4a72;border-radius:4px}}
+    /* Columns: league, Niveau, PC, Att/Déf/PV (wider - three numbers in one cell), Produit,
+       Rang, Rang IV. */
+    .league-stat-row{{display:grid;min-width:42rem;
                       grid-template-columns:minmax(0,1.2fr) minmax(0,.7fr) minmax(0,.8fr) minmax(0,1.9fr)
-                                            minmax(0,1.1fr) minmax(0,1.1fr);
+                                            minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);
                       align-items:center;padding:.7rem .8rem;gap:.3rem;border-top:1px solid #1e3350}}
     .league-stat-row:first-child{{border-top:none}}
     .league-stat-header{{padding-bottom:.3rem}}
@@ -504,8 +540,9 @@ def build_battle_html():
     .league-stat-value{{font-size:.85rem;color:#7a9bbf;text-align:center;overflow:hidden;
                         text-overflow:ellipsis;white-space:nowrap}}
     @media(max-width:480px){{
-      .league-stat-row{{grid-template-columns:minmax(0,.9fr) minmax(0,.5fr) minmax(0,.6fr) minmax(0,1.5fr)
-                                              minmax(0,.9fr) minmax(0,.8fr);
+      .league-stat-row{{min-width:36rem;
+                        grid-template-columns:minmax(0,.9fr) minmax(0,.5fr) minmax(0,.6fr) minmax(0,1.5fr)
+                                              minmax(0,.9fr) minmax(0,.8fr) minmax(0,.8fr);
                         gap:.15rem;padding:.6rem .4rem}}
       .league-stat-name{{font-size:.72rem}}
       .league-stat-value{{font-size:.72rem}}
@@ -527,6 +564,7 @@ def build_battle_html():
         <input type="hidden" id="species-select">
         <div id="species-suggestions" class="suggestions" role="listbox"></div>
       </div>
+      <div class="iv-section">
       <div class="field-group iv-group">
         <label>IVs (Attaque / Défense / PV)</label>
         <div class="iv-inline">
@@ -550,6 +588,7 @@ def build_battle_html():
           <div class="iv-bar-fill hp" id="iv-hp-fill"></div>
           <div class="iv-bar-ticks"></div>
         </div>
+      </div>
       </div>
     </div>
     <div class="field-group">

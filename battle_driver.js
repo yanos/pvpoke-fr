@@ -568,7 +568,14 @@ function runLeague(league, speciesId, ivs, moves) {
 
 	var poke = buildPokemon(battle, speciesId, ivs, moves);
 
-	return { league: league, poke: poke };
+	// Where this IV spread sits among all 4096 spreads for this species in this league, ranked by
+	// stat product (pvpoke's own getIVRank). Rank 1 is the best spread under the league's CP cap --
+	// which is NOT 15/15/15 in Super/Hyper, since a low Attack IV buys levels. In Master (no cap)
+	// it is. ~10ms, so it stays on the main thread. Returns rank 0 when the spread is unreachable
+	// for this species (legendaries/untradeables have an IV floor), which renders as a dash.
+	var ivRank = poke.getIVRank("overall");
+
+	return { league: league, poke: poke, ivRank: ivRank };
 }
 
 // Small badges labeling how each panel relates to the selected species - empty for the
@@ -591,6 +598,18 @@ function realStats(poke) {
 // Stat product: Attack x Defense x HP, multiplied (not summed) - it's the quantity find_best_ivs()
 // in pvpoke_fr.py maximizes to pick an IV spread, and the reason a low Attack IV can beat a perfect
 // one under a CP cap. Raw values run into the millions, so it's shown in thousands.
+var IV_RANK_TOOLTIP = "Place de ces IV parmi toutes les combinaisons possibles pour cette espèce " +
+	"dans cette ligue, classées par produit des stats. 1 = les meilleurs IV possibles. Attention : " +
+	"sous un plafond de PC, ce ne sont pas 15/15/15 — une Attaque basse permet de monter en niveau " +
+	"et de gagner plus en Défense et PV qu'on ne perd en Attaque.";
+
+// getIVRank returns rank 0 when this spread can't exist for the species -- legendaries,
+// untradeables and Return-holders have an IV floor, so e.g. 0/0/0 is simply unreachable.
+function ivRankHtml(ivRank) {
+	if (!ivRank || !ivRank.rank) return "—";
+	return '<span title="' + IV_RANK_TOOLTIP + '">' + ivRank.rank + '</span>';
+}
+
 function statProduct(poke) {
 	var product = poke.stats.atk * poke.stats.def * poke.stats.hp;
 	return Math.round(product / 1000).toLocaleString("fr-FR") + " k";
@@ -640,7 +659,8 @@ function renderVariantPanel(group) {
 		'<div class="league-stat-value" title="Points de Combat à ce niveau">PC</div>' +
 		'<div class="league-stat-value" title="Statistiques réelles (Attaque / Défense / PV) à ces IV et à ce niveau">Att / Déf / PV</div>' +
 		'<div class="league-stat-value" title="Attaque × Défense × PV, en milliers. Plus ce produit est élevé, plus le Pokémon est solide globalement — c\'est ce qu\'on maximise pour trouver les meilleurs IV.">Produit</div>' +
-		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Classement</div>';
+		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Rang</div>' +
+		'<div class="league-stat-value" title="' + IV_RANK_TOOLTIP + '">Rang IV</div>';
 	table.appendChild(headerRow);
 
 	results.forEach(function (r) {
@@ -653,7 +673,8 @@ function renderVariantPanel(group) {
 			'<div class="league-stat-value">' + realStats(r.poke) + '</div>' +
 			'<div class="league-stat-value">' + statProduct(r.poke) + '</div>' +
 			'<div class="league-stat-value" data-global-rank="' + globalRankKey(r.poke.speciesId, r.league.id) + '">' +
-			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>';
+			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>' +
+			'<div class="league-stat-value">' + ivRankHtml(r.ivRank) + '</div>';
 		table.appendChild(row);
 	});
 	wrapper.appendChild(table);

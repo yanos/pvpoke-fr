@@ -84,7 +84,14 @@ function init() {
 function wireAutoRun() {
 	["iv-atk", "iv-def", "iv-hp"].forEach(function (id) {
 		var el = document.getElementById(id);
-		el.addEventListener("input", function () { clampIv(el); syncIvBars(); runBattles(); });
+		el.addEventListener("input", function () {
+			clampIv(el);
+			syncIvBars();
+			// Mid-typing (a field cleared to retype, one still empty) isn't a real build yet -
+			// don't churn through a battle computation for every keystroke, only once all three
+			// IVs are actual 0-15 values.
+			if (ivsValid()) runBattles();
+		});
 		// Select the existing value on focus so typing replaces it outright instead of appending.
 		el.addEventListener("focus", function () { el.select(); });
 	});
@@ -93,13 +100,24 @@ function wireAutoRun() {
 	});
 }
 
-// IVs top out at 15 (the max any Pokemon can roll); <input type=number max> only stops the
-// spinner arrows, not typed values, so clamp explicitly.
+// IVs top out at 15 (the max any Pokemon can roll) and must be whole numbers; <input type=number
+// max/min> only stop the spinner arrows, not typed values (e.g. "1.5", "1e2", "-5" all pass
+// straight through), so reject anything but plain digits and clamp explicitly.
 function clampIv(el) {
+	if (!/^\d*$/.test(el.value)) {
+		el.value = el.dataset.lastValid || "";
+		return;
+	}
 	var v = parseInt(el.value, 10);
-	if (isNaN(v)) return;
-	if (v > 15) el.value = 15;
-	if (v < 0) el.value = 0;
+	if (!isNaN(v) && v > 15) el.value = "15";
+	el.dataset.lastValid = el.value;
+}
+
+function ivsValid() {
+	return ["iv-atk", "iv-def", "iv-hp"].every(function (id) {
+		var v = document.getElementById(id).value;
+		return /^\d+$/.test(v) && parseInt(v, 10) <= 15;
+	});
 }
 
 // Mirrors each IV number input onto its Pokemon GO-style bar (width = value/15). Called on every

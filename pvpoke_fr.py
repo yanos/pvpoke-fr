@@ -458,10 +458,8 @@ def build_battle_html():
     .top-row .field-group.iv-group{{flex:0 0 auto}}
     .iv-inline{{display:flex;align-items:center;gap:.3rem}}
     .iv-inline input{{width:2.3rem;text-align:center}}
-    .iv-inline input::-webkit-outer-spin-button,.iv-inline input::-webkit-inner-spin-button{{-webkit-appearance:none;margin:0}}
-    .iv-inline input[type=number]{{-moz-appearance:textfield}}
     .iv-sep{{color:#7a9bbf;font-weight:600}}
-    .iv-visual{{flex:1;display:flex;flex-direction:column;gap:.3rem;min-height:2.4rem}}
+    .iv-visual{{flex:1;display:flex;flex-direction:column;gap:.3rem;min-height:2.4rem;margin-left:1.5rem}}
     .iv-bar-track{{position:relative;flex:1;min-height:0;border-radius:4px;background:#0d1b2a;
                    border:1px solid #1e3350;overflow:hidden}}
     .iv-bar-fill{{position:absolute;top:0;left:0;height:100%;border-radius:3px 0 0 3px;
@@ -525,13 +523,13 @@ def build_battle_html():
         <div id="species-suggestions" class="suggestions" role="listbox"></div>
       </div>
       <div class="field-group iv-group">
-        <label>IV (Attaque / Défense / Endurance)</label>
+        <label>IVs (Attaque / Défense / PV)</label>
         <div class="iv-inline">
-          <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
+          <input type="text" inputmode="numeric" id="iv-atk" value="15" aria-label="IV Attaque" title="IV Attaque">
           <span class="iv-sep">/</span>
-          <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Défense" title="IV Défense">
+          <input type="text" inputmode="numeric" id="iv-def" value="15" aria-label="IV Défense" title="IV Défense">
           <span class="iv-sep">/</span>
-          <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
+          <input type="text" inputmode="numeric" id="iv-hp" value="15" aria-label="IV PV" title="IV PV">
         </div>
       </div>
       <div class="iv-visual">
@@ -543,7 +541,7 @@ def build_battle_html():
           <div class="iv-bar-fill def" id="iv-def-fill"></div>
           <div class="iv-bar-ticks"></div>
         </div>
-        <div class="iv-bar-track hp" title="Endurance">
+        <div class="iv-bar-track hp" title="PV">
           <div class="iv-bar-fill hp" id="iv-hp-fill"></div>
           <div class="iv-bar-ticks"></div>
         </div>

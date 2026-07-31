@@ -25,6 +25,13 @@ jobs:
         with:
           python-version: '3.12'
 
+      # generate.sh's build_baselines.js step needs Node. It degrades to keeping the committed
+      # baselines when Node is absent, so pin it here to make sure CI actually regenerates them
+      # against the freshly-synced engine/rankings rather than silently shipping stale ones.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Configure git identity
         # Needed for the name-cache commit made in the next step. generate.sh (further below)
         # never commits anything itself, so this identity isn't needed for it.

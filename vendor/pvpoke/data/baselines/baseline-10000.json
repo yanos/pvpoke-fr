@@ -1,0 +1,609 @@
+{
+	"cp": 10000,
+	"engineVersion": "3ca651c7c83f3d39704f33b28ac4ca01ae10bf16",
+	"generated": "2026-07-31T15:05:35.710Z",
+	"shieldMode": "average",
+	"count": 150,
+	"ratings": [
+		{
+			"speciesId": "palkia_origin",
+			"rating": 710
+		},
+		{
+			"speciesId": "marshadow",
+			"rating": 682
+		},
+		{
+			"speciesId": "palkia_shadow",
+			"rating": 680
+		},
+		{
+			"speciesId": "eternatus",
+			"rating": 677
+		},
+		{
+			"speciesId": "reshiram",
+			"rating": 675
+		},
+		{
+			"speciesId": "zekrom",
+			"rating": 673
+		},
+		{
+			"speciesId": "zygarde_complete",
+			"rating": 671
+		},
+		{
+			"speciesId": "kyurem_white",
+			"rating": 669
+		},
+		{
+			"speciesId": "garchomp_shadow",
+			"rating": 665
+		},
+		{
+			"speciesId": "mewtwo_shadow",
+			"rating": 665
+		},
+		{
+			"speciesId": "garchomp",
+			"rating": 663
+		},
+		{
+			"speciesId": "reshiram_shadow",
+			"rating": 658
+		},
+		{
+			"speciesId": "latios",
+			"rating": 657
+		},
+		{
+			"speciesId": "goodra",
+			"rating": 657
+		},
+		{
+			"speciesId": "latios_shadow",
+			"rating": 656
+		},
+		{
+			"speciesId": "palkia",
+			"rating": 655
+		},
+		{
+			"speciesId": "dialga_origin",
+			"rating": 653
+		},
+		{
+			"speciesId": "kyurem_black",
+			"rating": 653
+		},
+		{
+			"speciesId": "hydreigon_shadow",
+			"rating": 650
+		},
+		{
+			"speciesId": "dragonite_shadow",
+			"rating": 650
+		},
+		{
+			"speciesId": "lugia",
+			"rating": 648
+		},
+		{
+			"speciesId": "xerneas",
+			"rating": 647
+		},
+		{
+			"speciesId": "mewtwo",
+			"rating": 647
+		},
+		{
+			"speciesId": "groudon",
+			"rating": 644
+		},
+		{
+			"speciesId": "lunala",
+			"rating": 643
+		},
+		{
+			"speciesId": "kyogre",
+			"rating": 643
+		},
+		{
+			"speciesId": "meloetta_aria",
+			"rating": 643
+		},
+		{
+			"speciesId": "latias",
+			"rating": 642
+		},
+		{
+			"speciesId": "zamazenta_crowned_shield",
+			"rating": 641
+		},
+		{
+			"speciesId": "latias_shadow",
+			"rating": 640
+		},
+		{
+			"speciesId": "yveltal",
+			"rating": 638
+		},
+		{
+			"speciesId": "lugia_shadow",
+			"rating": 637
+		},
+		{
+			"speciesId": "hydreigon",
+			"rating": 635
+		},
+		{
+			"speciesId": "dialga",
+			"rating": 634
+		},
+		{
+			"speciesId": "metagross",
+			"rating": 632
+		},
+		{
+			"speciesId": "giratina_origin",
+			"rating": 630
+		},
+		{
+			"speciesId": "giratina_altered_shadow",
+			"rating": 630
+		},
+		{
+			"speciesId": "salamence_shadow",
+			"rating": 630
+		},
+		{
+			"speciesId": "dragonite",
+			"rating": 629
+		},
+		{
+			"speciesId": "giratina_altered",
+			"rating": 629
+		},
+		{
+			"speciesId": "zacian_crowned_sword",
+			"rating": 628
+		},
+		{
+			"speciesId": "florges",
+			"rating": 624
+		},
+		{
+			"speciesId": "kyogre_shadow",
+			"rating": 621
+		},
+		{
+			"speciesId": "solgaleo",
+			"rating": 621
+		},
+		{
+			"speciesId": "kyurem",
+			"rating": 621
+		},
+		{
+			"speciesId": "melmetal",
+			"rating": 620
+		},
+		{
+			"speciesId": "raikou_shadow",
+			"rating": 620
+		},
+		{
+			"speciesId": "togekiss",
+			"rating": 618
+		},
+		{
+			"speciesId": "groudon_shadow",
+			"rating": 617
+		},
+		{
+			"speciesId": "landorus_therian",
+			"rating": 616
+		},
+		{
+			"speciesId": "keldeo_resolute",
+			"rating": 614
+		},
+		{
+			"speciesId": "tyranitar_shadow",
+			"rating": 614
+		},
+		{
+			"speciesId": "gholdengo",
+			"rating": 613
+		},
+		{
+			"speciesId": "rayquaza",
+			"rating": 612
+		},
+		{
+			"speciesId": "gyarados_shadow",
+			"rating": 611
+		},
+		{
+			"speciesId": "rhyperior",
+			"rating": 611
+		},
+		{
+			"speciesId": "metagross_shadow",
+			"rating": 610
+		},
+		{
+			"speciesId": "salamence",
+			"rating": 609
+		},
+		{
+			"speciesId": "tyranitar",
+			"rating": 606
+		},
+		{
+			"speciesId": "dialga_shadow",
+			"rating": 605
+		},
+		{
+			"speciesId": "heatran",
+			"rating": 604
+		},
+		{
+			"speciesId": "raikou",
+			"rating": 603
+		},
+		{
+			"speciesId": "keldeo_ordinary",
+			"rating": 601
+		},
+		{
+			"speciesId": "rhyperior_shadow",
+			"rating": 601
+		},
+		{
+			"speciesId": "urshifu_single_strike",
+			"rating": 599
+		},
+		{
+			"speciesId": "heatran_shadow",
+			"rating": 599
+		},
+		{
+			"speciesId": "volcanion",
+			"rating": 596
+		},
+		{
+			"speciesId": "jirachi",
+			"rating": 595
+		},
+		{
+			"speciesId": "zapdos_shadow",
+			"rating": 595
+		},
+		{
+			"speciesId": "necrozma_dusk_mane",
+			"rating": 594
+		},
+		{
+			"speciesId": "kommo_o",
+			"rating": 593
+		},
+		{
+			"speciesId": "urshifu_rapid_strike",
+			"rating": 592
+		},
+		{
+			"speciesId": "zapdos",
+			"rating": 592
+		},
+		{
+			"speciesId": "annihilape_shadow",
+			"rating": 590
+		},
+		{
+			"speciesId": "primarina",
+			"rating": 590
+		},
+		{
+			"speciesId": "necrozma_dawn_wings",
+			"rating": 589
+		},
+		{
+			"speciesId": "conkeldurr_shadow",
+			"rating": 589
+		},
+		{
+			"speciesId": "gyarados",
+			"rating": 588
+		},
+		{
+			"speciesId": "ho_oh",
+			"rating": 587
+		},
+		{
+			"speciesId": "tapu_lele",
+			"rating": 587
+		},
+		{
+			"speciesId": "terrakion",
+			"rating": 585
+		},
+		{
+			"speciesId": "annihilape",
+			"rating": 584
+		},
+		{
+			"speciesId": "kartana",
+			"rating": 584
+		},
+		{
+			"speciesId": "conkeldurr",
+			"rating": 584
+		},
+		{
+			"speciesId": "enamorus_therian",
+			"rating": 583
+		},
+		{
+			"speciesId": "zygarde",
+			"rating": 578
+		},
+		{
+			"speciesId": "baxcalibur",
+			"rating": 577
+		},
+		{
+			"speciesId": "mewtwo_armored",
+			"rating": 576
+		},
+		{
+			"speciesId": "zeraora",
+			"rating": 575
+		},
+		{
+			"speciesId": "sylveon",
+			"rating": 574
+		},
+		{
+			"speciesId": "gallade_shadow",
+			"rating": 572
+		},
+		{
+			"speciesId": "landorus_incarnate_shadow",
+			"rating": 571
+		},
+		{
+			"speciesId": "golisopod",
+			"rating": 569
+		},
+		{
+			"speciesId": "victini",
+			"rating": 568
+		},
+		{
+			"speciesId": "hippowdon_shadow",
+			"rating": 567
+		},
+		{
+			"speciesId": "kingambit",
+			"rating": 567
+		},
+		{
+			"speciesId": "genesect_shock",
+			"rating": 567
+		},
+		{
+			"speciesId": "landorus_incarnate",
+			"rating": 566
+		},
+		{
+			"speciesId": "zamazenta_hero",
+			"rating": 565
+		},
+		{
+			"speciesId": "genesect_chill",
+			"rating": 565
+		},
+		{
+			"speciesId": "genesect_burn",
+			"rating": 562
+		},
+		{
+			"speciesId": "hippowdon",
+			"rating": 561
+		},
+		{
+			"speciesId": "avalugg_hisuian",
+			"rating": 560
+		},
+		{
+			"speciesId": "regidrago",
+			"rating": 559
+		},
+		{
+			"speciesId": "zacian_hero",
+			"rating": 557
+		},
+		{
+			"speciesId": "zapdos_galarian",
+			"rating": 557
+		},
+		{
+			"speciesId": "genesect_douse",
+			"rating": 556
+		},
+		{
+			"speciesId": "mew",
+			"rating": 555
+		},
+		{
+			"speciesId": "moltres_galarian",
+			"rating": 555
+		},
+		{
+			"speciesId": "ho_oh_shadow",
+			"rating": 554
+		},
+		{
+			"speciesId": "swampert_shadow",
+			"rating": 554
+		},
+		{
+			"speciesId": "regirock",
+			"rating": 554
+		},
+		{
+			"speciesId": "swampert",
+			"rating": 553
+		},
+		{
+			"speciesId": "skeledirge",
+			"rating": 553
+		},
+		{
+			"speciesId": "dondozo",
+			"rating": 552
+		},
+		{
+			"speciesId": "magnezone_shadow",
+			"rating": 551
+		},
+		{
+			"speciesId": "cobalion",
+			"rating": 550
+		},
+		{
+			"speciesId": "celebi",
+			"rating": 549
+		},
+		{
+			"speciesId": "enamorus_incarnate",
+			"rating": 548
+		},
+		{
+			"speciesId": "genesect",
+			"rating": 548
+		},
+		{
+			"speciesId": "gallade",
+			"rating": 548
+		},
+		{
+			"speciesId": "machamp_shadow",
+			"rating": 547
+		},
+		{
+			"speciesId": "ursaluna",
+			"rating": 545
+		},
+		{
+			"speciesId": "articuno",
+			"rating": 545
+		},
+		{
+			"speciesId": "cetitan",
+			"rating": 545
+		},
+		{
+			"speciesId": "milotic_shadow",
+			"rating": 544
+		},
+		{
+			"speciesId": "thundurus_therian",
+			"rating": 544
+		},
+		{
+			"speciesId": "mamoswine_shadow",
+			"rating": 543
+		},
+		{
+			"speciesId": "mamoswine",
+			"rating": 543
+		},
+		{
+			"speciesId": "armarouge",
+			"rating": 542
+		},
+		{
+			"speciesId": "blacephalon",
+			"rating": 540
+		},
+		{
+			"speciesId": "articuno_shadow",
+			"rating": 540
+		},
+		{
+			"speciesId": "milotic",
+			"rating": 539
+		},
+		{
+			"speciesId": "virizion",
+			"rating": 535
+		},
+		{
+			"speciesId": "sneasler_shadow",
+			"rating": 535
+		},
+		{
+			"speciesId": "avalugg",
+			"rating": 533
+		},
+		{
+			"speciesId": "ursaluna_shadow",
+			"rating": 530
+		},
+		{
+			"speciesId": "xurkitree",
+			"rating": 529
+		},
+		{
+			"speciesId": "quaquaval",
+			"rating": 527
+		},
+		{
+			"speciesId": "thundurus_incarnate_shadow",
+			"rating": 524
+		},
+		{
+			"speciesId": "empoleon",
+			"rating": 522
+		},
+		{
+			"speciesId": "tapu_bulu",
+			"rating": 518
+		},
+		{
+			"speciesId": "gigalith",
+			"rating": 517
+		},
+		{
+			"speciesId": "tapu_fini",
+			"rating": 513
+		},
+		{
+			"speciesId": "necrozma",
+			"rating": 511
+		},
+		{
+			"speciesId": "moltres",
+			"rating": 508
+		},
+		{
+			"speciesId": "gigalith_shadow",
+			"rating": 503
+		},
+		{
+			"speciesId": "chesnaught_shadow",
+			"rating": 499
+		},
+		{
+			"speciesId": "golurk_shadow",
+			"rating": 498
+		},
+		{
+			"speciesId": "tapu_koko",
+			"rating": 487
+		}
+	]
+}

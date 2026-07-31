@@ -16,6 +16,16 @@ echo "== Refreshing French name cache =="
 echo "== Syncing pvpoke engine + data =="
 python3 sync_engine.py
 
+# battle_fr.html's global-rank number is a position within these baselines, so they go stale
+# whenever sync_engine.py pulls fresh rankings/engine. Node-only step: skipped (keeping the
+# committed baselines) rather than failing the build if node isn't installed.
+echo "== Rebuilding global-rank baselines =="
+if command -v node >/dev/null 2>&1; then
+	node build_baselines.js
+else
+	echo "  node not found — keeping committed vendor/pvpoke/data/baselines/ (may be stale)"
+fi
+
 echo "== Generating rankings_fr.html, i18n_fr.json, battle_fr.html =="
 python3 pvpoke_fr.py
 

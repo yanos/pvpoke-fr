@@ -9,7 +9,8 @@
 // All three leagues are shown at once (no tab navigation) and re-run automatically whenever any
 // control changes. Results are rendered with French
 // names/sprites from i18n_fr.json; the underlying computation runs on English species/move IDs
-// exactly as pvpoke's engine expects, so level/CP/rank match pvpoke.com exactly.
+// exactly as pvpoke's engine expects, so level/CP and the species tier rank match pvpoke.com
+// exactly. The global rank does NOT - it's this site's own metric; see GLOBAL_RANK_TOOLTIP below.
 
 var LEAGUES = [
 	{ id: "super", name: "Ligue Super", cp: 1500 },
@@ -24,6 +25,18 @@ var i18n = { pokemon: {}, moves: {} };
 var globalRankWorker = null;
 var globalRankGeneration = 0;
 var globalRankRequestSeq = 0;
+
+// Deliberately does NOT claim to match pvpoke.com's published ranking. It can't: pvpoke derives
+// its tier list from all five rankingScenarios with rank-weighted opponents, while this site runs
+// a single flat shieldMode:"average" sweep. The number here is a rank among the top species as
+// rated by *this* simulator (see build_baselines.js), which is self-consistent and IV-sensitive
+// but is its own metric.
+function GLOBAL_RANK_TOOLTIP(count) {
+	return "Rang de cet IV précis parmi les " + (count ? count + " " : "") +
+		"espèces les mieux classées de la ligue, obtenu en simulant des combats contre tout le " +
+		"champ. Méthodologie propre à ce site (un seul scénario de boucliers, sans pondération) : " +
+		"à ne pas confondre avec le classement officiel de pvpoke.com.";
+}
 
 var state = {
 	speciesId: null,
@@ -535,14 +548,13 @@ function onGlobalRankMessage(e) {
 	if (!cell) return;
 
 	if (msg.error) {
-		cell.textContent = "non classé";
+		cell.textContent = "—";
 		return;
 	}
 
 	var r = msg.result;
-	cell.innerHTML = '<span class="poke-rank" title="Rang simulé de cet IV précis parmi les ' + r.count +
-		' espèces de la ligue - calculé en simulant des combats contre tout le champ, comme le ' +
-		'classement officiel de pvpoke.com mais pour cet IV exact plutôt que l\'IV idéal">' + r.rank + '</span>';
+	cell.innerHTML = '<span class="poke-rank" title="' + GLOBAL_RANK_TOOLTIP(r.count) + '">' +
+		(r.beyond ? "> " + r.count : r.rank) + '</span>';
 }
 
 function runLeague(league, speciesId, ivs, moves) {
@@ -611,7 +623,7 @@ function renderVariantPanel(group) {
 		'<div class="league-stat-value" title="Niveau maximal atteignable avec ces IV sans dépasser le plafond de PC de cette ligue">Niveau</div>' +
 		'<div class="league-stat-value" title="Points de Combat à ce niveau">PC</div>' +
 		'<div class="league-stat-value" title="Classement de l\'espèce dans le meta avec ses meilleurs IV possibles - pas de cet IV précis">Espèce</div>' +
-		'<div class="league-stat-value" title="Rang simulé de cet IV précis parmi toutes les espèces de la ligue - calculé en simulant des combats contre tout le champ, comme le classement officiel de pvpoke.com mais pour cet IV exact plutôt que l\'IV idéal">Global</div>';
+		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Global</div>';
 	table.appendChild(headerRow);
 
 	results.forEach(function (r) {

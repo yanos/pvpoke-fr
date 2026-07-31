@@ -1,0 +1,609 @@
+{
+	"cp": 2500,
+	"engineVersion": "3ca651c7c83f3d39704f33b28ac4ca01ae10bf16",
+	"generated": "2026-07-31T15:05:27.049Z",
+	"shieldMode": "average",
+	"count": 150,
+	"ratings": [
+		{
+			"speciesId": "mimikyu",
+			"rating": 699
+		},
+		{
+			"speciesId": "tinkaton",
+			"rating": 648
+		},
+		{
+			"speciesId": "malamar_shadow",
+			"rating": 630
+		},
+		{
+			"speciesId": "regidrago",
+			"rating": 629
+		},
+		{
+			"speciesId": "crustle",
+			"rating": 626
+		},
+		{
+			"speciesId": "corviknight_shadow",
+			"rating": 623
+		},
+		{
+			"speciesId": "corviknight",
+			"rating": 622
+		},
+		{
+			"speciesId": "kingdra_shadow",
+			"rating": 620
+		},
+		{
+			"speciesId": "clefable",
+			"rating": 620
+		},
+		{
+			"speciesId": "giratina_altered",
+			"rating": 618
+		},
+		{
+			"speciesId": "annihilape_shadow",
+			"rating": 618
+		},
+		{
+			"speciesId": "grumpig",
+			"rating": 618
+		},
+		{
+			"speciesId": "malamar",
+			"rating": 616
+		},
+		{
+			"speciesId": "lapras",
+			"rating": 615
+		},
+		{
+			"speciesId": "crustle_shadow",
+			"rating": 615
+		},
+		{
+			"speciesId": "annihilape",
+			"rating": 613
+		},
+		{
+			"speciesId": "hydreigon_shadow",
+			"rating": 613
+		},
+		{
+			"speciesId": "dusknoir",
+			"rating": 611
+		},
+		{
+			"speciesId": "dusknoir_shadow",
+			"rating": 610
+		},
+		{
+			"speciesId": "primeape",
+			"rating": 610
+		},
+		{
+			"speciesId": "grumpig_shadow",
+			"rating": 610
+		},
+		{
+			"speciesId": "doublade",
+			"rating": 610
+		},
+		{
+			"speciesId": "blaziken_shadow",
+			"rating": 609
+		},
+		{
+			"speciesId": "empoleon_shadow",
+			"rating": 608
+		},
+		{
+			"speciesId": "kingdra",
+			"rating": 608
+		},
+		{
+			"speciesId": "giratina_altered_shadow",
+			"rating": 607
+		},
+		{
+			"speciesId": "aurorus",
+			"rating": 607
+		},
+		{
+			"speciesId": "ninetales_alolan_shadow",
+			"rating": 606
+		},
+		{
+			"speciesId": "walrein",
+			"rating": 605
+		},
+		{
+			"speciesId": "zygarde_complete",
+			"rating": 604
+		},
+		{
+			"speciesId": "lapras_shadow",
+			"rating": 603
+		},
+		{
+			"speciesId": "aromatisse",
+			"rating": 602
+		},
+		{
+			"speciesId": "registeel",
+			"rating": 601
+		},
+		{
+			"speciesId": "walrein_shadow",
+			"rating": 601
+		},
+		{
+			"speciesId": "empoleon",
+			"rating": 600
+		},
+		{
+			"speciesId": "latias",
+			"rating": 600
+		},
+		{
+			"speciesId": "aurorus_shadow",
+			"rating": 599
+		},
+		{
+			"speciesId": "cobalion",
+			"rating": 598
+		},
+		{
+			"speciesId": "kyurem",
+			"rating": 598
+		},
+		{
+			"speciesId": "florges",
+			"rating": 597
+		},
+		{
+			"speciesId": "jellicent",
+			"rating": 597
+		},
+		{
+			"speciesId": "ninetales_alolan",
+			"rating": 597
+		},
+		{
+			"speciesId": "dragalge",
+			"rating": 597
+		},
+		{
+			"speciesId": "abomasnow_shadow",
+			"rating": 597
+		},
+		{
+			"speciesId": "moltres_galarian",
+			"rating": 596
+		},
+		{
+			"speciesId": "raikou_shadow",
+			"rating": 596
+		},
+		{
+			"speciesId": "toucannon_shadow",
+			"rating": 596
+		},
+		{
+			"speciesId": "sandslash_alolan_shadow",
+			"rating": 596
+		},
+		{
+			"speciesId": "toucannon",
+			"rating": 594
+		},
+		{
+			"speciesId": "kommo_o",
+			"rating": 594
+		},
+		{
+			"speciesId": "togekiss",
+			"rating": 593
+		},
+		{
+			"speciesId": "goodra",
+			"rating": 592
+		},
+		{
+			"speciesId": "sandslash_alolan",
+			"rating": 592
+		},
+		{
+			"speciesId": "ninetales_shadow",
+			"rating": 591
+		},
+		{
+			"speciesId": "golisopod",
+			"rating": 590
+		},
+		{
+			"speciesId": "articuno",
+			"rating": 589
+		},
+		{
+			"speciesId": "bronzong",
+			"rating": 589
+		},
+		{
+			"speciesId": "feraligatr_shadow",
+			"rating": 588
+		},
+		{
+			"speciesId": "samurott_shadow",
+			"rating": 588
+		},
+		{
+			"speciesId": "ninetales",
+			"rating": 587
+		},
+		{
+			"speciesId": "hippowdon_shadow",
+			"rating": 587
+		},
+		{
+			"speciesId": "guzzlord",
+			"rating": 587
+		},
+		{
+			"speciesId": "swampert",
+			"rating": 586
+		},
+		{
+			"speciesId": "melmetal",
+			"rating": 586
+		},
+		{
+			"speciesId": "swampert_shadow",
+			"rating": 586
+		},
+		{
+			"speciesId": "stunfisk_galarian",
+			"rating": 586
+		},
+		{
+			"speciesId": "jirachi",
+			"rating": 586
+		},
+		{
+			"speciesId": "dondozo",
+			"rating": 585
+		},
+		{
+			"speciesId": "cresselia",
+			"rating": 585
+		},
+		{
+			"speciesId": "feraligatr",
+			"rating": 585
+		},
+		{
+			"speciesId": "sylveon",
+			"rating": 585
+		},
+		{
+			"speciesId": "gyarados_shadow",
+			"rating": 585
+		},
+		{
+			"speciesId": "samurott",
+			"rating": 584
+		},
+		{
+			"speciesId": "lickilicky",
+			"rating": 583
+		},
+		{
+			"speciesId": "steelix",
+			"rating": 583
+		},
+		{
+			"speciesId": "turtonator",
+			"rating": 583
+		},
+		{
+			"speciesId": "hippowdon",
+			"rating": 583
+		},
+		{
+			"speciesId": "weezing_galarian",
+			"rating": 583
+		},
+		{
+			"speciesId": "weezing_galarian_shadow",
+			"rating": 583
+		},
+		{
+			"speciesId": "skeledirge",
+			"rating": 583
+		},
+		{
+			"speciesId": "abomasnow",
+			"rating": 582
+		},
+		{
+			"speciesId": "zapdos_shadow",
+			"rating": 581
+		},
+		{
+			"speciesId": "runerigus",
+			"rating": 580
+		},
+		{
+			"speciesId": "oranguru",
+			"rating": 579
+		},
+		{
+			"speciesId": "drapion",
+			"rating": 579
+		},
+		{
+			"speciesId": "drapion_shadow",
+			"rating": 579
+		},
+		{
+			"speciesId": "raikou",
+			"rating": 579
+		},
+		{
+			"speciesId": "milotic_shadow",
+			"rating": 578
+		},
+		{
+			"speciesId": "palossand",
+			"rating": 577
+		},
+		{
+			"speciesId": "seismitoad",
+			"rating": 576
+		},
+		{
+			"speciesId": "regirock",
+			"rating": 576
+		},
+		{
+			"speciesId": "milotic",
+			"rating": 575
+		},
+		{
+			"speciesId": "tentacruel",
+			"rating": 574
+		},
+		{
+			"speciesId": "gourgeist_super",
+			"rating": 574
+		},
+		{
+			"speciesId": "blastoise",
+			"rating": 573
+		},
+		{
+			"speciesId": "cradily",
+			"rating": 573
+		},
+		{
+			"speciesId": "drifblim",
+			"rating": 573
+		},
+		{
+			"speciesId": "forretress",
+			"rating": 572
+		},
+		{
+			"speciesId": "cresselia_shadow",
+			"rating": 572
+		},
+		{
+			"speciesId": "grimmsnarl",
+			"rating": 572
+		},
+		{
+			"speciesId": "mewtwo_armored",
+			"rating": 572
+		},
+		{
+			"speciesId": "rapidash_shadow",
+			"rating": 572
+		},
+		{
+			"speciesId": "drifblim_shadow",
+			"rating": 572
+		},
+		{
+			"speciesId": "bellibolt",
+			"rating": 570
+		},
+		{
+			"speciesId": "gourgeist_large",
+			"rating": 570
+		},
+		{
+			"speciesId": "orthworm",
+			"rating": 569
+		},
+		{
+			"speciesId": "gastrodon",
+			"rating": 569
+		},
+		{
+			"speciesId": "articuno_shadow",
+			"rating": 568
+		},
+		{
+			"speciesId": "trevenant",
+			"rating": 568
+		},
+		{
+			"speciesId": "gyarados",
+			"rating": 567
+		},
+		{
+			"speciesId": "blastoise_shadow",
+			"rating": 567
+		},
+		{
+			"speciesId": "nidoqueen",
+			"rating": 566
+		},
+		{
+			"speciesId": "pelipper",
+			"rating": 566
+		},
+		{
+			"speciesId": "trevenant_shadow",
+			"rating": 565
+		},
+		{
+			"speciesId": "gourgeist_average",
+			"rating": 565
+		},
+		{
+			"speciesId": "virizion",
+			"rating": 564
+		},
+		{
+			"speciesId": "cofagrigus",
+			"rating": 563
+		},
+		{
+			"speciesId": "rapidash",
+			"rating": 563
+		},
+		{
+			"speciesId": "forretress_shadow",
+			"rating": 562
+		},
+		{
+			"speciesId": "primarina",
+			"rating": 562
+		},
+		{
+			"speciesId": "miltank",
+			"rating": 562
+		},
+		{
+			"speciesId": "ludicolo",
+			"rating": 561
+		},
+		{
+			"speciesId": "mandibuzz",
+			"rating": 561
+		},
+		{
+			"speciesId": "zapdos",
+			"rating": 561
+		},
+		{
+			"speciesId": "steelix_shadow",
+			"rating": 560
+		},
+		{
+			"speciesId": "tentacruel_shadow",
+			"rating": 560
+		},
+		{
+			"speciesId": "nidoqueen_shadow",
+			"rating": 559
+		},
+		{
+			"speciesId": "oinkologne_female",
+			"rating": 557
+		},
+		{
+			"speciesId": "greedent",
+			"rating": 556
+		},
+		{
+			"speciesId": "coalossal",
+			"rating": 556
+		},
+		{
+			"speciesId": "zeraora",
+			"rating": 556
+		},
+		{
+			"speciesId": "primeape_shadow",
+			"rating": 555
+		},
+		{
+			"speciesId": "cradily_shadow",
+			"rating": 554
+		},
+		{
+			"speciesId": "bombirdier",
+			"rating": 554
+		},
+		{
+			"speciesId": "slurpuff",
+			"rating": 553
+		},
+		{
+			"speciesId": "politoed",
+			"rating": 552
+		},
+		{
+			"speciesId": "mantine",
+			"rating": 552
+		},
+		{
+			"speciesId": "politoed_shadow",
+			"rating": 551
+		},
+		{
+			"speciesId": "stunfisk",
+			"rating": 548
+		},
+		{
+			"speciesId": "talonflame",
+			"rating": 547
+		},
+		{
+			"speciesId": "dudunsparce",
+			"rating": 545
+		},
+		{
+			"speciesId": "ampharos_shadow",
+			"rating": 544
+		},
+		{
+			"speciesId": "scizor_shadow",
+			"rating": 544
+		},
+		{
+			"speciesId": "seaking",
+			"rating": 541
+		},
+		{
+			"speciesId": "ampharos",
+			"rating": 541
+		},
+		{
+			"speciesId": "spiritomb",
+			"rating": 541
+		},
+		{
+			"speciesId": "tapu_fini",
+			"rating": 537
+		},
+		{
+			"speciesId": "yveltal",
+			"rating": 531
+		},
+		{
+			"speciesId": "electrode_hisuian",
+			"rating": 526
+		},
+		{
+			"speciesId": "talonflame_shadow",
+			"rating": 522
+		}
+	]
+}

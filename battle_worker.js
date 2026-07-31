@@ -59,17 +59,36 @@ function ensureLoaded() {
 // The opponent field (every viable species at its own best IVs) and the known rating list it's
 // spliced into don't depend on the candidate's IVs at all - build once per league, reuse for
 // every subsequent request instead of rebuilding on each IV change.
+//
+// The baseline ratings deliberately come from baselines/baseline-<cp>.json (generated offline by
+// build_baselines.js) rather than from rankings-*.json's own `rating` field. Splicing into the
+// published ratings was wrong twice over: this engine reproduces them only to within ~70-95
+// points (pvpoke generates them from all five rankingScenarios with rank-weighted opponents; we
+// run one flat shieldMode:"average" pass), and rankings-*.json is sorted by `score` anyway, not
+// by `rating`. The baseline file rates the top species with *this* simulator, so both sides of
+// the comparison are finally on one scale. See build_baselines.js's header for the full story.
 function getField(cp) {
 	if (fieldCache[cp]) return Promise.resolve(fieldCache[cp]);
 
-	return gm.loadRankingData(null, "overall", cp, "all").then(function (rankingData) {
+	var baselineUrl = "vendor/pvpoke/data/baselines/baseline-" + cp + ".json";
+
+	return Promise.all([
+		gm.loadRankingData(null, "overall", cp, "all"),
+		fetch(baselineUrl).then(function (r) {
+			if (!r.ok) throw new Error("baseline data missing (" + baselineUrl + ") - run build_baselines.js");
+			return r.json();
+		}),
+	]).then(function (results) {
+		var baseline = results[1];
+
 		var battle = new Battle();
 		battle.setCP(cp);
 		battle.setCup("all");
 		var cup = gm.getCupById("all");
 
 		var field = gm.generateFilteredPokemonList(battle, cup.include || [], cup.exclude || []);
-		var ratings = rankingData.map(function (e) { return e.rating; }).sort(function (a, b) { return b - a; });
+		// Already sorted descending by build_baselines.js, but don't rely on that.
+		var ratings = baseline.ratings.map(function (e) { return e.rating; }).sort(function (a, b) { return b - a; });
 
 		fieldCache[cp] = { field: field, ratings: ratings };
 		return fieldCache[cp];
@@ -133,13 +152,20 @@ function computeGlobalRank(speciesId, ivs, moves, cp) {
 		var data = ranker.rank(cached.field, cp, cup);
 		var rating = data.rankings[0].rating;
 
-		// Splice this candidate's rating into the known ratings (already sorted desc) to find
-		// its true position among them.
+		// Splice this candidate's rating into the baseline ratings (sorted desc) to find its
+		// position among them. The baseline only covers the top N species, so a candidate that
+		// beats none of them is reported as "beyond" rather than given a precise number we
+		// haven't actually computed.
 		var ratings = cached.ratings;
-		var rank = ratings.findIndex(function (r) { return r <= rating; }) + 1;
-		if (rank === 0) rank = ratings.length + 1;
+		var idx = ratings.findIndex(function (r) { return r <= rating; });
+		var beyond = idx === -1;
 
-		return { rank: rank, count: ratings.length, rating: rating };
+		return {
+			rank: beyond ? ratings.length : idx + 1,
+			beyond: beyond,
+			count: ratings.length,
+			rating: rating,
+		};
 	});
 }
 

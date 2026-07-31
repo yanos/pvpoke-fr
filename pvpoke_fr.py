@@ -16,6 +16,9 @@ LEAGUES = [
 ]
 TOP_N = 36
 
+REPO_URL = "https://github.com/yanos/pvpoke-fr"
+LICENSE_URL = REPO_URL + "/blob/main/LICENSE"
+
 CPM_TABLE = [
     (1,0.09400000),(1.5,0.13513743),(2,0.16639787),(2.5,0.19265091),
     (3,0.21573247),(3.5,0.23657266),(4,0.25572005),(4.5,0.27353038),
@@ -373,6 +376,8 @@ def build_html(league_rows):
     sup.elite{{color:#ffd700;font-size:.65em;vertical-align:super;margin-left:1px;font-weight:700}}
     .ivs{{font-size:.78rem;color:#f0c060;font-family:'Courier New',monospace}}
     footer{{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}}
+    footer a{{color:#6d8fb0;text-decoration:none}}
+    footer a:hover{{text-decoration:underline}}
     @media(max-width:540px){{.grid{{grid-template-columns:1fr}}
       .sprite-wrap{{min-width:70px;width:70px;height:70px}}
       .sprite-wrap img{{width:70px;height:70px}}}}
@@ -407,7 +412,8 @@ def build_html(league_rows):
     {tab_labels_row}
   </div>
 {panels}
-  <footer>Données : pvpoke.com . Images &amp; noms : PokeAPI . Généré le {time.strftime('%d/%m/%Y')}</footer>
+  <footer>Données : pvpoke.com . Images &amp; noms : PokeAPI . Généré le {time.strftime('%d/%m/%Y')}<br>
+    <a href="{REPO_URL}">Code source sur GitHub</a> . <a href="{LICENSE_URL}">Licence MIT</a></footer>
 </body>
 </html>"""
 
@@ -552,6 +558,8 @@ def build_battle_html():
     .poke-rank{{font-weight:700}}
     .poke-rank-pending{{font-weight:400;color:#7a9bbf;font-style:italic}}
     footer{{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}}
+    footer a{{color:#6d8fb0;text-decoration:none}}
+    footer a:hover{{text-decoration:underline}}
   </style>
 </head>
 <body>
@@ -603,7 +611,8 @@ def build_battle_html():
   </div>
   <div id="loading">Chargement...</div>
   <div id="result-panel" class="result-panel"></div>
-  <footer>Moteur : pvpoke.com (vendu localement) . Données &amp; noms : PokeAPI . Généré le {time.strftime('%d/%m/%Y')}</footer>
+  <footer>Moteur : pvpoke.com (vendu localement) . Données &amp; noms : PokeAPI . Généré le {time.strftime('%d/%m/%Y')}<br>
+    <a href="{REPO_URL}">Code source sur GitHub</a> . <a href="{LICENSE_URL}">Licence MIT</a></footer>
   {engine_scripts}
   <script src="gamemaster_shim.js"></script>
   <script src="battle_driver.js"></script>

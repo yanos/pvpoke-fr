@@ -21,7 +21,23 @@
     .controls .field-group{flex:2 1 320px}
     .inline-fields{display:flex;gap:.5rem}
     .inline-fields input,.inline-fields select{width:auto;flex:1;min-width:0}
-    .species-field{position:relative}
+    .controls > .top-row{flex:0 0 100%;width:100%;display:flex;align-items:flex-end;gap:1rem}
+    .species-field{position:relative;flex:0 0 auto;width:14rem}
+    .top-row .field-group.iv-group{flex:0 0 auto}
+    .iv-inline{display:flex;align-items:center;gap:.3rem}
+    .iv-inline input{width:2.3rem;text-align:center}
+    .iv-inline input::-webkit-outer-spin-button,.iv-inline input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+    .iv-inline input[type=number]{-moz-appearance:textfield}
+    .iv-sep{color:#7a9bbf;font-weight:600}
+    .iv-visual{flex:1;display:flex;flex-direction:column;gap:.3rem;min-height:2.4rem}
+    .iv-bar-track{position:relative;flex:1;min-height:0;border-radius:4px;background:#0d1b2a;
+                   border:1px solid #1e3350;overflow:hidden}
+    .iv-bar-fill{position:absolute;top:0;left:0;height:100%;border-radius:3px 0 0 3px;
+                 transition:width .15s ease}
+    .iv-bar-fill.atk,.iv-bar-fill.def,.iv-bar-fill.hp{background-image:linear-gradient(180deg,#ffd699,#ffb347)}
+    .iv-bar-ticks{position:absolute;inset:0;pointer-events:none;
+                  background-image:repeating-linear-gradient(90deg,rgba(13,27,42,.6) 0,
+                  rgba(13,27,42,.6) 1px,transparent 1px,transparent calc(100%/3))}
     .suggestions{display:none;position:absolute;top:100%;left:0;right:0;margin-top:.2rem;
                   background:#0d1b2a;border:1px solid #1e3350;border-radius:8px;max-height:280px;
                   overflow-y:auto;z-index:20}
@@ -60,7 +76,7 @@
       .league-stat-value{font-size:.72rem}
       .league-stat-header .league-stat-value{font-size:.58rem}
     }
-    .poke-rank{font-weight:700;color:#fff}
+    .poke-rank{font-weight:700}
     .poke-rank-pending{font-weight:400;color:#7a9bbf;font-style:italic}
     footer{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}
   </style>
@@ -69,18 +85,36 @@
   <h1>Simulateur de combat PvP</h1>
   <nav class="site-nav"><a href="rankings_fr.html">Classements</a></nav>
   <div class="controls">
-    <div class="species-field">
-      <label for="species-search">Pokémon</label>
-      <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokémon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
-      <input type="hidden" id="species-select">
-      <div id="species-suggestions" class="suggestions" role="listbox"></div>
-    </div>
-    <div class="field-group">
-      <label>IV (Attaque / Défense / Endurance)</label>
-      <div class="inline-fields">
-        <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
-        <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Défense" title="IV Défense">
-        <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
+    <div class="top-row">
+      <div class="species-field">
+        <label for="species-search">Pokémon</label>
+        <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokémon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
+        <input type="hidden" id="species-select">
+        <div id="species-suggestions" class="suggestions" role="listbox"></div>
+      </div>
+      <div class="field-group iv-group">
+        <label>IV (Attaque / Défense / Endurance)</label>
+        <div class="iv-inline">
+          <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
+          <span class="iv-sep">/</span>
+          <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Défense" title="IV Défense">
+          <span class="iv-sep">/</span>
+          <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
+        </div>
+      </div>
+      <div class="iv-visual">
+        <div class="iv-bar-track atk" title="Attaque">
+          <div class="iv-bar-fill atk" id="iv-atk-fill"></div>
+          <div class="iv-bar-ticks"></div>
+        </div>
+        <div class="iv-bar-track def" title="Défense">
+          <div class="iv-bar-fill def" id="iv-def-fill"></div>
+          <div class="iv-bar-ticks"></div>
+        </div>
+        <div class="iv-bar-track hp" title="Endurance">
+          <div class="iv-bar-fill hp" id="iv-hp-fill"></div>
+          <div class="iv-bar-ticks"></div>
+        </div>
       </div>
     </div>
     <div class="field-group">
@@ -94,7 +128,7 @@
   </div>
   <div id="loading">Chargement...</div>
   <div id="result-panel" class="result-panel"></div>
-  <footer>Moteur : pvpoke.com (vendu localement) . Données &amp; noms : PokeAPI . Généré le 30/07/2026</footer>
+  <footer>Moteur : pvpoke.com (vendu localement) . Données &amp; noms : PokeAPI . Généré le 31/07/2026</footer>
   <script src="vendor/pvpoke/engine/DamageCalculator.js"></script>
   <script src="vendor/pvpoke/engine/Battle.js"></script>
   <script src="vendor/pvpoke/engine/Pokemon.js"></script>

@@ -48,6 +48,9 @@ function frMoveName(moveId) {
 }
 
 function init() {
+	syncIvVisualSize();
+	window.addEventListener("resize", syncIvVisualSize);
+
 	// If this fails (e.g. Workers unavailable in this context), globalRankWorker stays null and
 	// dispatchGlobalRankRequests() below becomes a no-op - the "Calcul..." placeholder just never
 	// resolves, but nothing else on the page breaks.
@@ -81,7 +84,7 @@ function init() {
 function wireAutoRun() {
 	["iv-atk", "iv-def", "iv-hp"].forEach(function (id) {
 		var el = document.getElementById(id);
-		el.addEventListener("input", function () { clampIv(el); runBattles(); });
+		el.addEventListener("input", function () { clampIv(el); syncIvBars(); runBattles(); });
 		// Select the existing value on focus so typing replaces it outright instead of appending.
 		el.addEventListener("focus", function () { el.select(); });
 	});
@@ -99,8 +102,48 @@ function clampIv(el) {
 	if (v < 0) el.value = 0;
 }
 
+// Mirrors each IV number input onto its Pokemon GO-style bar (width = value/15). Called on every
+// IV input event and once at startup (including after applyUrlParams(), which sets input.value
+// programmatically and so doesn't fire an "input" event on its own).
+function syncIvBars() {
+	["atk", "def", "hp"].forEach(function (key) {
+		var v = parseInt(document.getElementById("iv-" + key).value, 10) || 0;
+		var fill = document.getElementById("iv-" + key + "-fill");
+		fill.style.width = (v / 15 * 100) + "%";
+	});
+}
+
+// The IV bar graph's box has no natural height of its own (it's just 3 empty tracks) - CSS alone
+// can't size it to "match the Pokemon field's height", since that height depends on font
+// metrics, not a fixed value. So measure it. Width is left to flex:1 (fills the rest of the row).
+function syncIvVisualSize() {
+	var col = document.querySelector(".species-field");
+	var visual = document.querySelector(".iv-visual");
+	if (!col || !visual) return;
+	visual.style.height = col.getBoundingClientRect().height + "px";
+}
+
 function hasTag(pokemonData, tag) {
 	return !!(pokemonData.tags && pokemonData.tags.indexOf(tag) !== -1);
+}
+
+// Lets rankings_fr.html cards link straight into the simulator with a species and its ideal IVs
+// pre-filled (?species=<id>&atk=<n>&def=<n>&hp=<n>), instead of always landing on the default
+// species with 15/15/15. Applied once at startup by populateSpeciesPicker(); absent/invalid
+// params are ignored and the usual defaults apply.
+function applyUrlParams() {
+	var params = new URLSearchParams(window.location.search);
+	var speciesId = params.get("species");
+	if (!speciesId || !gm.pokemonMap.has(speciesId)) return null;
+
+	["atk", "def", "hp"].forEach(function (key) {
+		var v = parseInt(params.get(key), 10);
+		if (isNaN(v)) return;
+		v = Math.max(0, Math.min(15, v));
+		document.getElementById("iv-" + key).value = v;
+	});
+
+	return speciesId;
 }
 
 var pokemonList = []; // {speciesId, name}, sorted by French display name
@@ -122,7 +165,9 @@ function populateSpeciesPicker() {
 		if (e.target !== search && !e.target.closest("#species-suggestions")) closeSuggestions();
 	});
 
-	selectSpecies(pokemonList[0].speciesId);
+	var initialSpeciesId = applyUrlParams() || pokemonList[0].speciesId;
+	syncIvBars();
+	selectSpecies(initialSpeciesId);
 }
 
 function renderSuggestions(query) {
@@ -479,7 +524,7 @@ function onGlobalRankMessage(e) {
 	var r = msg.result;
 	cell.innerHTML = '<span class="poke-rank" title="Rang simulé de cet IV précis parmi les ' + r.count +
 		' espèces de la ligue - calculé en simulant des combats contre tout le champ, comme le ' +
-		'classement officiel de pvpoke.com mais pour cet IV exact plutôt que l\'IV idéal">#' + r.rank + '</span>';
+		'classement officiel de pvpoke.com mais pour cet IV exact plutôt que l\'IV idéal">' + r.rank + '</span>';
 }
 
 function runLeague(league, speciesId, ivs, moves) {
@@ -545,17 +590,17 @@ function renderVariantPanel(group) {
 	headerRow.className = "league-stat-row league-stat-header";
 	headerRow.innerHTML =
 		'<div class="league-stat-name"></div>' +
-		'<div class="league-stat-value">Niveau</div>' +
-		'<div class="league-stat-value">PC</div>' +
-		'<div class="league-stat-value">Espèce</div>' +
-		'<div class="league-stat-value">Global</div>';
+		'<div class="league-stat-value" title="Niveau maximal atteignable avec ces IV sans dépasser le plafond de PC de cette ligue">Niveau</div>' +
+		'<div class="league-stat-value" title="Points de Combat à ce niveau">PC</div>' +
+		'<div class="league-stat-value" title="Classement de l\'espèce dans le meta avec ses meilleurs IV possibles - pas de cet IV précis">Espèce</div>' +
+		'<div class="league-stat-value" title="Rang simulé de cet IV précis parmi toutes les espèces de la ligue - calculé en simulant des combats contre tout le champ, comme le classement officiel de pvpoke.com mais pour cet IV exact plutôt que l\'IV idéal">Global</div>';
 	table.appendChild(headerRow);
 
 	results.forEach(function (r) {
 		var row = document.createElement("div");
 		row.className = "league-stat-row";
 		var speciesRankHtml = r.speciesRank
-			? '<span class="poke-rank" title="Classement de l\'espèce dans le meta avec ses meilleurs IV possibles - pas de cet IV précis">#' + r.speciesRank + '</span>'
+			? '<span class="poke-rank" title="Classement de l\'espèce dans le meta avec ses meilleurs IV possibles - pas de cet IV précis">' + r.speciesRank + '</span>'
 			: 'non classé';
 		row.innerHTML =
 			'<div class="league-stat-name">' + r.league.name + '</div>' +

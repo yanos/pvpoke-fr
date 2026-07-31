@@ -176,8 +176,10 @@ def build_league_rows(rankings, league, stats_map, dex_map, elite_map):
             cpm = dict(CPM_TABLE)[b["level"]]
             cp = calc_cp(stats["atk"], stats["def"], stats["hp"], b["ia"], b["id"], b["is"], cpm)
             iv_str = f"Niv. {fmt_level(b['level'])}  {b['ia']}/{b['id']}/{b['is']}  •  {cp} PC"
+            best_ivs = {"atk": b["ia"], "def": b["id"], "hp": b["is"]}
         else:
             iv_str = "N/A"
+            best_ivs = None
             print(f"    WARNING: no stats for {sid}")
 
         elite = elite_map.get(sid) or elite_map.get(base_sid) or set()
@@ -192,6 +194,7 @@ def build_league_rows(rankings, league, stats_map, dex_map, elite_map):
             "charged":       [get_move_fr(m) for m in charged_ids],
             "charged_elite": [m in elite for m in charged_ids],
             "ivs": iv_str,
+            "best_ivs": best_ivs,
         })
     return rows
 
@@ -239,15 +242,29 @@ def build_cards(rows):
             f' loading="lazy" onerror="this.style.opacity=\'0\'">'
             if r["sprite_url"] else ""
         )
+        sim_href = ""
+        sim_attrs = ""
+        if r["best_ivs"]:
+            iv = r["best_ivs"]
+            sim_href = (
+                "battle_fr.html?species=" + urllib.parse.quote(r["sid"])
+                + f"&atk={iv['atk']}&def={iv['def']}&hp={iv['hp']}"
+            )
+            sim_attrs = (
+                f' onclick="location.href=\'{sim_href}\'" role="link" tabindex="0"'
+                f' style="cursor:pointer"'
+                f' onkeydown="if(event.key===\'Enter\')location.href=\'{sim_href}\'"'
+                f' title="Ouvrir dans le simulateur de combat avec les IV idéaux"'
+            )
         cards += f"""
-    <div class="card{shadow_cls}">
+    <div class="card{shadow_cls}"{sim_attrs}>
       <div class="rank">#{r['rank']}</div>
       <div class="sprite-wrap">
         {img_tag}
         {shadow_badge}
       </div>
       <div class="info">
-        <div class="name"><a href="https://www.pokepedia.fr/{urllib.parse.quote(r['fr_name'].replace(' ', '_'))}" target="_blank" rel="noopener">{escape(r['fr_name'])}</a></div>
+        <div class="name"><a href="https://www.pokepedia.fr/{urllib.parse.quote(r['fr_name'].replace(' ', '_'))}" target="_blank" rel="noopener" onclick="event.stopPropagation()">{escape(r['fr_name'])}</a></div>
         <div class="score">Score : {r['score']:.1f}</div>
         <div class="moves">
           <span class="move fast">{escape(r['fast'])}{fast_star}</span>
@@ -436,7 +453,23 @@ def build_battle_html():
     .controls .field-group{{flex:2 1 320px}}
     .inline-fields{{display:flex;gap:.5rem}}
     .inline-fields input,.inline-fields select{{width:auto;flex:1;min-width:0}}
-    .species-field{{position:relative}}
+    .controls > .top-row{{flex:0 0 100%;width:100%;display:flex;align-items:flex-end;gap:1rem}}
+    .species-field{{position:relative;flex:0 0 auto;width:14rem}}
+    .top-row .field-group.iv-group{{flex:0 0 auto}}
+    .iv-inline{{display:flex;align-items:center;gap:.3rem}}
+    .iv-inline input{{width:2.3rem;text-align:center}}
+    .iv-inline input::-webkit-outer-spin-button,.iv-inline input::-webkit-inner-spin-button{{-webkit-appearance:none;margin:0}}
+    .iv-inline input[type=number]{{-moz-appearance:textfield}}
+    .iv-sep{{color:#7a9bbf;font-weight:600}}
+    .iv-visual{{flex:1;display:flex;flex-direction:column;gap:.3rem;min-height:2.4rem}}
+    .iv-bar-track{{position:relative;flex:1;min-height:0;border-radius:4px;background:#0d1b2a;
+                   border:1px solid #1e3350;overflow:hidden}}
+    .iv-bar-fill{{position:absolute;top:0;left:0;height:100%;border-radius:3px 0 0 3px;
+                 transition:width .15s ease}}
+    .iv-bar-fill.atk,.iv-bar-fill.def,.iv-bar-fill.hp{{background-image:linear-gradient(180deg,#ffd699,#ffb347)}}
+    .iv-bar-ticks{{position:absolute;inset:0;pointer-events:none;
+                  background-image:repeating-linear-gradient(90deg,rgba(13,27,42,.6) 0,
+                  rgba(13,27,42,.6) 1px,transparent 1px,transparent calc(100%/3))}}
     .suggestions{{display:none;position:absolute;top:100%;left:0;right:0;margin-top:.2rem;
                   background:#0d1b2a;border:1px solid #1e3350;border-radius:8px;max-height:280px;
                   overflow-y:auto;z-index:20}}
@@ -475,7 +508,7 @@ def build_battle_html():
       .league-stat-value{{font-size:.72rem}}
       .league-stat-header .league-stat-value{{font-size:.58rem}}
     }}
-    .poke-rank{{font-weight:700;color:#fff}}
+    .poke-rank{{font-weight:700}}
     .poke-rank-pending{{font-weight:400;color:#7a9bbf;font-style:italic}}
     footer{{text-align:center;margin-top:3rem;color:#3a5570;font-size:.72rem}}
   </style>
@@ -484,18 +517,36 @@ def build_battle_html():
   <h1>Simulateur de combat PvP</h1>
   <nav class="site-nav"><a href="rankings_fr.html">Classements</a></nav>
   <div class="controls">
-    <div class="species-field">
-      <label for="species-search">Pokémon</label>
-      <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokémon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
-      <input type="hidden" id="species-select">
-      <div id="species-suggestions" class="suggestions" role="listbox"></div>
-    </div>
-    <div class="field-group">
-      <label>IV (Attaque / Défense / Endurance)</label>
-      <div class="inline-fields">
-        <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
-        <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Défense" title="IV Défense">
-        <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
+    <div class="top-row">
+      <div class="species-field">
+        <label for="species-search">Pokémon</label>
+        <input type="text" id="species-search" autocomplete="off" placeholder="Rechercher un Pokémon..." role="combobox" aria-expanded="false" aria-autocomplete="list">
+        <input type="hidden" id="species-select">
+        <div id="species-suggestions" class="suggestions" role="listbox"></div>
+      </div>
+      <div class="field-group iv-group">
+        <label>IV (Attaque / Défense / Endurance)</label>
+        <div class="iv-inline">
+          <input type="number" id="iv-atk" min="0" max="15" value="15" aria-label="IV Attaque" title="IV Attaque">
+          <span class="iv-sep">/</span>
+          <input type="number" id="iv-def" min="0" max="15" value="15" aria-label="IV Défense" title="IV Défense">
+          <span class="iv-sep">/</span>
+          <input type="number" id="iv-hp" min="0" max="15" value="15" aria-label="IV Endurance" title="IV Endurance">
+        </div>
+      </div>
+      <div class="iv-visual">
+        <div class="iv-bar-track atk" title="Attaque">
+          <div class="iv-bar-fill atk" id="iv-atk-fill"></div>
+          <div class="iv-bar-ticks"></div>
+        </div>
+        <div class="iv-bar-track def" title="Défense">
+          <div class="iv-bar-fill def" id="iv-def-fill"></div>
+          <div class="iv-bar-ticks"></div>
+        </div>
+        <div class="iv-bar-track hp" title="Endurance">
+          <div class="iv-bar-fill hp" id="iv-hp-fill"></div>
+          <div class="iv-bar-ticks"></div>
+        </div>
       </div>
     </div>
     <div class="field-group">

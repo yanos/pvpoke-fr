@@ -87,7 +87,7 @@ jobs:
           cp battle_driver.js battle_worker.js gamemaster_shim.js _site/
           cp -r vendor _site/vendor
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 

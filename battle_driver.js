@@ -2,15 +2,17 @@
 //
 // Wires the vendored pvpoke engine (Battle/Pokemon) + gamemaster_shim.js together: pick a
 // Pokemon, set its IVs/moveset, and for each league show its level/CP (auto-maxed to the
-// highest level, given the chosen IVs, whose CP still fits under that league's cap) plus two
-// rank numbers - see rankingEntry()/globalRank() (species tier rank) and
-// dispatchGlobalRankRequests() (true battle-simulated global rank, computed off the main thread
-// in battle_worker.js since it's comparatively expensive - see that file's own header comment).
+// highest level, given the chosen IVs, whose CP still fits under that league's cap), its effective
+// Attack/Defense/HP at those IVs and that level (realStats()), their product (statProduct()),
+// and its global rank - see
+// dispatchGlobalRankRequests() (battle-simulated, computed off the main thread in
+// battle_worker.js since it's comparatively expensive - see that file's own header comment).
 // All three leagues are shown at once (no tab navigation) and re-run automatically whenever any
 // control changes. Results are rendered with French
 // names/sprites from i18n_fr.json; the underlying computation runs on English species/move IDs
-// exactly as pvpoke's engine expects, so level/CP and the species tier rank match pvpoke.com
-// exactly. The global rank does NOT - it's this site's own metric; see GLOBAL_RANK_TOOLTIP below.
+// exactly as pvpoke's engine expects, so level, CP and the effective stats match pvpoke.com
+// exactly. The global rank is an estimate of pvpoke's published tier position; see
+// GLOBAL_RANK_TOOLTIP below.
 
 var LEAGUES = [
 	{ id: "super", name: "Ligue Super", cp: 1500 },
@@ -26,16 +28,23 @@ var globalRankWorker = null;
 var globalRankGeneration = 0;
 var globalRankRequestSeq = 0;
 
-// Deliberately does NOT claim to match pvpoke.com's published ranking. It can't: pvpoke derives
-// its tier list from all five rankingScenarios with rank-weighted opponents, while this site runs
-// a single flat shieldMode:"average" sweep. The number here is a rank among the top species as
-// rated by *this* simulator (see build_baselines.js), which is self-consistent and IV-sensitive
-// but is its own metric.
+// This IS a position on pvpoke.com's own published tier list: battle_worker.js simulates the build
+// under all five of pvpoke's ranking scenarios and combines them with their own formula. It's an
+// approximation though - one stage of their pipeline (the opponent weighting) can't be reproduced
+// from their published source, so a default-IV build lands within about a point of its published
+// score rather than exactly on it. See battle_worker.js's header for the measurements.
 function GLOBAL_RANK_TOOLTIP(count) {
-	return "Rang de cet IV précis parmi les " + (count ? count + " " : "") +
-		"espèces les mieux classées de la ligue, obtenu en simulant des combats contre tout le " +
-		"champ. Méthodologie propre à ce site (un seul scénario de boucliers, sans pondération) : " +
-		"à ne pas confondre avec le classement officiel de pvpoke.com.";
+	return "Ce Pokémon exact, avec ces IV et ce niveau, affronte en combat simulé " +
+		"toutes les autres espèces de la ligue, chacune à son niveau et à ses IV optimaux. " +
+		"Son rang est sa place parmi les " + (count ? count + " " : "") +
+		"espèces classées : 1 = le meilleur. Estimation, à environ un point près.";
+}
+
+// Species whose reference score is mostly a hand-authored editorial rating (75% weight) barely
+// move when IVs change; worth flagging so the user doesn't read a static number as a bug.
+function editorialNote() {
+	return " Pour cette espèce, le classement de référence est en grande partie fixé à la main : " +
+		"les IV n'en déplacent qu'une petite part.";
 }
 
 var state = {
@@ -456,11 +465,6 @@ function rankingEntry(league, speciesId) {
 	return null;
 }
 
-function globalRank(league, speciesId) {
-	var found = rankingEntry(league, speciesId);
-	return found ? found.rank : null;
-}
-
 // Shared by runBattles() (sync, cheap numbers) and dispatchGlobalRankRequests() (debounced,
 // worker-based true global rank) so both read the same form state the same way.
 function currentIvsAndMoves() {
@@ -553,8 +557,8 @@ function onGlobalRankMessage(e) {
 	}
 
 	var r = msg.result;
-	cell.innerHTML = '<span class="poke-rank" title="' + GLOBAL_RANK_TOOLTIP(r.count) + '">' +
-		(r.beyond ? "> " + r.count : r.rank) + '</span>';
+	var title = GLOBAL_RANK_TOOLTIP(r.count) + (r.editorial ? editorialNote() : "");
+	cell.innerHTML = '<span class="poke-rank" title="' + title + '">' + r.rank + '</span>';
 }
 
 function runLeague(league, speciesId, ivs, moves) {
@@ -564,11 +568,7 @@ function runLeague(league, speciesId, ivs, moves) {
 
 	var poke = buildPokemon(battle, speciesId, ivs, moves);
 
-	// speciesRank is this species' position in the tier list when played with its own
-	// best-possible IVs (same for any IV spread you enter) - see globalRank()/rankingEntry().
-	var speciesRank = globalRank(league, poke.speciesId);
-
-	return { league: league, poke: poke, speciesRank: speciesRank };
+	return { league: league, poke: poke };
 }
 
 // Small badges labeling how each panel relates to the selected species - empty for the
@@ -579,6 +579,22 @@ var VARIANT_BADGES = {
 	evolution: ["Évolution"],
 	"evolution-shadow": ["Évolution", "Obscur"],
 };
+
+// Effective stats at the IVs entered and the level maxLevelForCap() settled on -- i.e. what this
+// exact build actually fights with, rather than the species' base stats. Attack/Defense are the
+// engine's own floats (they feed the damage formula unrounded, so a decimal is meaningful);
+// HP is already an integer.
+function realStats(poke) {
+	return poke.stats.atk.toFixed(1) + " / " + poke.stats.def.toFixed(1) + " / " + poke.stats.hp;
+}
+
+// Stat product: Attack x Defense x HP, multiplied (not summed) - it's the quantity find_best_ivs()
+// in pvpoke_fr.py maximizes to pick an IV spread, and the reason a low Attack IV can beat a perfect
+// one under a CP cap. Raw values run into the millions, so it's shown in thousands.
+function statProduct(poke) {
+	var product = poke.stats.atk * poke.stats.def * poke.stats.hp;
+	return Math.round(product / 1000).toLocaleString("fr-FR") + " k";
+}
 
 function badgeClass(label) {
 	return "variant-badge " + (label === "Obscur" ? "shadow" : "evolution");
@@ -622,21 +638,20 @@ function renderVariantPanel(group) {
 		'<div class="league-stat-name"></div>' +
 		'<div class="league-stat-value" title="Niveau maximal atteignable avec ces IV sans dépasser le plafond de PC de cette ligue">Niveau</div>' +
 		'<div class="league-stat-value" title="Points de Combat à ce niveau">PC</div>' +
-		'<div class="league-stat-value" title="Classement de l\'espèce dans le meta avec ses meilleurs IV possibles - pas de cet IV précis">Espèce</div>' +
-		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Global</div>';
+		'<div class="league-stat-value" title="Statistiques réelles (Attaque / Défense / PV) à ces IV et à ce niveau">Att / Déf / PV</div>' +
+		'<div class="league-stat-value" title="Attaque × Défense × PV, en milliers. Plus ce produit est élevé, plus le Pokémon est solide globalement — c\'est ce qu\'on maximise pour trouver les meilleurs IV.">Produit</div>' +
+		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Classement</div>';
 	table.appendChild(headerRow);
 
 	results.forEach(function (r) {
 		var row = document.createElement("div");
 		row.className = "league-stat-row";
-		var speciesRankHtml = r.speciesRank
-			? '<span class="poke-rank" title="Classement de l\'espèce dans le meta avec ses meilleurs IV possibles - pas de cet IV précis">' + r.speciesRank + '</span>'
-			: 'non classé';
 		row.innerHTML =
 			'<div class="league-stat-name">' + r.league.name + '</div>' +
 			'<div class="league-stat-value">' + r.poke.level + '</div>' +
 			'<div class="league-stat-value">' + r.poke.cp + '</div>' +
-			'<div class="league-stat-value">' + speciesRankHtml + '</div>' +
+			'<div class="league-stat-value">' + realStats(r.poke) + '</div>' +
+			'<div class="league-stat-value">' + statProduct(r.poke) + '</div>' +
 			'<div class="league-stat-value" data-global-rank="' + globalRankKey(r.poke.speciesId, r.league.id) + '">' +
 			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>';
 		table.appendChild(row);

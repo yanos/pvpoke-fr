@@ -16,14 +16,14 @@ echo "== Refreshing French name cache =="
 echo "== Syncing pvpoke engine + data =="
 python3 sync_engine.py
 
-# battle_fr.html's global-rank number is a position within these baselines, so they go stale
-# whenever sync_engine.py pulls fresh rankings/engine. Node-only step: skipped (keeping the
-# committed baselines) rather than failing the build if node isn't installed.
-echo "== Rebuilding global-rank baselines =="
+# sync_engine.py writes the per-scenario ratings but can't compute their normalisation constants
+# (that needs the JS battle engine). Node-only step, and cheap (~6s); skipped rather than failing
+# the build if node isn't installed, since the committed constants stay usable.
+echo "== Computing scenario normalisation constants =="
 if command -v node >/dev/null 2>&1; then
-	node build_baselines.js
+	node build_scenario_norm.js
 else
-	echo "  node not found — keeping committed vendor/pvpoke/data/baselines/ (may be stale)"
+	echo "  node not found — keeping committed constants in vendor/pvpoke/data/scenario-ratings-*.json"
 fi
 
 echo "== Generating rankings_fr.html, i18n_fr.json, battle_fr.html =="

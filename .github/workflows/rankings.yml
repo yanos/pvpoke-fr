@@ -19,16 +19,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
       # generate.sh's build_baselines.js step needs Node. It degrades to keeping the committed
       # baselines when Node is absent, so pin it here to make sure CI actually regenerates them
       # against the freshly-synced engine/rankings rather than silently shipping stale ones.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
 
@@ -87,7 +87,7 @@ jobs:
           cp battle_driver.js battle_worker.js gamemaster_shim.js _site/
           cp -r vendor _site/vendor
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
 
@@ -98,5 +98,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deployment

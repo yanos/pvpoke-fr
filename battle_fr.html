@@ -6,21 +6,23 @@
   <title>Simulateur de combat PvP - PvPoke FR</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',sans-serif;background:#0d1b2a;color:#e0e6f0;padding:2rem 1rem}
+    body{font-family:'Segoe UI',sans-serif;background:#0d1b2a;color:#e0e6f0;padding:1.5rem .5rem}
     h1{text-align:center;font-size:2rem;font-weight:700;color:#fff;margin-bottom:1.5rem}
     nav.site-nav{text-align:center;margin-bottom:1.5rem;font-size:.85rem}
     nav.site-nav a{color:#7a9bbf;text-decoration:none;margin:0 .6rem}
     nav.site-nav a:hover{color:#fff;text-decoration:underline}
     .result-panel{max-width:900px;margin:0 auto 2.5rem}
-    .controls{max-width:900px;margin:0 auto 2.5rem;background:#152033;border:1px solid #1e3350;
-               border-radius:14px;padding:1.5rem;display:flex;flex-wrap:wrap;gap:1rem}
+    .controls{max-width:900px;margin:0 auto 1.5rem;background:#152033;border:1px solid #1e3350;
+               border-radius:14px;padding:.9rem;display:flex;flex-wrap:wrap;gap:.8rem}
     .controls label{display:block;font-size:.75rem;color:#7a9bbf;margin-bottom:.3rem;font-weight:600}
     .controls select,.controls input{width:100%;padding:.45rem;border-radius:6px;border:1px solid #1e3350;
                                        background:#0d1b2a;color:#e0e6f0;font-size:.85rem}
     .controls > div{flex:1 1 180px}
     .controls .field-group{flex:2 1 320px}
-    .inline-fields{display:flex;gap:.5rem}
-    .inline-fields input,.inline-fields select{width:auto;flex:1;min-width:0}
+    .inline-fields{display:flex;flex-wrap:wrap;gap:.5rem}
+    /* flex-basis is the wrap trigger: below ~10rem each move dropdown drops onto its own line
+       instead of being squeezed (move names are long) or pushed outside the panel. */
+    .inline-fields input,.inline-fields select{width:auto;flex:1 1 10rem;min-width:0}
     /* top-row wraps so that once the IV bars would be squeezed unreadably narrow, the whole IV
        section (numbers + bars, kept together in .iv-section) drops onto its own full-width line
        instead of shrinking. flex-basis on .iv-section is what triggers that. */
@@ -72,28 +74,27 @@
     .league-stats::-webkit-scrollbar{height:8px}
     .league-stats::-webkit-scrollbar-track{background:#152033}
     .league-stats::-webkit-scrollbar-thumb{background:#2c4a72;border-radius:4px}
-    /* Columns: league, Niveau, PC, Att/Déf/PV (wider - three numbers in one cell), Produit,
-       Rang, Rang IV. */
-    .league-stat-row{display:grid;min-width:42rem;
-                      grid-template-columns:minmax(0,1.2fr) minmax(0,.7fr) minmax(0,.8fr) minmax(0,1.9fr)
-                                            minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);
-                      align-items:center;padding:.7rem .8rem;gap:.3rem;border-top:1px solid #1e3350}
+    /* Columns: Ligue, Rang, Rang IV, Niveau, PC, Att/Déf/PV (widest - three numbers in one
+       cell), Produit. */
+    .league-stat-row{display:grid;min-width:40rem;
+                      grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.9fr)
+                                            minmax(0,1fr) minmax(0,2fr) minmax(0,1.2fr);
+                      align-items:center;padding:.6rem .8rem;gap:.3rem;border-top:1px solid #1e3350}
     .league-stat-row:first-child{border-top:none}
     .league-stat-header{padding-bottom:.3rem}
-    .league-stat-header .league-stat-value{font-weight:700;color:#4a6d94;font-size:.7rem;
-                                             text-transform:uppercase;letter-spacing:.03em}
+    .league-stat-header .league-stat-value,
+    .league-stat-header .league-stat-name{font-weight:700;color:#4a6d94;font-size:.7rem;
+                                            text-transform:uppercase;letter-spacing:.03em}
     .league-stat-name{font-weight:700;color:#fff;font-size:.85rem;overflow:hidden;
                        text-overflow:ellipsis;white-space:nowrap}
     .league-stat-value{font-size:.85rem;color:#7a9bbf;text-align:center;overflow:hidden;
                         text-overflow:ellipsis;white-space:nowrap}
     @media(max-width:480px){
-      .league-stat-row{min-width:36rem;
-                        grid-template-columns:minmax(0,.9fr) minmax(0,.5fr) minmax(0,.6fr) minmax(0,1.5fr)
-                                              minmax(0,.9fr) minmax(0,.8fr) minmax(0,.8fr);
-                        gap:.15rem;padding:.6rem .4rem}
+      .league-stat-row{min-width:35rem;gap:.15rem;padding:.5rem .5rem}
       .league-stat-name{font-size:.72rem}
       .league-stat-value{font-size:.72rem}
-      .league-stat-header .league-stat-value{font-size:.58rem}
+      .league-stat-header .league-stat-value,
+      .league-stat-header .league-stat-name{font-size:.58rem}
     }
     .poke-rank{font-weight:700}
     .poke-rank-pending{font-weight:400;color:#7a9bbf;font-style:italic}

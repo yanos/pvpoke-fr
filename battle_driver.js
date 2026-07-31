@@ -14,10 +14,12 @@
 // exactly. The global rank is an estimate of pvpoke's published tier position; see
 // GLOBAL_RANK_TOOLTIP below.
 
+// `name` is the full label; `short` is what the results table's Ligue column shows, since the
+// "Ligue " prefix is already the column header there.
 var LEAGUES = [
-	{ id: "super", name: "Ligue Super", cp: 1500 },
-	{ id: "hyper", name: "Ligue Hyper", cp: 2500 },
-	{ id: "master", name: "Ligue Master", cp: 10000 },
+	{ id: "super", name: "Ligue Super", short: "Super", cp: 1500 },
+	{ id: "hyper", name: "Ligue Hyper", short: "Hyper", cp: 2500 },
+	{ id: "master", name: "Ligue Master", short: "Master", cp: 10000 },
 ];
 
 var gm = GameMaster.getInstance();
@@ -654,27 +656,27 @@ function renderVariantPanel(group) {
 	var headerRow = document.createElement("div");
 	headerRow.className = "league-stat-row league-stat-header";
 	headerRow.innerHTML =
-		'<div class="league-stat-name"></div>' +
+		'<div class="league-stat-name">Ligue</div>' +
+		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Rang</div>' +
+		'<div class="league-stat-value" title="' + IV_RANK_TOOLTIP + '">Rang IV</div>' +
 		'<div class="league-stat-value" title="Niveau maximal atteignable avec ces IV sans dépasser le plafond de PC de cette ligue">Niveau</div>' +
 		'<div class="league-stat-value" title="Points de Combat à ce niveau">PC</div>' +
 		'<div class="league-stat-value" title="Statistiques réelles (Attaque / Défense / PV) à ces IV et à ce niveau">Att / Déf / PV</div>' +
-		'<div class="league-stat-value" title="Attaque × Défense × PV, en milliers. Plus ce produit est élevé, plus le Pokémon est solide globalement — c\'est ce qu\'on maximise pour trouver les meilleurs IV.">Produit</div>' +
-		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Rang</div>' +
-		'<div class="league-stat-value" title="' + IV_RANK_TOOLTIP + '">Rang IV</div>';
+		'<div class="league-stat-value" title="Attaque × Défense × PV, en milliers. Plus ce produit est élevé, plus le Pokémon est solide globalement — c\'est ce qu\'on maximise pour trouver les meilleurs IV.">Produit</div>';
 	table.appendChild(headerRow);
 
 	results.forEach(function (r) {
 		var row = document.createElement("div");
 		row.className = "league-stat-row";
 		row.innerHTML =
-			'<div class="league-stat-name">' + r.league.name + '</div>' +
+			'<div class="league-stat-name">' + r.league.short + '</div>' +
+			'<div class="league-stat-value" data-global-rank="' + globalRankKey(r.poke.speciesId, r.league.id) + '">' +
+			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>' +
+			'<div class="league-stat-value">' + ivRankHtml(r.ivRank) + '</div>' +
 			'<div class="league-stat-value">' + r.poke.level + '</div>' +
 			'<div class="league-stat-value">' + r.poke.cp + '</div>' +
 			'<div class="league-stat-value">' + realStats(r.poke) + '</div>' +
-			'<div class="league-stat-value">' + statProduct(r.poke) + '</div>' +
-			'<div class="league-stat-value" data-global-rank="' + globalRankKey(r.poke.speciesId, r.league.id) + '">' +
-			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>' +
-			'<div class="league-stat-value">' + ivRankHtml(r.ivRank) + '</div>';
+			'<div class="league-stat-value">' + statProduct(r.poke) + '</div>';
 		table.appendChild(row);
 	});
 	wrapper.appendChild(table);

@@ -122,6 +122,7 @@ function wireAutoRun() {
 	["fast-move-select", "charged-move-1-select", "charged-move-2-select"].forEach(function (id) {
 		document.getElementById(id).addEventListener("change", runBattles);
 	});
+	document.getElementById("result-panel").addEventListener("click", onMovesetApplyClick);
 }
 
 // IVs top out at 15 (the max any Pokemon can roll) and must be whole numbers; <input type=number
@@ -192,10 +193,10 @@ var pokemonList = []; // {speciesId, name}, sorted by French display name
 
 function populateSpeciesPicker() {
 	pokemonList = gm.data.pokemon
-		// Skip duplicate/alias entries, and skip Shadow forms specifically - runBattles() always
-		// shows a species' Shadow counterpart (if any) alongside it, so it doesn't need its own
-		// picker entry too.
-		.filter(function (p) { return !p.aliasId && !hasTag(p, "shadow"); })
+		// Skip duplicate/alias entries, and skip Shadow and Mega/Primal forms specifically -
+		// runBattles() always shows a species' Shadow and Mega counterparts (if any) alongside it,
+		// so they don't need their own picker entries too.
+		.filter(function (p) { return !p.aliasId && !hasTag(p, "shadow") && !hasTag(p, "mega"); })
 		.map(function (p) { return { speciesId: p.speciesId, name: frPokemonName(p.speciesId) }; })
 		.sort(function (a, b) { return a.name.localeCompare(b.name); });
 
@@ -207,9 +208,59 @@ function populateSpeciesPicker() {
 		if (e.target !== search && !e.target.closest("#species-suggestions")) closeSuggestions();
 	});
 
-	var initialSpeciesId = applyUrlParams() || pokemonList[0].speciesId;
+	// Precedence: explicit URL params (a link from rankings_fr.html) beat the restored session,
+	// which beats the alphabetically-first species.
+	var savedSpeciesId = applySavedState();
+	var initialSpeciesId = applyUrlParams() || savedSpeciesId || pokemonList[0].speciesId;
+	// The saved moveset only belongs to the saved species - if a URL param picked a different one,
+	// let onSpeciesChange() choose that species' own best moveset instead.
+	if (initialSpeciesId !== savedSpeciesId) pendingMoves = null;
 	syncIvBars();
 	selectSpecies(initialSpeciesId);
+}
+
+// Session persistence: the page is a plain form with no server state, so leaving for
+// rankings_fr.html and coming back would otherwise reset to the default species. Saved on every
+// recomputation, restored at startup.
+var STORAGE_KEY = "pvpoke-fr:battle";
+
+// Set at restore time and consumed once by onSpeciesChange(), which is the only place that knows
+// the movepools have just been rebuilt and so which <option>s can actually be selected.
+var pendingMoves = null;
+
+function saveState() {
+	try {
+		var current = currentIvsAndMoves();
+		localStorage.setItem(STORAGE_KEY, JSON.stringify({
+			speciesId: document.getElementById("species-select").value,
+			ivs: current.ivs,
+			moves: current.userMoves,
+		}));
+	} catch (e) {
+		// Private mode / disabled storage: persistence is a convenience, never a hard requirement.
+	}
+}
+
+// Returns the saved speciesId (or null), having already applied the saved IVs to the form and
+// staged the saved moveset in pendingMoves. Anything malformed or no longer in the gamemaster is
+// ignored rather than throwing.
+function applySavedState() {
+	var saved;
+	try {
+		saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+	} catch (e) {
+		return null;
+	}
+	if (!saved || !saved.speciesId || !gm.pokemonMap.has(saved.speciesId)) return null;
+
+	["atk", "def", "hp"].forEach(function (key) {
+		var v = saved.ivs && parseInt(saved.ivs[key], 10);
+		if (isNaN(v)) return;
+		document.getElementById("iv-" + key).value = Math.max(0, Math.min(15, v));
+	});
+
+	pendingMoves = saved.moves || null;
+	return saved.speciesId;
 }
 
 function renderSuggestions(query) {
@@ -290,10 +341,16 @@ function onSpeciesChange() {
 	// Default to the best-ranked moveset (fast + both charged attacks) for this species instead
 	// of the engine's arbitrary default, preferring the format with the fullest movepool data
 	// (Master has no CP cap) and falling back to whichever format actually ranks this species.
+	// A restored session's own moveset wins over the default for that one first render (see
+	// pendingMoves); it's consumed here so a later species change falls back to the default again.
+	var restored = pendingMoves;
+	pendingMoves = null;
+
 	var best = bestMoveset(speciesId);
-	var fastSel = best ? { moveId: best[0] } : poke.fastMove;
-	var charged1Sel = best ? { moveId: best[1] } : poke.chargedMoves[0];
-	var charged2Sel = best && best[2] ? { moveId: best[2] } : (poke.chargedMoves[1] || { moveId: "none" });
+	var fastSel = restored ? { moveId: restored.fast } : (best ? { moveId: best[0] } : poke.fastMove);
+	var charged1Sel = restored ? { moveId: restored.charged1 } : (best ? { moveId: best[1] } : poke.chargedMoves[0]);
+	var charged2Sel = restored ? { moveId: restored.charged2 } :
+		(best && best[2] ? { moveId: best[2] } : (poke.chargedMoves[1] || { moveId: "none" }));
 
 	fillMoveSelect("fast-move-select", poke.fastMovePool, fastSel);
 	fillMoveSelect("charged-move-1-select", poke.chargedMovePool, charged1Sel);
@@ -431,25 +488,47 @@ function evolutionChain(speciesId) {
 	return chain;
 }
 
-// Every variant to display for the selected species: itself, its Shadow form (if any), then
-// each forward evolution paired with its own Shadow form (if any) - Shadow is always shown
-// alongside its normal counterpart rather than being separately selectable (see
-// populateSpeciesPicker).
+// speciesId -> its Mega/Primal form ids (Charizard has two, X and Y). Mega-tagged entries name
+// themselves after their base with a _mega/_mega_x/_mega_y/_primal suffix, so the base is
+// recoverable by stripping it; built once since the gamemaster doesn't change at runtime.
+var megaFormsByBase = null;
+function megaForms(speciesId) {
+	if (!megaFormsByBase) {
+		megaFormsByBase = {};
+		gm.data.pokemon.forEach(function (p) {
+			if (p.aliasId || !hasTag(p, "mega")) return;
+			var base = p.speciesId.replace(/_(mega_x|mega_y|mega|primal)$/, "");
+			if (base === p.speciesId) return;
+			(megaFormsByBase[base] = megaFormsByBase[base] || []).push(p.speciesId);
+		});
+	}
+	return megaFormsByBase[speciesId] || [];
+}
+
+// Every variant to display for the selected species: itself, its Shadow form and its Mega/Primal
+// forms (if any), then each forward evolution with the same treatment - none of those are
+// separately selectable in the picker (see populateSpeciesPicker), they're always shown alongside
+// their normal counterpart.
 function buildVariantList(speciesId) {
 	var variants = [];
 
-	function addWithShadow(id, kind, shadowKind) {
+	function addForms(id, kind, shadowKind, megaKind) {
 		variants.push({ speciesId: id, kind: kind });
 		var shadowId = id + "_shadow";
 		if (gm.pokemonMap.has(shadowId)) {
 			variants.push({ speciesId: shadowId, kind: shadowKind });
 		}
+		megaForms(id).forEach(function (megaId) {
+			// Primal Groudon/Kyogre carry the "mega" tag but are labeled Primo- in French.
+			var suffix = /_primal$/.test(megaId) ? "-primal" : "";
+			variants.push({ speciesId: megaId, kind: megaKind + suffix });
+		});
 	}
 
 	var chain = evolutionChain(speciesId);
-	addWithShadow(chain[0], "selected", "shadow");
+	addForms(chain[0], "selected", "shadow", "mega");
 	chain.slice(1).forEach(function (evoId) {
-		addWithShadow(evoId, "evolution", "evolution-shadow");
+		addForms(evoId, "evolution", "evolution-shadow", "evolution-mega");
 	});
 
 	return variants;
@@ -465,6 +544,41 @@ function rankingEntry(league, speciesId) {
 		if (list[i].speciesId === speciesId) return { rank: i + 1, entry: list[i] };
 	}
 	return null;
+}
+
+// Which moveset a variant panel is simulated with. The form's picks aren't limited to the selected
+// species: a Shadow form has exactly its base form's movepool, and an evolution often shares most
+// of it, so any variant that *can* learn the chosen moves uses them - otherwise the panels beside
+// the selection would silently ignore a move change made right above them. Only a variant whose
+// pool can't produce the set (an evolution that never learns it) falls back to its own best-ranked
+// moveset. Returns the caller's userMoves object by identity when the form applies, so callers can
+// test which case they got.
+function movesForVariant(variant, userMoves) {
+	if (variant.kind === "selected") return userMoves;
+	return speciesCanLearn(variant.speciesId, userMoves) ? userMoves : defaultMoveset(variant.speciesId);
+}
+
+// Pool lookups are per species and hit once per variant per render, so memoize the pools rather
+// than rebuilding a Pokemon for each check.
+var movePoolCache = {};
+
+function movePools(speciesId) {
+	if (!movePoolCache[speciesId]) {
+		var battle = new Battle();
+		battle.setCP(10000);
+		var poke = new Pokemon(speciesId, 0, battle);
+		movePoolCache[speciesId] = {
+			fast: poke.fastMovePool.map(function (m) { return m.moveId; }),
+			charged: poke.chargedMovePool.map(function (m) { return m.moveId; }),
+		};
+	}
+	return movePoolCache[speciesId];
+}
+
+function speciesCanLearn(speciesId, moves) {
+	var pools = movePools(speciesId);
+	var hasCharged = function (id) { return !id || id === "none" || pools.charged.indexOf(id) !== -1; };
+	return pools.fast.indexOf(moves.fast) !== -1 && hasCharged(moves.charged1) && hasCharged(moves.charged2);
 }
 
 // Shared by runBattles() (sync, cheap numbers) and dispatchGlobalRankRequests() (debounced,
@@ -488,14 +602,13 @@ function runBattles() {
 	var current = currentIvsAndMoves();
 
 	var groups = buildVariantList(state.speciesId).map(function (variant) {
-		// The selected species uses the user's own move picks; evolutions/Shadow forms (which have
-		// no move controls of their own) fall back to their own best-ranked moveset, same IVs.
-		var moves = variant.kind === "selected" ? current.userMoves : defaultMoveset(variant.speciesId);
+		var moves = movesForVariant(variant, current.userMoves);
 		var results = LEAGUES.map(function (league) { return runLeague(league, variant.speciesId, current.ivs, moves); });
-		return { kind: variant.kind, results: results };
+		return { kind: variant.kind, usesFormMoves: moves === current.userMoves, results: results };
 	});
 
 	renderResults(groups);
+	saveState();
 	scheduleGlobalRankRequests();
 }
 
@@ -525,7 +638,7 @@ function dispatchGlobalRankRequests() {
 	var current = currentIvsAndMoves();
 
 	buildVariantList(state.speciesId).forEach(function (variant) {
-		var moves = variant.kind === "selected" ? current.userMoves : defaultMoveset(variant.speciesId);
+		var moves = movesForVariant(variant, current.userMoves);
 		LEAGUES.forEach(function (league) {
 			globalRankRequestSeq++;
 			globalRankWorker.postMessage({
@@ -577,7 +690,12 @@ function runLeague(league, speciesId, ivs, moves) {
 	// for this species (legendaries/untradeables have an IV floor), which renders as a dash.
 	var ivRank = poke.getIVRank("overall");
 
-	return { league: league, poke: poke, ivRank: ivRank };
+	// Where the species itself sits in this league's published "all/overall" list, at its own best
+	// possible IVs - IV-invariant on purpose, unlike the Rang column beside it (see
+	// SPECIES_RANK_TOOLTIP).
+	var found = rankingEntry(league, speciesId);
+
+	return { league: league, poke: poke, ivRank: ivRank, speciesRank: found ? found.rank : null };
 }
 
 // Small badges labeling how each panel relates to the selected species - empty for the
@@ -585,8 +703,12 @@ function runLeague(league, speciesId, ivs, moves) {
 var VARIANT_BADGES = {
 	selected: [],
 	shadow: ["Obscur"],
+	mega: ["Méga"],
+	"mega-primal": ["Primo"],
 	evolution: ["Évolution"],
 	"evolution-shadow": ["Évolution", "Obscur"],
+	"evolution-mega": ["Évolution", "Méga"],
+	"evolution-mega-primal": ["Évolution", "Primo"],
 };
 
 // Effective stats at the IVs entered and the level maxLevelForCap() settled on -- i.e. what this
@@ -612,13 +734,139 @@ function ivRankHtml(ivRank) {
 	return '<span title="' + IV_RANK_TOOLTIP + '">' + ivRank.rank + '</span>';
 }
 
+// Distinct from the Rang column: this is pvpoke's own published position for the *species* in this
+// league (at its own optimal IVs/moveset), so it does not move when the IVs entered change. Kept
+// beside the two IV-sensitive ranks as the reference point they're measured against.
+var SPECIES_RANK_TOOLTIP = "Place de l'espèce dans le classement publié par PvPoke pour cette ligue, " +
+	"avec ses IV et son moveset optimaux. Ne dépend pas des IV saisis — c'est le potentiel de " +
+	"l'espèce, pas de ce build précis.";
+
+// Null when the species isn't ranked in that league at all (too weak to appear in the list).
+function speciesRankHtml(rank) {
+	if (!rank) return "—";
+	return '<span title="' + SPECIES_RANK_TOOLTIP + '">' + rank + '</span>';
+}
+
 function statProduct(poke) {
 	var product = poke.stats.atk * poke.stats.def * poke.stats.hp;
 	return Math.round(product / 1000).toLocaleString("fr-FR") + " k";
 }
 
+// The highest CP this species can ever reach: perfect 15/15/15 at the engine's level cap (51, i.e.
+// best-buddy). Independent of the IVs entered and of any league cap, so it's shown once per panel
+// beside the name/moves rather than per league.
+function maxCp(speciesId) {
+	var battle = new Battle();
+	battle.setCP(10000);
+	var poke = new Pokemon(speciesId, 0, battle);
+	poke.ivs.atk = 15;
+	poke.ivs.def = 15;
+	poke.ivs.hp = 15;
+	poke.isCustom = true;
+	poke.setLevel(battle.getLevelCap(), false);
+	return poke.calculateCP();
+}
+
+var BADGE_CLASSES = { "Obscur": "shadow", "Méga": "mega", "Primo": "mega" };
 function badgeClass(label) {
-	return "variant-badge " + (label === "Obscur" ? "shadow" : "evolution");
+	return "variant-badge " + (BADGE_CLASSES[label] || "evolution");
+}
+
+// The badge beside the name already says Obscur/Méga/Primo, so the name itself doesn't need to
+// repeat it - PokeAPI's French names carry it as a "(Obscur)" suffix, a "Mega" suffix or a
+// "Méga-"/"Primo-" prefix depending on the form. Any remainder (Dracaufeu's X/Y) is kept, since
+// that's the only thing telling two Mega forms of the same species apart.
+function variantName(speciesId) {
+	return frPokemonName(speciesId)
+		.replace(/\s*\(Obscur\)\s*$/, "")
+		.replace(/\s+Mega$/, "")
+		.replace(/^(Méga|Primo)-/, "");
+}
+
+// The best moveset genuinely differs per league for about half the species ranked in all three
+// (different opponent field, different energy budget under each CP cap), but a panel shows one
+// moveset above rows for all three leagues -- so list pvpoke's per-league sets beside it, each
+// applicable to the form's dropdowns in one click.
+//
+// The check mark and the button both refer to the *form* at the top of the page, so they're only
+// rendered on panels the form actually drives (movesForVariant() -> usesFormMoves). On a panel
+// falling back to its own best-ranked moveset the check mark would read as "this is what this panel
+// is simulating", which it wouldn't be, and the button would appear to change nothing.
+function leagueMovesetsHtml(poke, interactive) {
+	var formMoves = interactive ? currentIvsAndMoves().userMoves : null;
+
+	var rows = LEAGUES.map(function (league) {
+		var found = rankingEntry(league, poke.speciesId);
+		var moveset = found && found.entry.moveset;
+		if (!moveset || !moveset.length) {
+			return '<div class="moveset-row"><span class="moveset-league">' + league.short + '</span>' +
+				'<span class="moveset-moves moveset-none">non classé</span></div>';
+		}
+
+		var moves = { fast: moveset[0], charged1: moveset[1], charged2: moveset[2] || "none" };
+		var label = movesetLabel(moves);
+		var isCurrent = interactive && sameMoveset(moves, formMoves);
+
+		var action = !interactive ? "" :
+			isCurrent ? '<span class="moveset-current" title="C\'est le moveset actuellement sélectionné dans le formulaire ci-dessus" aria-label="actuel">✓</span>' :
+			// The moves must exist in the form's dropdowns for the button to be able to set them.
+			movesetApplicable(moves) ? '<button type="button" class="moveset-apply" ' +
+				'data-fast="' + moves.fast + '" data-charged1="' + moves.charged1 + '" data-charged2="' + moves.charged2 + '" ' +
+				'title="Utiliser ce moveset dans le formulaire et relancer la simulation">Utiliser</button>' : "";
+
+		return '<div class="moveset-row' + (isCurrent ? " current" : "") + '">' +
+			'<span class="moveset-league">' + league.short + '</span>' +
+			'<span class="moveset-moves">' + label + '</span>' + action + '</div>';
+	}).join("");
+
+	var title = "Meilleur moveset publié par PvPoke pour chaque ligue. Il diffère souvent d'une ligue à " +
+		"l'autre ; le tableau ci-dessous simule les trois ligues avec le seul moveset affiché à gauche." +
+		(interactive ? "" : " Indicatif ici : cette variante ne peut pas apprendre le moveset du " +
+			"formulaire, elle utilise donc son propre meilleur moveset.");
+
+	return '<div class="moveset-panel"><div class="moveset-title" title="' + title + '">Movesets par ligue</div>' +
+		rows + '</div>';
+}
+
+// Order-sensitive on purpose: the two charged slots aren't interchangeable in the form (each row
+// applies to a specific dropdown), and pvpoke lists them in score order, which flips between
+// leagues for the same pair (aggron's Thunder/Rock Tomb). Treating those as "the same set" would
+// mark every row as current and leave nothing to click.
+function sameMoveset(a, b) {
+	var key = function (m) { return [m.fast, m.charged1 || "none", m.charged2 || "none"].join("|"); };
+	return key(a) === key(b);
+}
+
+function movesetLabel(moves) {
+	var charged = [moves.charged1, moves.charged2]
+		.filter(function (m) { return m && m !== "none"; })
+		.map(frMoveName)
+		.join(", ");
+	return frMoveName(moves.fast) + " / " + charged;
+}
+
+function selectHasOption(elId, moveId) {
+	var select = document.getElementById(elId);
+	return Array.prototype.some.call(select.options, function (o) { return o.value === moveId; });
+}
+
+function movesetApplicable(moves) {
+	return selectHasOption("fast-move-select", moves.fast) &&
+		selectHasOption("charged-move-1-select", moves.charged1) &&
+		selectHasOption("charged-move-2-select", moves.charged2);
+}
+
+// Delegated (the panels are re-rendered wholesale on every recomputation, so per-button listeners
+// would be re-wired constantly). Setting .value programmatically fires no "change" event, hence the
+// explicit runBattles() -- which also re-renders these rows, moving the "actuel" marker.
+function onMovesetApplyClick(e) {
+	var button = e.target.closest(".moveset-apply");
+	if (!button) return;
+
+	document.getElementById("fast-move-select").value = button.dataset.fast;
+	document.getElementById("charged-move-1-select").value = button.dataset.charged1;
+	document.getElementById("charged-move-2-select").value = button.dataset.charged2;
+	runBattles();
 }
 
 // One stacked panel per variant (selected species, its Shadow form, each forward evolution, and
@@ -645,9 +893,10 @@ function renderVariantPanel(group) {
 	header.className = "battle-summary";
 	header.innerHTML =
 		'<img class="poke-sprite" src="' + frSprite(poke.speciesId) + '" alt="">' +
-		'<div><div class="poke-name">' + (badgeHtml ? badgeHtml + " " : "") + frPokemonName(poke.speciesId) + '</div>' +
-		'<div class="poke-moves">' + frMoveName(poke.fastMove.moveId) + " / " +
-		poke.chargedMoves.map(function (m) { return frMoveName(m.moveId); }).join(", ") + '</div></div>';
+		'<div class="poke-identity"><div class="poke-name">' + variantName(poke.speciesId) + (badgeHtml ? " " + badgeHtml : "") + '</div>' +
+		'<div class="poke-maxcp" title="PC maximum atteignable par cette espèce : IV 15/15/15 au niveau 51 (copain ultime). Sans rapport avec les plafonds de ligue.">' +
+		'PC max : <strong>' + maxCp(poke.speciesId) + '</strong></div></div>' +
+		leagueMovesetsHtml(poke, group.usesFormMoves);
 	wrapper.appendChild(header);
 
 	var table = document.createElement("div");
@@ -659,6 +908,7 @@ function renderVariantPanel(group) {
 		'<div class="league-stat-name">Ligue</div>' +
 		'<div class="league-stat-value" title="' + GLOBAL_RANK_TOOLTIP() + '">Rang</div>' +
 		'<div class="league-stat-value" title="' + IV_RANK_TOOLTIP + '">Rang IV</div>' +
+		'<div class="league-stat-value" title="' + SPECIES_RANK_TOOLTIP + '">Rang espèce</div>' +
 		'<div class="league-stat-value" title="Niveau maximal atteignable avec ces IV sans dépasser le plafond de PC de cette ligue">Niveau</div>' +
 		'<div class="league-stat-value" title="Points de Combat à ce niveau">PC</div>' +
 		'<div class="league-stat-value" title="Statistiques réelles (Attaque / Défense / PV) à ces IV et à ce niveau">Att / Déf / PV</div>' +
@@ -673,6 +923,7 @@ function renderVariantPanel(group) {
 			'<div class="league-stat-value" data-global-rank="' + globalRankKey(r.poke.speciesId, r.league.id) + '">' +
 			'<span class="poke-rank poke-rank-pending">Calcul...</span></div>' +
 			'<div class="league-stat-value">' + ivRankHtml(r.ivRank) + '</div>' +
+			'<div class="league-stat-value">' + speciesRankHtml(r.speciesRank) + '</div>' +
 			'<div class="league-stat-value">' + r.poke.level + '</div>' +
 			'<div class="league-stat-value">' + r.poke.cp + '</div>' +
 			'<div class="league-stat-value">' + realStats(r.poke) + '</div>' +

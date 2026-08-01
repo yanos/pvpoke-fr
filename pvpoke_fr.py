@@ -514,15 +514,48 @@ def build_battle_html():
     .variant-panel{{margin-bottom:1.5rem}}
     .variant-panel:last-child{{margin-bottom:0}}
     .variant-badge{{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;
-                    letter-spacing:.03em;border-radius:4px;padding:.15rem .4rem;margin-right:.3rem;
-                    vertical-align:middle}}
+                    letter-spacing:.03em;border-radius:4px;padding:.15rem .4rem;margin-left:.3rem;
+                    line-height:1}}
     .variant-badge.shadow{{color:#a060ff;background:#1a1030;border:1px solid #3d1a6e}}
+    .variant-badge.mega{{color:#e8963c;background:#2b1a08;border:1px solid #6e451a}}
     .variant-badge.evolution{{color:#5b9bd5;background:#0f2438;border:1px solid #1e3350}}
-    .battle-summary{{display:flex;align-items:center;gap:1rem;background:#152033;border:1px solid #1e3350;
-                     border-radius:14px 14px 0 0;padding:1rem;border-bottom:1px solid #1e3350}}
-    .battle-summary .poke-sprite{{width:70px;height:70px;object-fit:contain}}
-    .battle-summary .poke-name{{font-size:1.2rem;font-weight:700}}
-    .battle-summary .poke-moves{{font-size:.8rem;color:#7a9bbf;margin-top:.2rem}}
+    .battle-summary{{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;background:#152033;border:1px solid #1e3350;
+                     border-radius:14px 14px 0 0;padding:.6rem 1rem;border-bottom:1px solid #1e3350}}
+    .battle-summary .poke-sprite{{width:96px;height:96px;object-fit:contain}}
+    /* The name lines up with the moveset list's heading rather than floating mid-header;
+       the sprite stays vertically centred against the taller of the two. */
+    .battle-summary .poke-identity{{align-self:flex-start}}
+    .battle-summary .poke-name{{display:flex;align-items:center;gap:.1rem;font-size:1.2rem;font-weight:700;
+                                margin-top:6px}}
+    .battle-summary .poke-maxcp{{font-size:.8rem;color:#4a6d94;margin-top:.2rem}}
+    .battle-summary .poke-maxcp strong{{color:#7a9bbf;font-weight:700}}
+    /* Per-league best movesets. The name block is pinned to 40% of the header, so the list starts
+       around the middle (clear of the name, not jammed right) and then takes all the remaining
+       width -- which is what keeps three move names on one line. Below 640px it takes a full row
+       of its own instead (the header is flex-wrap above). */
+    .poke-identity{{flex:0 0 40%;min-width:0}}
+    .moveset-panel{{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:.1rem}}
+    .moveset-title{{font-size:.65rem;font-weight:700;color:#4a6d94;text-transform:uppercase;
+                    letter-spacing:.03em}}
+    /* min-height is what fixes the row pitch: it's taller than the Utiliser button, so a row keeps
+       the same height whether it carries the button, the check mark or nothing -- otherwise the
+       list reflows as the current moveset moves from one league to another. */
+    .moveset-row{{display:flex;align-items:center;gap:.35rem;font-size:.72rem;line-height:1.25;
+                  min-height:1.3rem;color:#7a9bbf}}
+    .moveset-row.current{{color:#a8c6e4}}
+    .moveset-league{{font-weight:700;color:#fff;flex:0 0 2.5rem}}
+    .moveset-moves{{flex:1;min-width:0}}
+    .moveset-none{{font-style:italic;color:#3a5570}}
+    /* Fixed-width so the check and the button occupy the same slot -- the rows stay aligned and the
+       moves column doesn't reflow as the current moveset moves from one league to another. */
+    .moveset-current{{flex:0 0 3.8rem;text-align:center;color:#4a8f5a;font-weight:700}}
+    .moveset-apply{{flex:0 0 3.8rem;font:inherit;font-size:.68rem;font-weight:700;cursor:pointer;
+                    color:#a8c6e4;background:#1b2c45;border:1px solid #2c4a72;border-radius:6px;
+                    padding:0 .45rem;height:1.05rem;line-height:1}}
+    .moveset-apply:hover{{background:#24395a;color:#fff}}
+    @media(max-width:640px){{
+      .moveset-panel{{flex:1 1 100%}}
+    }}
     /* Scrolls sideways rather than crushing the columns once the viewport can't fit them (see the
        min-width on .league-stat-row). overflow-y stays hidden so the rounded bottom corners still
        clip; -webkit-overflow-scrolling keeps momentum scrolling on older iOS, and touch-action
@@ -533,11 +566,11 @@ def build_battle_html():
     .league-stats::-webkit-scrollbar{{height:8px}}
     .league-stats::-webkit-scrollbar-track{{background:#152033}}
     .league-stats::-webkit-scrollbar-thumb{{background:#2c4a72;border-radius:4px}}
-    /* Columns: Ligue, Rang, Rang IV, Niveau, PC, Att/Déf/PV (widest - three numbers in one
-       cell), Produit. */
-    .league-stat-row{{display:grid;min-width:40rem;
-                      grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.9fr)
-                                            minmax(0,1fr) minmax(0,2fr) minmax(0,1.2fr);
+    /* Columns: Ligue, Rang, Rang IV, Rang espèce, Niveau, PC, Att/Déf/PV (widest - three numbers
+       in one cell), Produit. */
+    .league-stat-row{{display:grid;min-width:46rem;
+                      grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr)
+                                            minmax(0,.9fr) minmax(0,1fr) minmax(0,2fr) minmax(0,1.2fr);
                       align-items:center;padding:.6rem .8rem;gap:.3rem;border-top:1px solid #1e3350}}
     .league-stat-row:first-child{{border-top:none}}
     .league-stat-header{{padding-bottom:.3rem}}
@@ -549,7 +582,7 @@ def build_battle_html():
     .league-stat-value{{font-size:.85rem;color:#7a9bbf;text-align:center;overflow:hidden;
                         text-overflow:ellipsis;white-space:nowrap}}
     @media(max-width:480px){{
-      .league-stat-row{{min-width:35rem;gap:.15rem;padding:.5rem .5rem}}
+      .league-stat-row{{min-width:40rem;gap:.15rem;padding:.5rem .5rem}}
       .league-stat-name{{font-size:.72rem}}
       .league-stat-value{{font-size:.72rem}}
       .league-stat-header .league-stat-value,

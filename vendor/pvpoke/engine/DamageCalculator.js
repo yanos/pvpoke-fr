@@ -7,6 +7,7 @@ class DamageMultiplier{
 	static STAB = 1.2000000476837158203125;
 	static SHADOW_ATK = 1.2;
 	static SHADOW_DEF = 0.83333331;
+	static MEGA_BONUS = [1, 1.10000002384185791015625, 1.2000000476837158203125, 1.2999999523162841796875]
 }
 
 
@@ -36,18 +37,20 @@ class DamageCalculator {
 		let power = move.power;
 		let attackStat = attacker.getEffectiveStat(0);
 		let defenseStat = defender.getEffectiveStat(1);
+		let isMegaMove = (attacker.hasTag("mega") && move?.isMegaMove);
+		let megaMultiplier = isMegaMove ? DamageMultiplier.MEGA_BONUS[attacker.megaLevel - 1] : 1;
 
 		// Form specific special cases
 		switch(attacker.activeFormId){
 			case "aegislash_shield":
 				// Calculate all Charged Attack damage using the Blade form's Attack stat
-				if(move.energy > 0){
+				if(move.category == "charged"){
 					attackStat = attacker.getFormStats("aegislash_blade").atk;
 				}
 				break;
 		}
 
-		var damage = Math.floor(power * move.stab * ( attackStat / defenseStat) * effectiveness * chargeMultiplier * 0.5 * DamageMultiplier.BONUS) + 1;
+		let damage = 1;
 
 		// Form specific special cases
 		switch(attacker.activeFormId){
@@ -56,6 +59,17 @@ class DamageCalculator {
 				if(move.energyGain > 0){
 					damage = 1;
 				}
+				break;
+		}
+
+		// Alternative damage method calculations
+		switch(move.damageMethod){
+			default:
+				damage = Math.floor(power * move.stab * ( attackStat / defenseStat) * effectiveness * chargeMultiplier * megaMultiplier * 0.5 * DamageMultiplier.BONUS) + 1;
+				break;
+
+			case "percentMaxHP":
+				damage = Math.floor((move.power / 100) * (defender.stats.hp)) + 1;
 				break;
 		}
 
@@ -66,11 +80,13 @@ class DamageCalculator {
 
 	static damageByStats(attacker, defender, attack, defense, effectiveness, move){
 		// For Pokemon which change forms before a charged attack, use the new form's attack stat
-		if(attacker.formChange && attacker.formChange.trigger == "activate_charged" && move.energy > 0){
+		if(attacker.formChange && attacker.formChange.trigger == "activate_charged" && move.category == "charged"){
 			attack = attacker.getFormStats(attacker.formChange.alternativeFormId).atk;
 		}
 
-		var damage = Math.floor(move.power * move.stab * (attack/defense) * effectiveness * 0.5 * DamageMultiplier.BONUS) + 1;
+		let isMegaMove = (attacker.hasTag("mega") && move?.isMegaMove);
+		let megaMultiplier = isMegaMove ? DamageMultiplier.MEGA_BONUS[attacker.megaLevel - 1] : 1;
+		let damage = 1;
 
 		// Form specific special cases
 		switch(attacker.activeFormId){
@@ -79,6 +95,17 @@ class DamageCalculator {
 				if(move.energyGain > 0){
 					damage = 1;
 				}
+				break;
+		}
+
+		// Alternative damage method calculations
+		switch(move.damageMethod){
+			default:
+				damage = Math.floor(move.power * move.stab * (attack/defense) * megaMultiplier * effectiveness * 0.5 * DamageMultiplier.BONUS) + 1;
+				break;
+
+			case "percentMaxHP":
+				damage = Math.floor((move.power / 100) * (defender.stats.hp)) + 1;
 				break;
 		}
 

@@ -73,6 +73,7 @@ var GameMaster = (function () {
 			var move = {
 				moveId: m.moveId,
 				name: m.name,
+				category: m.energyGain > 0 ? "fast" : "charged",
 				displayName: m.name,
 				abbreviation: abbreviation,
 				archetype: m.archetype || '',
@@ -80,6 +81,7 @@ var GameMaster = (function () {
 				power: m.power,
 				energy: m.energy,
 				energyGain: m.energyGain,
+				damageMethod: "default",
 				cooldown: m.cooldown,
 				turns: m.turns,
 				selfDebuffing: false,
@@ -87,8 +89,29 @@ var GameMaster = (function () {
 				selfAttackDebuffing: false,
 				selfDefenseDebuffing: false,
 				legacy: false,
-				elite: false
+				elite: false,
+				isMegaMove: false,
+				tags: [],
+				hasTag: function (tag) {
+					return this.tags.includes(tag);
+				}
 			};
+
+			if (m.category) {
+				move.category = m.category;
+			}
+
+			if (m.damageMethod) {
+				move.damageMethod = m.damageMethod;
+			}
+
+			if (m.tags) {
+				move.tags = [...m.tags];
+			}
+
+			if (m.isMegaMove) {
+				move.isMegaMove = m.isMegaMove;
+			}
 
 			if (move.moveId == "RETURN" || move.moveId == "FRUSTRATION") {
 				move.legacy = true;

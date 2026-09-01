@@ -362,6 +362,29 @@ class ActionLogic {
 			}
 		}
 
+		// If Cramorant has not changed form, use Dive or Surf as soon as possible if other moves aren't meaningfully more effective
+		if(poke.activeFormId == "cramorant"){
+			let gulpMove = poke.activeChargedMoves.find(move => move.moveId == "DIVE" || move.moveId == "SURF");
+			let nonGulpMove = poke.activeChargedMoves.find(move => move.moveId != "DIVE" && move.moveID != "SURF");
+
+			if(gulpMove && nonGulpMove && poke.energy >= gulpMove.energy
+				&& opponent.hp > nonGulpMove.damage * 1.3 && nonGulpMove.dpe / gulpMove.dpe < 1.5){
+
+				let moveIndex = poke.chargedMoves.indexOf(gulpMove);
+
+				battle.logDecision(poke, " uses " + gulpMove.name + " to trigger form change as soon as possible.");
+
+				action = new TimelineAction(
+					"charged",
+					poke.index,
+					turns,
+					moveIndex,
+					{shielded: false, buffs: false, priority: poke.priority});
+
+				return action;
+			}
+		}
+
 		// Evaluate if opponent can't be fainted in a limited number of cycles. If so, do a simpler move selection.
 
 		var bestChargedDamage = DamageCalculator.damage(poke, opponent, poke.bestChargedMove);
@@ -380,15 +403,13 @@ class ActionLogic {
 			var selectedMove = poke.bestChargedMove;
 
 			if(poke.activeChargedMoves.length > 1){
-				if(poke.baitShields && opponent.shields > 0 && ! poke.activeChargedMoves[0].selfDebuffing && ActionLogic.wouldShield(battle, poke, opponent, poke.activeChargedMoves[1]).value){
-					selectedMove = poke.activeChargedMoves[0];
-				}
+				for(var i = 0; i < poke.activeChargedMoves.length; i++){
+					if(poke.bestChargedMove.selfDebuffing && (! poke.activeChargedMoves[i].selfDebuffing) && (selectedMove.dpe / poke.activeChargedMoves[i].dpe < 2)){
+						selectedMove = poke.activeChargedMoves[i];
+					}
 
-				if(poke.bestChargedMove.selfDebuffing){
-					for(var i = 0; i < poke.activeChargedMoves.length; i++){
-						if((! poke.activeChargedMoves[i].selfDebuffing) && (selectedMove.dpe / poke.activeChargedMoves[i].dpe < 2)){
-							selectedMove = poke.activeChargedMoves[i];
-						}
+					if(poke.baitShields && opponent.shields > 0 && ! poke.activeChargedMoves[0].selfDebuffing && ActionLogic.wouldShield(battle, poke, opponent, poke.activeChargedMoves[i]).value){
+						selectedMove = poke.activeChargedMoves[0];
 					}
 				}
 			}
@@ -837,31 +858,35 @@ class ActionLogic {
 
 		// If bait shields, build up to most expensive charge move in planned move list
 		if (poke.baitShields && opponent.shields > 0 && poke.activeChargedMoves.length > 1) {
-			if ((poke.energy < poke.activeChargedMoves[1].energy)&&(poke.activeChargedMoves[1].dpe > finalState.moves[0].dpe)) {
-				var bait = true;
+			for(var i = 1; i < poke.activeChargedMoves.length; i++){
+				if ((poke.energy < poke.activeChargedMoves[i].energy)&&(poke.activeChargedMoves[i].dpe > finalState.moves[0].dpe)) {
+					var bait = true;
 
-				// Don't go for baits if you have an effective self buffing move
-				if((poke.activeChargedMoves[1].dpe / poke.activeChargedMoves[0].dpe <= 1.5)&&(poke.activeChargedMoves[0].selfBuffing)){
-					bait = false;
-				}
+					// Don't go for baits if you have an effective self buffing move
+					if((poke.activeChargedMoves[i].dpe / poke.activeChargedMoves[0].dpe <= 1.5)&&(poke.activeChargedMoves[0].selfBuffing)){
+						bait = false;
+					}
 
-
-				if(bait){
-					battle.logDecision(poke, " doesn't use " + finalState.moves[0].name + " because it wants to bait");
-					return;
+					if(bait){
+						battle.logDecision(poke, " doesn't use " + finalState.moves[0].name + " because it wants to bait");
+						return;
+					}
 				}
 			}
 		}
 
 		// Don't bait if the opponent won't shield
 		if (poke.baitShields && opponent.shields > 0 && poke.activeChargedMoves.length > 1) {
-			var dpeRatio = (poke.activeChargedMoves[1].damage / poke.activeChargedMoves[1].energy) / (finalState.moves[0].damage / finalState.moves[0].energy);
+			for(var i = 1; i < poke.activeChargedMoves.length; i++){
+				var dpeRatio = (poke.activeChargedMoves[i].damage / poke.activeChargedMoves[i].energy) / (finalState.moves[0].damage / finalState.moves[0].energy);
 
-			if ((poke.energy >= poke.activeChargedMoves[1].energy)&&(dpeRatio > 1.5)) {
-				if(! ActionLogic.wouldShield(battle, poke, opponent, poke.activeChargedMoves[1]).value){
-					finalState.moves[0] = poke.activeChargedMoves[1];
+				if ((poke.energy >= poke.activeChargedMoves[i].energy)&&(dpeRatio > 1.5)) {
+					if(! ActionLogic.wouldShield(battle, poke, opponent, poke.activeChargedMoves[i]).value){
+						finalState.moves[0] = poke.activeChargedMoves[i];
+					}
 				}
 			}
+
 		}
 
 		// If pokemon needs boost, we cannot reorder and no moves both buff and debuff
@@ -903,9 +928,20 @@ class ActionLogic {
 
 		// Don't bait with self debuffing moves
 		if (poke.baitShields && opponent.shields > 0 && poke.activeChargedMoves.length > 1) {
-			if ((poke.energy >= poke.activeChargedMoves[1].energy)&&(poke.activeChargedMoves[1].dpe > finalState.moves[0].dpe)) {
-				if((finalState.moves[0].selfDebuffing)&&(! poke.activeChargedMoves[1].selfDebuffing)){
-					finalState.moves[0] = poke.activeChargedMoves[1];
+			for(var i = 1; i < poke.activeChargedMoves.length; i++){
+				if ((poke.energy >= poke.activeChargedMoves[i].energy)&&(poke.activeChargedMoves[i].dpe > finalState.moves[0].dpe)) {
+					if((finalState.moves[0].selfDebuffing)&&(! poke.activeChargedMoves[i].selfDebuffing)){
+						finalState.moves[0] = poke.activeChargedMoves[i];
+					}
+				}
+			}
+		}
+
+		// When shields are down, don't use self debuffing moves that are significantly less efficient
+		if (opponent.shields == 0 && poke.activeChargedMoves.length > 1 && finalState.moves[0].selfDebuffing) {
+			for(var i = 1; i < poke.activeChargedMoves.length; i++){
+				if (poke.activeChargedMoves[i].dpe > finalState.moves[0].dpe && (! poke.activeChargedMoves[i].selfDebuffing)) {
+					finalState.moves[0] = poke.activeChargedMoves[i];
 				}
 			}
 		}
@@ -914,15 +950,18 @@ class ActionLogic {
 
 		if (opponent.shields > 0 && poke.activeChargedMoves.length > 1) {
 			// Is one self debuffing and the other non self debuffing, and will the first Charged Move
-			if((poke.activeChargedMoves[0].selfDebuffing)&&(! poke.activeChargedMoves[1].selfBuffing)){
-				// Is the Pokemon baiting or will the self debuffing move not come close to a KO?
-				if(poke.baitShields || (opponent.hp - poke.activeChargedMoves[0].damage > 10)){
-					// Is the second move close in energy and dpe?
-					if((poke.activeChargedMoves[1].energy - poke.activeChargedMoves[0].energy <= 10) && (poke.activeChargedMoves[1].dpe / poke.activeChargedMoves[0].dpe > 0.7)){
-						finalState.moves[0] = poke.activeChargedMoves[1];
+			for(var i = 1; i < poke.activeChargedMoves.length; i++){
+				if((poke.activeChargedMoves[0].selfDebuffing)&&(! poke.activeChargedMoves[i].selfDebuffing)){
+					// Is the Pokemon baiting or will the self debuffing move not come close to a KO?
+					if(poke.baitShields || (opponent.hp - poke.activeChargedMoves[0].damage > 10)){
+						// Is the second move close in energy and dpe?
+						if((poke.activeChargedMoves[i].energy - poke.activeChargedMoves[0].energy <= 10) && (poke.activeChargedMoves[i].dpe / poke.activeChargedMoves[0].dpe > 0.7)){
+							finalState.moves[0] = poke.activeChargedMoves[i];
+						}
 					}
 				}
 			}
+
 		}
 
 		// Defer self debuffing moves until after survivable Charged Moves
@@ -934,7 +973,7 @@ class ActionLogic {
 		}
 
 		// If move is self debuffing and doesn't KO, try to stack as much as you can
-		if (finalState.moves[0].selfDebuffing) {
+		if (finalState.moves[0].selfDebuffing || (opponent.activeFormId == "cramorant_gulping" || opponent.activeFormId == "cramorant_gorging")) {
 			//var targetEnergy = poke.energy + (Math.round( (100 - poke.energy) / poke.fastMove.energyGain) * poke.fastMove.energyGain);
 			let targetEnergy = Math.floor(100 / finalState.moves[0].energy) * finalState.moves[0].energy;
 
@@ -951,7 +990,6 @@ class ActionLogic {
 				}
 			}
 		}
-
 
 		// Use the final move, or a Fast Move if not enough energy
 		if (poke.energy >= finalState.moves[0].energy) {
@@ -971,7 +1009,7 @@ class ActionLogic {
 			battle.logDecision(poke, " uses a fast move because it has no energy for " + finalState.moves[0].name);
 			return;
 		}
-
+		
 		// Build energy for Aegislash Shield to reduce time spent in Blade form
 		if(poke.activeFormId == "aegislash_shield" && poke.energy < 100 - (poke.fastMove.energyGain / 2)){
 			if(battle.getMode() == "simulate" && poke.bestChargedMove.damage < opponent.hp){
@@ -1161,6 +1199,10 @@ class ActionLogic {
 		var fastDPT = fastDamage / attacker.fastMove.turns;
 
 		for (var i = 0; i < attacker.chargedMoves.length; i++){
+			if(! attacker.chargedMoves[i]){
+				continue;
+			}
+			
 			var chargedMove = attacker.chargedMoves[i];
 
 			if(attacker.energy + chargedMove.energy >= chargedMove.energy){
@@ -1191,6 +1233,27 @@ class ActionLogic {
 		// When a Pokemon is set to always bait, always return true for this value
 		if((battle.getMode() == "simulate")&&(attacker.baitShields == 2)){
 			useShield = true;
+		}
+
+		// Save shields in Aegislash shield form to protect Blade form
+
+		if(defender.activeFormId == "aegislash_shield" && move.damage * 2 < defender.hp){
+			useShield = false;
+		}
+
+		// Save shields in Cramorant gulping or gorging form to trigger Gulp Missile earlier against weak moves
+
+		if((defender.activeFormId == "cramorant_gulping" || defender.activeFormId == "cramorant_gorging") && move.damage * 2.2 < defender.hp){
+			useShield = false;
+		}
+
+		// Don't shield early Cramorant Dives or Surfs to save for later attacks
+		if(attacker.speciesId == "cramorant" && move.damage && move.damage / defender.hp < .33){
+			useShield = false;
+		}
+
+		if(attacker.speciesId == "cramorant" && (move.moveId == "DIVE" || move.moveID == "SURF") && move.damage > defender.hp){
+			useShield = false;
 		}
 
 		return {

@@ -1268,6 +1268,10 @@
       "name": "Blindépique",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/652.png"
     },
+    "chesnaught_mega": {
+      "name": "Blindépique Méga",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/652.png"
+    },
     "chesnaught_shadow": {
       "name": "Blindépique (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/652.png"
@@ -1670,6 +1674,10 @@
     },
     "delphox": {
       "name": "Goupelin",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/655.png"
+    },
+    "delphox_mega": {
+      "name": "Goupelin Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/655.png"
     },
     "delphox_shadow": {
@@ -2806,6 +2814,10 @@
     },
     "greninja": {
       "name": "Amphinobi",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png"
+    },
+    "greninja_mega": {
+      "name": "Amphinobi Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png"
     },
     "greninja_shadow": {
@@ -6094,6 +6106,10 @@
     },
     "starmie": {
       "name": "Staross",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
+    },
+    "starmie_mega": {
+      "name": "Staross Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
     },
     "starmie_shadow": {

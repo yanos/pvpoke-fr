@@ -163,6 +163,7 @@
     "IRON_HEAD": "Tête de Fer",
     "IRON_TAIL": "Queue de Fer",
     "KARATE_CHOP": "Poing Karaté",
+    "KOWTOW_CLEAVE": "Génusection",
     "LAST_RESORT": "Dernier Recours",
     "LEAFAGE": "Feuillage",
     "LEAF_BLADE": "Lame Feuille",
@@ -272,6 +273,7 @@
     "SMACK_DOWN": "Anti-Air",
     "SNARL": "Aboiement",
     "SNIPE_SHOT": "Tir de Précision",
+    "SOAK": "Détrempage",
     "SOLAR_BEAM": "Lance-Soleil",
     "SPACIAL_REND": "Spatio-Rift",
     "SPARK": "Étincelle",
@@ -1196,6 +1198,10 @@
       "name": "Lugulabre",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png"
     },
+    "chandelure_mega": {
+      "name": "Lugulabre Méga",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png"
+    },
     "chandelure_shadow": {
       "name": "Lugulabre (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png"
@@ -1266,6 +1272,10 @@
     },
     "chesnaught": {
       "name": "Blindépique",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/652.png"
+    },
+    "chesnaught_mega": {
+      "name": "Blindépique Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/652.png"
     },
     "chesnaught_shadow": {
@@ -1350,6 +1360,10 @@
     },
     "clefable": {
       "name": "Mélodelfe",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png"
+    },
+    "clefable_mega": {
+      "name": "Mélodelfe Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png"
     },
     "clefairy": {
@@ -1670,6 +1684,10 @@
     },
     "delphox": {
       "name": "Goupelin",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/655.png"
+    },
+    "delphox_mega": {
+      "name": "Goupelin Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/655.png"
     },
     "delphox_shadow": {
@@ -2340,6 +2358,10 @@
       "name": "Mimantis",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/753.png"
     },
+    "fomantis_shadow": {
+      "name": "Mimantis (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/753.png"
+    },
     "foongus": {
       "name": "Trompignon",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/590.png"
@@ -2692,6 +2714,10 @@
       "name": "Sarmuraï",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/768.png"
     },
+    "golisopod_shadow": {
+      "name": "Sarmuraï (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/768.png"
+    },
     "golurk": {
       "name": "Golemastoc",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/623.png"
@@ -2702,6 +2728,10 @@
     },
     "goodra": {
       "name": "Muplodocus",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/706.png"
+    },
+    "goodra_hisuian": {
+      "name": "Muplodocus de Hisui",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/706.png"
     },
     "goomy": {
@@ -2806,6 +2836,10 @@
     },
     "greninja": {
       "name": "Amphinobi",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png"
+    },
+    "greninja_mega": {
+      "name": "Amphinobi Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png"
     },
     "greninja_shadow": {
@@ -3712,6 +3746,10 @@
       "name": "Floramantis",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/754.png"
     },
+    "lurantis_shadow": {
+      "name": "Floramantis (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/754.png"
+    },
     "luvdisc": {
       "name": "Lovdisc",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/370.png"
@@ -4584,6 +4622,10 @@
       "name": "Trépassable",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/770.png"
     },
+    "palossand_shadow": {
+      "name": "Trépassable (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/770.png"
+    },
     "palpitoad": {
       "name": "Batracné",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/536.png"
@@ -4592,8 +4634,16 @@
       "name": "Pandespiègle",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/674.png"
     },
+    "pancham_shadow": {
+      "name": "Pandespiègle (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/674.png"
+    },
     "pangoro": {
       "name": "Pandarbare",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/675.png"
+    },
+    "pangoro_shadow": {
+      "name": "Pandarbare (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/675.png"
     },
     "panpour": {
@@ -5396,6 +5446,10 @@
       "name": "Bacabouh",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/769.png"
     },
+    "sandygast_shadow": {
+      "name": "Bacabouh (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/769.png"
+    },
     "sandyshocks": {
       "name": "Pelage-Sablé",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/989.png"
@@ -5840,6 +5894,10 @@
       "name": "Colimucus",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/705.png"
     },
+    "sliggoo_hisuian": {
+      "name": "Colimucus de Hisui",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/705.png"
+    },
     "slitherwing": {
       "name": "Rampe-Ailes",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/988.png"
@@ -6072,6 +6130,10 @@
       "name": "Étouraptor",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/398.png"
     },
+    "staraptor_mega": {
+      "name": "Étouraptor Méga",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/398.png"
+    },
     "staraptor_shadow": {
       "name": "Étouraptor (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/398.png"
@@ -6094,6 +6156,10 @@
     },
     "starmie": {
       "name": "Staross",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
+    },
+    "starmie_mega": {
+      "name": "Staross Méga",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/121.png"
     },
     "starmie_shadow": {
@@ -7000,6 +7066,10 @@
       "name": "Sovkipou",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/767.png"
     },
+    "wimpod_shadow": {
+      "name": "Sovkipou (Obscur)",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/767.png"
+    },
     "wingull": {
       "name": "Goélise",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/278.png"
@@ -7170,6 +7240,10 @@
     },
     "zekrom": {
       "name": "Zekrom",
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"
+    },
+    "zekrom_shadow": {
+      "name": "Zekrom (Obscur)",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"
     },
     "zeraora": {
